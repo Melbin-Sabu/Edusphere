@@ -3,8 +3,9 @@ import Card from "../common/Card";
 import Button from "../common/Button";
 import api from "../../api/api";
 import { BookOpen, FileText, CheckCircle2, Clock, ExternalLink } from "lucide-react";
+import { FaRobot } from "react-icons/fa";
 
-export default function StudentNotesSection() {
+export default function StudentNotesSection({ onAskAI }) {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,15 +31,15 @@ export default function StudentNotesSection() {
   const handleOpenNote = async (note) => {
     try {
       const token = localStorage.getItem("token");
-      
+
       // If not viewed yet, mark as viewed
       if (!note.isViewed) {
         await api.post(`/notes/${note._id}/view`, {}, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
+
         // Optimistically update UI
-        setNotes(prev => prev.map(n => 
+        setNotes(prev => prev.map(n =>
           n._id === note._id ? { ...n, isViewed: true } : n
         ));
       } else {
@@ -47,11 +48,11 @@ export default function StudentNotesSection() {
           headers: { Authorization: `Bearer ${token}` }
         }).catch(e => console.error("Failed to update view count", e));
       }
-      
+
       // Open file in new tab
       const fileUrl = note.fileUrl.startsWith("http") ? note.fileUrl : `http://${window.location.hostname}:5000${note.fileUrl}`;
       window.open(fileUrl, "_blank");
-      
+
     } catch (err) {
       console.error("Error opening note:", err);
       alert("Failed to open note.");
@@ -98,7 +99,7 @@ export default function StudentNotesSection() {
                     </p>
                   </div>
                 </div>
-                
+
                 {note.isViewed ? (
                   <span className="inline-flex items-center gap-1 text-emerald-600 text-[10px] font-bold bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full shrink-0">
                     <CheckCircle2 className="w-3 h-3" /> Viewed
@@ -109,22 +110,33 @@ export default function StudentNotesSection() {
                   </span>
                 )}
               </div>
-              
+
               <h4 className="font-bold text-slate-900 mt-2 line-clamp-1" title={note.title}>{note.title}</h4>
               <p className="text-xs text-slate-500 line-clamp-2 mt-1 min-h-[32px]">{note.description || "No description provided."}</p>
-              
+
               <div className="mt-4 pt-4 border-t border-slate-100 flex-grow flex flex-col justify-end">
                 <div className="flex items-center justify-between text-[10px] mb-3 text-slate-400 font-semibold">
                   <span>Uploaded: {new Date(note.createdAt).toLocaleDateString()}</span>
                   <span className="uppercase">{note.fileType.split('/')[1] || "DOC"} &bull; {(note.fileSize / 1024 / 1024).toFixed(1)} MB</span>
                 </div>
-                
-                <Button 
-                  onClick={() => handleOpenNote(note)}
-                  className="w-full py-2 bg-slate-900 hover:bg-purple-700 text-white flex items-center justify-center gap-2 transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4" /> Open Material
-                </Button>
+
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => handleOpenNote(note)}
+                    className="w-full py-2 bg-slate-900 hover:bg-slate-700 text-white flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" /> Open
+                  </Button>
+                  
+                  {onAskAI && (
+                    <Button
+                      onClick={() => onAskAI(note)}
+                      className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center gap-2 transition-colors"
+                    >
+                      <FaRobot className="w-4 h-4" /> Ask AI
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           ))}

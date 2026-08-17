@@ -484,11 +484,10 @@ function TeacherManagement() {
                   <button
                     type="button"
                     onClick={() => handleToggleStatus(t._id || t.id, t.status || "Active")}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-bold transition cursor-pointer ${
-                      (t.status || "Active") === "Active"
-                        ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
-                        : "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
-                    }`}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-bold transition cursor-pointer ${(t.status || "Active") === "Active"
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
+                      : "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100"
+                      }`}
                     title={`Click to set status to ${(t.status || "Active") === "Active" ? "Inactive" : "Active"}`}
                   >
                     <Power className="w-3 h-3" />
@@ -888,11 +887,10 @@ function TeacherManagement() {
               <button
                 type="button"
                 onClick={() => handleToggleStatus(viewTeacher._id || viewTeacher.id, viewTeacher.status || "Active")}
-                className={`w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer border ${
-                  (viewTeacher.status || "Active") === "Active"
-                    ? "bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100"
-                    : "bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100"
-                }`}
+                className={`w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer border ${(viewTeacher.status || "Active") === "Active"
+                  ? "bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100"
+                  : "bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100"
+                  }`}
               >
                 <Power className="w-4 h-4" />
                 <span>{(viewTeacher.status || "Active") === "Active" ? "Deactivate Account" : "Activate Account"}</span>
@@ -989,7 +987,7 @@ function TeacherManagement() {
               </h3>
               <p className="text-xs text-slate-500 mt-1">Select batches for {allocationTeacher.name || allocationTeacher.fullName}</p>
             </div>
-            
+
             <div className="space-y-3 mb-6">
               {["NEET Morning Batch", "NEET Evening Batch", "JEE Morning Batch", "JEE Evening Batch"].map(batchName => (
                 <label key={batchName} className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
@@ -1007,7 +1005,7 @@ function TeacherManagement() {
                   <span className="text-sm font-semibold text-slate-700">{batchName}</span>
                 </label>
               ))}
-              
+
               <label className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-rose-50 cursor-pointer transition">
                 <input
                   type="radio"

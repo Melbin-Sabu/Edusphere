@@ -4,6 +4,7 @@ import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import ProfilePicUpload from "../../components/common/ProfilePicUpload";
 import StudentNotesSection from "../../components/dashboard/StudentNotesSection";
+import AIChatbot from "../../components/dashboard/AIChatbot";
 import PaymentModal from "../../components/common/PaymentModal";
 import api from "../../api/api";
 import {
@@ -28,6 +29,7 @@ function StudentDashboard() {
   const [loadingApp, setLoadingApp] = useState(true);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentSuccessMsg, setPaymentSuccessMsg] = useState("");
+  const [activeDocumentContext, setActiveDocumentContext] = useState(null);
 
   const handlePicSuccess = (url) => {
     updateUser({ profilePic: url });
@@ -201,7 +203,7 @@ function StudentDashboard() {
       </div>
 
       {/* STUDENT NOTES / STUDY MATERIALS */}
-      <StudentNotesSection />
+      <StudentNotesSection onAskAI={(note) => setActiveDocumentContext(note)} />
 
       {/* PROFILE SUMMARY CARD */}
       <Card className="p-6">
@@ -236,6 +238,10 @@ function StudentDashboard() {
           </div>
         </div>
       </Card>
+      <AIChatbot 
+        documentContext={activeDocumentContext} 
+        onCloseContext={() => setActiveDocumentContext(null)} 
+      />
     </AdminLayout>
   );
 }

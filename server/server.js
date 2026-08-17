@@ -13,6 +13,7 @@ const applicationRoutes = require("./routes/applicationRoutes");
 const administratorRoutes = require("./routes/administratorRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const noteRoutes = require("./routes/noteRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use("/api/applications", applicationRoutes);
 app.use("/api/administrator", administratorRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/notes", noteRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Test Route
 app.get("/", (req, res) => {
@@ -62,3 +64,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT} (accessible via 0.0.0.0)`);
 });
+
+// Trigger restart

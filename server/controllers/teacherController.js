@@ -102,7 +102,7 @@ const createTeacher = async (req, res) => {
 
     // 2. Create Teacher details document in MongoDB
     const teacher = await Teacher.create({
-      user_id: user._id,
+      user: user._id,
       fullName: fullName.trim(),
       email: cleanEmail,
       employeeId: employeeId,
