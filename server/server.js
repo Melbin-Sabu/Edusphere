@@ -12,6 +12,7 @@ const uploadRoutes = require("./routes/uploadRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const administratorRoutes = require("./routes/administratorRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const noteRoutes = require("./routes/noteRoutes");
 
 const app = express();
 
@@ -27,8 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 const uploadsDir = path.join(__dirname, "uploads");
 const certificatesDir = path.join(uploadsDir, "certificates");
 const profilePicsDir = path.join(uploadsDir, "profile-pics");
+const notesDir = path.join(uploadsDir, "notes");
 
-[uploadsDir, certificatesDir, profilePicsDir].forEach((dir) => {
+[uploadsDir, certificatesDir, profilePicsDir, notesDir].forEach((dir) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
@@ -38,6 +40,7 @@ const profilePicsDir = path.join(uploadsDir, "profile-pics");
 app.use("/uploads", express.static(uploadsDir));
 app.use("/uploads", express.static(certificatesDir));
 app.use("/uploads", express.static(profilePicsDir));
+app.use("/uploads", express.static(notesDir));
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -47,6 +50,7 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/administrator", administratorRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/notes", noteRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

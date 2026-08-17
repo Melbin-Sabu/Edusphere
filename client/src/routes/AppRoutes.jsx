@@ -15,6 +15,7 @@ import BatchManagement from "../pages/administrator/BatchManagement";
 
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import TeacherDashboard from "../pages/teacher/TeacherDashboard";
+import ManageSubjectTeachers from "../pages/teacher/ManageSubjectTeachers";
 import StudentDashboard from "../pages/student/StudentDashboard";
 
 import { ProtectedRoute, PublicOnlyRoute } from "./ProtectedRoute";
@@ -115,6 +116,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["TEACHER"]}>
               <TeacherDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/subject-teachers"
+          element={
+            <ProtectedRoute allowedRoles={["TEACHER"]}>
+              <ManageSubjectTeachers />
             </ProtectedRoute>
           }
         />

@@ -3,6 +3,7 @@ import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import ProfilePicUpload from "../../components/common/ProfilePicUpload";
+import StudentNotesSection from "../../components/dashboard/StudentNotesSection";
 import PaymentModal from "../../components/common/PaymentModal";
 import api from "../../api/api";
 import {
@@ -143,6 +144,20 @@ function StudentDashboard() {
             </p>
           </div>
         </div>
+
+        {/* Right side badges */}
+        <div className="flex flex-col md:items-end gap-2 shrink-0">
+          {(user.course || application?.courseId) && (
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold">
+              <span className="w-2 h-2 rounded-full bg-indigo-400" /> {user.course || application?.courseId}
+            </div>
+          )}
+          {(user.batch || application?.batchId) && (
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold">
+              <span className="w-2 h-2 rounded-full bg-amber-400" /> {user.batch || application?.batchId}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* METRICS CARDS */}
@@ -170,8 +185,13 @@ function StudentDashboard() {
         </Card>
 
         <Card className="p-5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Current Semester</span>
-          <p className="text-lg font-bold text-slate-900 mt-1">Semester 1</p>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Program & Batch</span>
+          <p className="text-lg font-bold text-indigo-600 mt-1">
+            {user.course || application?.courseId || "N/A"}
+          </p>
+          <p className="text-xs font-semibold text-slate-500 mt-0.5">
+            {user.batch || application?.batchId || "Unassigned"}
+          </p>
         </Card>
 
         <Card className="p-5">
@@ -179,6 +199,9 @@ function StudentDashboard() {
           <p className="text-lg font-bold text-emerald-600 mt-1">94.8% (Good)</p>
         </Card>
       </div>
+
+      {/* STUDENT NOTES / STUDY MATERIALS */}
+      <StudentNotesSection />
 
       {/* PROFILE SUMMARY CARD */}
       <Card className="p-6">

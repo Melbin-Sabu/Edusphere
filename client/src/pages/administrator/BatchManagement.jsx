@@ -22,6 +22,8 @@ function BatchManagement() {
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [activeModalTab, setActiveModalTab] = useState("Teachers"); // "Teachers" or "Students"
   const [search, setSearch] = useState("");
+  
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const batches = [
     { id: "JEE Morning Batch", name: "JEE Morning Batch", type: "JEE", icon: GraduationCap },
@@ -66,6 +68,13 @@ function BatchManagement() {
         // Remove batch
         newBatches = newBatches.filter(b => b !== batchName);
       } else {
+        // Check if another teacher is already assigned to this batch
+        const existingTeacher = teachers.find(t => t.assignedBatches?.includes(batchName));
+        if (existingTeacher) {
+          alert(`This batch is already assigned to ${existingTeacher.fullName}. Please unassign them first before assigning a new teacher.`);
+          return;
+        }
+
         // Add batch
         if (!newBatches.includes(batchName)) {
           newBatches.push(batchName);
@@ -153,19 +162,21 @@ function BatchManagement() {
                 </div>
               </div>
               
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full border-blue-200 text-blue-700 hover:bg-blue-50"
-                onClick={() => {
-                  setSelectedBatch(batch);
-                  setShowAssignModal(true);
-                  setActiveModalTab("Teachers");
-                  setSearch("");
-                }}
-              >
-                Manage Batch
-              </Button>
+              {(user?.role || "").toUpperCase() === "ADMIN" && (
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-blue-200 text-blue-700 hover:bg-blue-50"
+                  onClick={() => {
+                    setSelectedBatch(batch);
+                    setShowAssignModal(true);
+                    setActiveModalTab("Teachers");
+                    setSearch("");
+                  }}
+                >
+                  Manage Batch
+                </Button>
+              )}
             </Card>
           );
         })}
