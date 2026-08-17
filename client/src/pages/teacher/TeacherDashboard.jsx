@@ -21,11 +21,13 @@ import {
   Award
 } from "lucide-react";
 import ProfilePicUpload from "../../components/common/ProfilePicUpload";
+import TeacherNotesSection from "../../components/dashboard/TeacherNotesSection";
 
 function TeacherDashboard() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user") || "{}"));
   const [students, setStudents] = useState([]);
   const [assignedBatches, setAssignedBatches] = useState([]);
+  const [subjectBatches, setSubjectBatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -49,22 +51,28 @@ function TeacherDashboard() {
         
         // Find current teacher's batches
         let myBatches = [];
+        let mySubjectBatches = [];
+        
         if (teachersRes.data?.teachers) {
           const me = teachersRes.data.teachers.find(t => t.email === user.email);
-          if (me && me.assignedBatches) {
-            myBatches = me.assignedBatches;
+          if (me) {
+            myBatches = me.assignedBatches || [];
+            mySubjectBatches = me.subjectBatches || [];
           }
         }
         setAssignedBatches(myBatches);
+        setSubjectBatches(mySubjectBatches);
+        
+        const allMyBatches = [...new Set([...myBatches, ...mySubjectBatches])];
         
         // Filter students by assigned batches using string matching
         const myStudents = allStudents.filter(s => {
-          if (myBatches.length === 0) return false;
+          if (allMyBatches.length === 0) return false;
           
           const sCourse = (s.course || "").toUpperCase();
           const sBatch = (s.batch || "").toLowerCase();
           
-          return myBatches.some(batchId => 
+          return allMyBatches.some(batchId => 
             batchId.toUpperCase().includes(sCourse) && 
             batchId.toLowerCase().includes(sBatch)
           );
@@ -99,13 +107,19 @@ function TeacherDashboard() {
           />
           <div>
             <h2 className="text-2xl font-bold">Welcome, {user.name || "Faculty Member"}!</h2>
-            {assignedBatches.length > 0 ? (
+            {assignedBatches.length > 0 || subjectBatches.length > 0 ? (
               <div className="mt-3 flex flex-wrap gap-2">
                 {assignedBatches.map(batch => (
-                  <div key={batch} className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-1.5 rounded-lg text-xs font-black text-white shadow-[0_0_15px_rgba(245,158,11,0.4)] border border-amber-400 relative overflow-hidden group">
+                  <div key={`ct-${batch}`} className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-1.5 rounded-lg text-xs font-black text-white shadow-[0_0_15px_rgba(245,158,11,0.4)] border border-amber-400 relative overflow-hidden group">
                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                     <Award className="w-4 h-4 text-amber-100 relative z-10" />
                     <span className="relative z-10 tracking-wide uppercase">Class Teacher • {batch}</span>
+                  </div>
+                ))}
+                {subjectBatches.map(batch => (
+                  <div key={`st-${batch}`} className="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/50 px-4 py-1.5 rounded-lg text-xs font-bold text-indigo-200">
+                    <BookOpen className="w-4 h-4" />
+                    <span className="tracking-wide uppercase">Subject Teacher • {batch}</span>
                   </div>
                 ))}
               </div>
@@ -139,15 +153,15 @@ function TeacherDashboard() {
         <Card className="p-6 border-slate-200 hover:border-purple-300 transition">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-              Assigned Batches
+              My Classes
             </span>
             <div className="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center">
               <Layers className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-3xl font-black text-slate-900">{assignedBatches.length} {assignedBatches.length === 1 ? 'Batch' : 'Batches'}</p>
+          <p className="text-3xl font-black text-slate-900">{assignedBatches.length + subjectBatches.length} {assignedBatches.length + subjectBatches.length === 1 ? 'Batch' : 'Batches'}</p>
           <p className="text-xs text-slate-500 mt-2 truncate">
-            {assignedBatches.length > 0 ? assignedBatches.join(", ") : "No batches assigned"}
+            {assignedBatches.length + subjectBatches.length > 0 ? [...assignedBatches, ...subjectBatches].join(", ") : "No batches assigned"}
           </p>
         </Card>
 
@@ -164,6 +178,12 @@ function TeacherDashboard() {
           <p className="text-xs text-slate-500 mt-2">Class Roster & Academic Monitoring</p>
         </Card>
       </div>
+
+      {/* TEACHER NOTES / STUDY MATERIALS */}
+      <TeacherNotesSection 
+        assignedBatches={[...assignedBatches, ...subjectBatches]} 
+        uploadableBatches={subjectBatches}
+      />
 
       {/* STUDENT ROSTER TABLE */}
       <Card className="p-6">

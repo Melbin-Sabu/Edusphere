@@ -6,6 +6,7 @@ const {
   getTeacherById,
   updateTeacher,
   deleteTeacher,
+  toggleSubjectBatch,
 } = require("../controllers/teacherController");
 const { protect, authorizeRoles } = require("../middleware/authMiddleware");
 
@@ -47,6 +48,14 @@ router.delete(
   protect,
   authorizeRoles("Administrator"),
   deleteTeacher
+);
+
+// Toggle Subject Batch for a teacher (Called by Class Teacher)
+router.put(
+  "/:teacherId/subject-batches",
+  protect,
+  authorizeRoles("Teacher"),
+  toggleSubjectBatch
 );
 
 module.exports = router;

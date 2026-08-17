@@ -297,10 +297,67 @@ const deleteTeacher = async (req, res) => {
   }
 };
 
+// =======================
+// Toggle Subject Batch (Class Teacher Action)
+// =======================
+const toggleSubjectBatch = async (req, res) => {
+  try {
+    const { teacherId } = req.params;
+    const { batchId } = req.body;
+
+    if (!batchId) {
+      return res.status(400).json({ message: "Batch ID is required" });
+    }
+
+    // Verify logged-in user is the Class Teacher for this batch
+    const loggedInTeacher = await Teacher.findOne({ user_id: req.user._id }) || await Teacher.findOne({ user: req.user._id });
+    
+    if (!loggedInTeacher) {
+      return res.status(404).json({ message: "Your teacher profile was not found" });
+    }
+
+    if (!loggedInTeacher.assignedBatches || !loggedInTeacher.assignedBatches.includes(batchId)) {
+      return res.status(403).json({ message: "You are not authorized to assign subject teachers for this batch" });
+    }
+
+    // Find the target teacher
+    const targetTeacher = await Teacher.findById(teacherId);
+    if (!targetTeacher) {
+      return res.status(404).json({ message: "Target teacher not found" });
+    }
+
+    // Don't allow assigning a batch as a subject batch if they are already the Class Teacher for it
+    if (targetTeacher.assignedBatches && targetTeacher.assignedBatches.includes(batchId)) {
+      return res.status(400).json({ message: "This teacher is already the Class Teacher for this batch" });
+    }
+
+    // Toggle the batchId in subjectBatches
+    let subjectBatches = targetTeacher.subjectBatches || [];
+    
+    if (subjectBatches.includes(batchId)) {
+      subjectBatches = subjectBatches.filter(b => b !== batchId);
+    } else {
+      subjectBatches.push(batchId);
+    }
+
+    targetTeacher.subjectBatches = subjectBatches;
+    await targetTeacher.save();
+
+    res.status(200).json({ 
+      message: "Subject teacher assignment updated successfully",
+      teacher: targetTeacher
+    });
+  } catch (error) {
+    console.error("Error toggling subject batch:", error);
+    res.status(500).json({ message: "Failed to update subject teacher assignment" });
+  }
+};
+
 module.exports = {
   createTeacher,
   getAllTeachers,
   getTeacherById,
   updateTeacher,
   deleteTeacher,
+  toggleSubjectBatch,
 };

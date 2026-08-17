@@ -69,6 +69,7 @@ function AdminLayout({ children, title }) {
     if (roleUpper === "TEACHER") {
       return [
         { name: "Faculty Dashboard", path: "/teacher/dashboard", icon: LayoutDashboard },
+        { name: "Manage Subject Teachers", path: "/teacher/subject-teachers", icon: Users },
         { name: "My Batches", path: "/teacher/batches", icon: Layers, isPlaceholder: true },
         { name: "Mark Attendance", path: "/teacher/attendance", icon: CalendarCheck, isPlaceholder: true },
         { name: "Exam Marks Entry", path: "/teacher/exams", icon: FileText, isPlaceholder: true },
@@ -93,7 +94,7 @@ function AdminLayout({ children, title }) {
       { name: "Student Management", path: "/administrator/students", icon: GraduationCap, badge: "Live" },
       { name: "Teacher Management", path: "/administrator/teachers", icon: Users },
       { name: "Admin Management", path: "/administrator/admins", icon: ShieldCheck },
-      { name: "Batch Management", path: "/administrator/batches", icon: Layers },
+      { name: "Batch Management", path: "/administrator/batches", icon: Layers, badge: "View Only" },
       { name: "Attendance", path: "/administrator/attendance", icon: CalendarCheck, isPlaceholder: true },
       { name: "Fees", path: "/administrator/fees", icon: Receipt, isPlaceholder: true },
       { name: "Exams & Marks", path: "/administrator/exams", icon: FileText, isPlaceholder: true },

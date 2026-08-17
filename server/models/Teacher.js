@@ -93,6 +93,11 @@ const teacherSchema = new mongoose.Schema(
       trim: true
     }],
 
+    subjectBatches: [{
+      type: String,
+      trim: true
+    }],
+
     profilePic: {
       type: String,
       default: "",
