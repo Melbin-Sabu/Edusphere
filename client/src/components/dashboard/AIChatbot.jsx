@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { FaRobot, FaTimes, FaPaperPlane } from "react-icons/fa";
 
-const AIChatbot = ({ documentContext, onCloseContext }) => {
+const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [history, setHistory] = useState([
@@ -58,7 +58,7 @@ const AIChatbot = ({ documentContext, onCloseContext }) => {
   return (
     <>
       {/* Floating Action Button */}
-      {!isOpen && (
+      {!isOpen && !inline && (
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 p-4 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 transition-colors z-50 flex items-center justify-center"
@@ -68,8 +68,8 @@ const AIChatbot = ({ documentContext, onCloseContext }) => {
       )}
 
       {/* Chat Window */}
-      {isOpen && (
-        <div className="fixed bottom-6 right-6 w-80 md:w-96 bg-white rounded-lg shadow-2xl flex flex-col z-50 overflow-hidden border border-gray-200" style={{ height: "500px" }}>
+      {(isOpen || inline) && (
+        <div className={inline ? "w-full h-full bg-white flex flex-col" : "fixed bottom-6 right-6 w-80 md:w-96 bg-white rounded-lg shadow-2xl flex flex-col z-50 overflow-hidden border border-gray-200"} style={inline ? {} : { height: "500px" }}>
           {/* Header */}
           <div className="bg-purple-600 text-white p-4 flex justify-between items-center shrink-0">
             <div className="flex items-center space-x-2">
@@ -79,28 +79,32 @@ const AIChatbot = ({ documentContext, onCloseContext }) => {
                 <p className="text-xs text-purple-200">NEET & JEE Support</p>
               </div>
             </div>
-            <button 
-              onClick={() => {
-                setIsOpen(false);
-                if (onCloseContext) onCloseContext();
-              }} 
-              className="text-white hover:text-gray-200 focus:outline-none"
-            >
-              <FaTimes />
-            </button>
+            {!inline && (
+              <button 
+                onClick={() => {
+                  setIsOpen(false);
+                  if (onCloseContext) onCloseContext();
+                }} 
+                className="text-white hover:text-gray-200 focus:outline-none"
+              >
+                <FaTimes />
+              </button>
+            )}
           </div>
 
           {/* Document Context Banner */}
           {documentContext && (
             <div className="bg-blue-50 border-b border-blue-100 p-2 text-xs text-blue-800 flex justify-between items-center shrink-0">
               <span className="truncate">Asking about: <strong>{documentContext.title}</strong></span>
-              <button 
-                onClick={onCloseContext}
-                className="ml-2 text-blue-500 hover:text-blue-700 font-bold"
-                title="Clear Context"
-              >
-                &times;
-              </button>
+              {!inline && (
+                <button 
+                  onClick={onCloseContext}
+                  className="ml-2 text-blue-500 hover:text-blue-700 font-bold"
+                  title="Clear Context"
+                >
+                  &times;
+                </button>
+              )}
             </div>
           )}
 

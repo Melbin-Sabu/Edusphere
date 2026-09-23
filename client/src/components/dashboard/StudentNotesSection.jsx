@@ -5,7 +5,15 @@ import api from "../../api/api";
 import { BookOpen, FileText, CheckCircle2, Clock, ExternalLink } from "lucide-react";
 import { FaRobot } from "react-icons/fa";
 
-export default function StudentNotesSection({ onAskAI }) {
+const formatFileSize = (bytes) => {
+  if (!bytes) return "0.0 MB";
+  const k = 1024;
+  if (bytes < k * k) return (bytes / k).toFixed(1) + " KB";
+  return (bytes / (k * k)).toFixed(1) + " MB";
+};
+
+
+export default function StudentNotesSection({ onAskAI, onViewNote }) {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,9 +57,13 @@ export default function StudentNotesSection({ onAskAI }) {
         }).catch(e => console.error("Failed to update view count", e));
       }
 
-      // Open file in new tab
-      const fileUrl = note.fileUrl.startsWith("http") ? note.fileUrl : `http://${window.location.hostname}:5000${note.fileUrl}`;
-      window.open(fileUrl, "_blank");
+      if (onViewNote) {
+        onViewNote(note);
+      } else {
+        // Fallback if onViewNote is not provided
+        const fileUrl = note.fileUrl.startsWith("http") ? note.fileUrl : `http://${window.location.hostname}:5000${note.fileUrl}`;
+        window.open(fileUrl, "_blank");
+      }
 
     } catch (err) {
       console.error("Error opening note:", err);
@@ -117,7 +129,7 @@ export default function StudentNotesSection({ onAskAI }) {
               <div className="mt-4 pt-4 border-t border-slate-100 flex-grow flex flex-col justify-end">
                 <div className="flex items-center justify-between text-[10px] mb-3 text-slate-400 font-semibold">
                   <span>Uploaded: {new Date(note.createdAt).toLocaleDateString()}</span>
-                  <span className="uppercase">{note.fileType.split('/')[1] || "DOC"} &bull; {(note.fileSize / 1024 / 1024).toFixed(1)} MB</span>
+                  <span className="uppercase">{note.fileType.split('/')[1] || "DOC"} &bull; {formatFileSize(note.fileSize)}</span>
                 </div>
 
                 <div className="flex gap-2">
@@ -127,15 +139,6 @@ export default function StudentNotesSection({ onAskAI }) {
                   >
                     <ExternalLink className="w-4 h-4" /> Open
                   </Button>
-                  
-                  {onAskAI && (
-                    <Button
-                      onClick={() => onAskAI(note)}
-                      className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center gap-2 transition-colors"
-                    >
-                      <FaRobot className="w-4 h-4" /> Ask AI
-                    </Button>
-                  )}
                 </div>
               </div>
             </div>

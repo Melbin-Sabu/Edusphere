@@ -20,6 +20,7 @@ import {
   CreditCard,
   AlertTriangle,
   Sparkles,
+  X,
 } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
@@ -31,6 +32,7 @@ function StudentDashboard() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentSuccessMsg, setPaymentSuccessMsg] = useState("");
   const [activeDocumentContext, setActiveDocumentContext] = useState(null);
+  const [viewingNote, setViewingNote] = useState(null);
   const [pendingFeesTotal, setPendingFeesTotal] = useState(0);
 
   const handlePicSuccess = (url) => {
@@ -244,7 +246,10 @@ function StudentDashboard() {
       </div>
 
       {/* STUDENT NOTES / STUDY MATERIALS */}
-      <StudentNotesSection onAskAI={(note) => setActiveDocumentContext(note)} />
+      <StudentNotesSection 
+        onAskAI={(note) => setActiveDocumentContext(note)} 
+        onViewNote={(note) => setViewingNote(note)}
+      />
 
       {/* PROFILE SUMMARY CARD */}
       <Card className="p-6">
@@ -279,10 +284,45 @@ function StudentDashboard() {
           </div>
         </div>
       </Card>
-      <AIChatbot 
-        documentContext={activeDocumentContext} 
-        onCloseContext={() => setActiveDocumentContext(null)} 
-      />
+      {/* FLOATING CHATBOT */}
+      {!viewingNote && (
+        <AIChatbot 
+          documentContext={activeDocumentContext} 
+          onCloseContext={() => setActiveDocumentContext(null)} 
+        />
+      )}
+
+      {/* NOTE VIEWER MODAL WITH SIDE-BY-SIDE CHATBOT */}
+      {viewingNote && (
+        <div className="fixed inset-0 z-[60] bg-white flex flex-col md:flex-row h-screen">
+          <div className="flex-1 h-full flex flex-col border-r border-slate-200">
+            <div className="bg-slate-900 text-white p-3 flex justify-between items-center shadow-md">
+              <h3 className="font-bold text-sm truncate pr-4">Viewing: {viewingNote.title}</h3>
+              <button 
+                onClick={() => setViewingNote(null)} 
+                className="p-1.5 hover:bg-slate-700 rounded-full transition-colors flex-shrink-0"
+                title="Close Viewer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 bg-slate-100">
+              <iframe 
+                src={viewingNote.fileUrl.startsWith("http") ? viewingNote.fileUrl : `http://${window.location.hostname}:5000${viewingNote.fileUrl}`} 
+                className="w-full h-full border-none" 
+                title={viewingNote.title}
+              />
+            </div>
+          </div>
+          <div className="w-full md:w-96 lg:w-[400px] h-full flex-shrink-0 border-t md:border-t-0 md:border-l border-slate-200">
+            <AIChatbot 
+              documentContext={viewingNote} 
+              onCloseContext={() => {}} 
+              inline={true} 
+            />
+          </div>
+        </div>
+      )}
     </AdminLayout>
   );
 }
