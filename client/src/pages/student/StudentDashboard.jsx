@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
@@ -30,6 +31,7 @@ function StudentDashboard() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentSuccessMsg, setPaymentSuccessMsg] = useState("");
   const [activeDocumentContext, setActiveDocumentContext] = useState(null);
+  const [pendingFeesTotal, setPendingFeesTotal] = useState(0);
 
   const handlePicSuccess = (url) => {
     updateUser({ profilePic: url });
@@ -51,8 +53,21 @@ function StudentDashboard() {
     }
   };
 
+  const fetchStudentFees = async () => {
+    try {
+      const res = await api.get("/fees/my-fees");
+      if (res.data && res.data.myFees) {
+        const total = res.data.myFees.reduce((sum, fee) => sum + fee.pendingAmount, 0);
+        setPendingFeesTotal(total);
+      }
+    } catch (err) {
+      console.log("Error fetching fees:", err.message);
+    }
+  };
+
   useEffect(() => {
     fetchStudentApplication();
+    fetchStudentFees();
   }, [user.email]);
 
   const handlePaymentSuccess = (receiptData) => {
@@ -101,6 +116,32 @@ function StudentDashboard() {
             <Sparkles className="w-4 h-4 text-amber-300" />
             <span>Pay ₹500 via Razorpay</span>
           </Button>
+        </div>
+      )}
+
+      {/* ACADEMIC FEE ALERT BANNER */}
+      {pendingFeesTotal > 0 && (
+        <div className="mb-6 rounded-2xl bg-gradient-to-r from-rose-500/15 via-rose-500/10 to-slate-900 border border-rose-500/30 p-5 text-rose-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg">
+          <div className="flex items-start gap-3">
+            <div className="p-2.5 bg-rose-500/20 rounded-xl text-rose-400 shrink-0">
+              <AlertTriangle className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                Academic Fee Outstanding (₹{pendingFeesTotal})
+              </h3>
+              <p className="text-xs text-rose-300 mt-0.5">
+                You have pending academic fee payments. Please clear your dues before the deadline.
+              </p>
+            </div>
+          </div>
+
+          <Link
+            to="/student/fees"
+            className="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs py-2.5 px-5 rounded-xl shrink-0 shadow-md flex items-center gap-2 transition"
+          >
+            <span>View & Pay Fees</span>
+          </Link>
         </div>
       )}
 

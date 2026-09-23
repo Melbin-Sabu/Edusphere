@@ -61,7 +61,7 @@ function AdminLayout({ children, title }) {
         { name: "My Courses", path: "/student/courses", icon: BookOpen, isPlaceholder: true },
         { name: "Attendance Record", path: "/student/attendance", icon: CalendarCheck, isPlaceholder: true },
         { name: "Exams & Results", path: "/student/exams", icon: FileText, isPlaceholder: true },
-        { name: "Fee Payments", path: "/student/fees", icon: Receipt, isPlaceholder: true },
+        { name: "Fee Payments", path: "/student/fees", icon: Receipt },
         { name: "Change Password", path: "/change-password", icon: Key },
       ];
     }
@@ -83,6 +83,7 @@ function AdminLayout({ children, title }) {
         { name: "Student Directory", path: "/administrator/students", icon: GraduationCap, badge: "View Only" },
         { name: "Batch Management", path: "/administrator/batches", icon: Layers },
         { name: "Attendance Records", path: "/administrator/attendance", icon: CalendarCheck, isPlaceholder: true },
+        { name: "Fee Management", path: "/admin/fees", icon: Receipt },
         { name: "Reports & Analytics", path: "/administrator/reports", icon: BarChart3, isPlaceholder: true },
         { name: "Change Password", path: "/change-password", icon: Key },
       ];
@@ -96,7 +97,7 @@ function AdminLayout({ children, title }) {
       { name: "Admin Management", path: "/administrator/admins", icon: ShieldCheck },
       { name: "Batch Management", path: "/administrator/batches", icon: Layers, badge: "View Only" },
       { name: "Attendance", path: "/administrator/attendance", icon: CalendarCheck, isPlaceholder: true },
-      { name: "Fees", path: "/administrator/fees", icon: Receipt, isPlaceholder: true },
+      { name: "Fees", path: "/administrator/fees", icon: Receipt },
       { name: "Exams & Marks", path: "/administrator/exams", icon: FileText, isPlaceholder: true },
       { name: "Reports", path: "/administrator/reports", icon: BarChart3, isPlaceholder: true },
       { name: "Settings", path: "/administrator/settings", icon: Settings, isPlaceholder: true },

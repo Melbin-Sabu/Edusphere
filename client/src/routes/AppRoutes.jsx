@@ -12,11 +12,13 @@ import StudentManagement from "../pages/administrator/StudentManagement";
 import TeacherManagement from "../pages/administrator/TeacherManagement";
 import AdminManagement from "../pages/administrator/AdminManagement";
 import BatchManagement from "../pages/administrator/BatchManagement";
+import FeeManagement from "../pages/administrator/FeeManagement";
 
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import TeacherDashboard from "../pages/teacher/TeacherDashboard";
 import ManageSubjectTeachers from "../pages/teacher/ManageSubjectTeachers";
 import StudentDashboard from "../pages/student/StudentDashboard";
+import StudentFeeView from "../pages/student/StudentFeeView";
 
 import { ProtectedRoute, PublicOnlyRoute } from "./ProtectedRoute";
 
@@ -101,6 +103,14 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/administrator/fees"
+          element={
+            <ProtectedRoute allowedRoles={["ADMINISTRATOR"]}>
+              <FeeManagement />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Role-Specific Dashboards */}
         <Route
@@ -108,6 +118,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/fees"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <FeeManagement />
             </ProtectedRoute>
           }
         />
@@ -132,6 +150,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["STUDENT"]}>
               <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/student/fees"
+          element={
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
+              <StudentFeeView />
             </ProtectedRoute>
           }
         />

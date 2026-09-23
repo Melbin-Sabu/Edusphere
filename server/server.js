@@ -14,6 +14,7 @@ const administratorRoutes = require("./routes/administratorRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const noteRoutes = require("./routes/noteRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const feeRoutes = require("./routes/feeRoutes");
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use("/api/administrator", administratorRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/fees", feeRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

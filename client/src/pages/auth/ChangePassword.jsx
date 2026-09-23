@@ -10,6 +10,7 @@ import {
   ShieldAlert,
   CreditCard,
   CheckCircle2,
+  LogOut,
 } from "lucide-react";
 
 import { useForm } from "react-hook-form";
@@ -20,7 +21,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function ChangePassword() {
   const navigate = useNavigate();
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, logout } = useAuth();
   const currentUser = user || {};
 
   const [passwordSuccess, setPasswordSuccess] = useState(false);
@@ -151,6 +152,19 @@ function ChangePassword() {
                   ? "Update Password & Continue to Razorpay Payment"
                   : "Update Password"}
             </Button>
+            
+            <div className="pt-4 text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  navigate("/login", { replace: true });
+                }}
+                className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-red-400 transition"
+              >
+                <LogOut className="w-3.5 h-3.5" /> Cancel & Sign Out
+              </button>
+            </div>
           </form>
         </>
       ) : (

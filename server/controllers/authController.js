@@ -503,6 +503,8 @@ const addStaffUser = async (req, res) => {
         employeeId,
         mobileNumber: mobileNumber ? mobileNumber.trim() : "N/A",
         department: department ? department.trim() : "General",
+
+        
         designation: designation ? designation.trim() : "Faculty",
         qualification: qualification ? qualification.trim() : "N/A",
         experience: experience ? experience.trim() : "N/A",
