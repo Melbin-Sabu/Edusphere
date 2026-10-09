@@ -15,6 +15,7 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const noteRoutes = require("./routes/noteRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const feeRoutes = require("./routes/feeRoutes");
+const quizRoutes = require("./routes/quizRoutes");
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/fees", feeRoutes);
+app.use("/api/quizzes", quizRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

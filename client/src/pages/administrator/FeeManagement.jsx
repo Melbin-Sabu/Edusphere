@@ -10,7 +10,7 @@ import {
   Plus,
   Search,
   Filter,
-  DollarSign,
+  IndianRupee,
   AlertTriangle,
   CheckCircle2,
   Clock,
@@ -227,30 +227,30 @@ function FeeManagement() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card padding="p-5">
               <div className="flex items-center justify-between mb-2">
-                <div className="p-2 rounded-xl bg-purple-50 text-purple-600"><DollarSign className="w-5 h-5"/></div>
+                <div className="p-2 rounded-xl bg-purple-50 text-purple-600"><IndianRupee className="w-5 h-5"/></div>
               </div>
-              <h4 className="text-2xl font-extrabold text-slate-900">₹{reports.summary.totalExpected || 0}</h4>
+              <h4 className="text-2xl font-extrabold text-slate-900">₹{(reports.summary.totalExpected || 0).toLocaleString('en-IN')}</h4>
               <p className="text-xs font-bold text-slate-500">Total Expected</p>
             </Card>
             <Card padding="p-5">
               <div className="flex items-center justify-between mb-2">
                 <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600"><CheckCircle2 className="w-5 h-5"/></div>
               </div>
-              <h4 className="text-2xl font-extrabold text-slate-900">₹{reports.summary.totalCollected || 0}</h4>
+              <h4 className="text-2xl font-extrabold text-slate-900">₹{(reports.summary.totalCollected || 0).toLocaleString('en-IN')}</h4>
               <p className="text-xs font-bold text-slate-500">Total Collected</p>
             </Card>
             <Card padding="p-5">
               <div className="flex items-center justify-between mb-2">
                 <div className="p-2 rounded-xl bg-amber-50 text-amber-600"><Clock className="w-5 h-5"/></div>
               </div>
-              <h4 className="text-2xl font-extrabold text-slate-900">₹{reports.summary.totalPending || 0}</h4>
+              <h4 className="text-2xl font-extrabold text-slate-900">₹{(reports.summary.totalPending || 0).toLocaleString('en-IN')}</h4>
               <p className="text-xs font-bold text-slate-500">Total Pending</p>
             </Card>
             <Card padding="p-5">
               <div className="flex items-center justify-between mb-2">
                 <div className="p-2 rounded-xl bg-rose-50 text-rose-600"><AlertTriangle className="w-5 h-5"/></div>
               </div>
-              <h4 className="text-2xl font-extrabold text-slate-900">₹{reports.overdue.totalOverdue || 0}</h4>
+              <h4 className="text-2xl font-extrabold text-slate-900">₹{(reports.overdue.totalOverdue || 0).toLocaleString('en-IN')}</h4>
               <p className="text-xs font-bold text-slate-500">Overdue ({reports.overdue.count || 0} students)</p>
             </Card>
           </div>
@@ -270,8 +270,8 @@ function FeeManagement() {
               <tbody className="divide-y divide-slate-100 font-medium">
                 {reports.recentPayments?.map(p => (
                   <tr key={p._id}>
-                    <td className="py-3 px-4">{p.studentId?.fullName} ({p.studentId?.admissionNumber})</td>
-                    <td className="py-3 px-4 text-emerald-600">₹{p.amount}</td>
+                    <td className="py-3 px-4">{(p.studentId?.fullName)} ({(p.studentId?.admissionNumber)})</td>
+                    <td className="py-3 px-4 text-emerald-600">₹{(p.amount || 0).toLocaleString('en-IN')}</td>
                     <td className="py-3 px-4">{p.paymentMethod}</td>
                     <td className="py-3 px-4">{new Date(p.paymentDate).toLocaleDateString()}</td>
                     <td className="py-3 px-4 text-purple-600">{p.receiptNumber}</td>
@@ -309,7 +309,7 @@ function FeeManagement() {
                 <tr key={s._id}>
                   <td className="py-3 px-4 font-bold">{s.courseId} / {s.batchId}</td>
                   <td className="py-3 px-4">{s.academicYear}</td>
-                  <td className="py-3 px-4 text-purple-700">₹{s.totalAmount}</td>
+                  <td className="py-3 px-4 text-purple-700">₹{(s.totalAmount || 0).toLocaleString('en-IN')}</td>
                   <td className="py-3 px-4">{new Date(s.dueDate).toLocaleDateString()}</td>
                   <td className="py-3 px-4">
                     <span className="px-2 py-1 rounded bg-emerald-100 text-emerald-800 text-[10px]">{s.status}</span>
@@ -349,9 +349,9 @@ function FeeManagement() {
                     <div className="text-[10px] text-slate-400">{sf.studentId?.admissionNumber}</div>
                   </td>
                   <td className="py-3 px-4">{sf.studentId?.course} / {sf.studentId?.batch}</td>
-                  <td className="py-3 px-4">₹{sf.totalAmount}</td>
-                  <td className="py-3 px-4 text-emerald-600">₹{sf.paidAmount}</td>
-                  <td className="py-3 px-4 text-rose-600">₹{sf.pendingAmount}</td>
+                  <td className="py-3 px-4">₹{(sf.totalAmount || 0).toLocaleString('en-IN')}</td>
+                  <td className="py-3 px-4 text-emerald-600">₹{(sf.paidAmount || 0).toLocaleString('en-IN')}</td>
+                  <td className="py-3 px-4 text-rose-600">₹{(sf.pendingAmount || 0).toLocaleString('en-IN')}</td>
                   <td className="py-3 px-4">
                     <span className={`px-2 py-1 rounded text-[10px] font-bold ${
                       sf.status === "PAID" ? "bg-emerald-100 text-emerald-800" :
@@ -402,7 +402,7 @@ function FeeManagement() {
                 <tr key={p._id}>
                   <td className="py-3 px-4 text-purple-700 font-mono">{p.receiptNumber}</td>
                   <td className="py-3 px-4">{p.studentId?.fullName} ({p.studentId?.admissionNumber})</td>
-                  <td className="py-3 px-4 font-bold text-emerald-600">₹{p.amount}</td>
+                  <td className="py-3 px-4 font-bold text-emerald-600">₹{(p.amount || 0).toLocaleString('en-IN')}</td>
                   <td className="py-3 px-4">{p.paymentMethod}</td>
                   <td className="py-3 px-4">{new Date(p.paymentDate).toLocaleDateString()}</td>
                   <td className="py-3 px-4 text-center">
@@ -516,7 +516,7 @@ function FeeManagement() {
             </div>
             <div className="mb-4 p-3 bg-purple-50 rounded-xl text-xs space-y-1">
               <p>Student: <strong>{selectedStudentFee.studentId?.fullName}</strong></p>
-              <p>Pending Amount: <strong className="text-rose-600">₹{selectedStudentFee.pendingAmount}</strong></p>
+              <p>Pending Amount: <strong className="text-rose-600">₹{(selectedStudentFee.pendingAmount || 0).toLocaleString('en-IN')}</strong></p>
             </div>
             <form onSubmit={submitPayment} className="space-y-4">
               <div>

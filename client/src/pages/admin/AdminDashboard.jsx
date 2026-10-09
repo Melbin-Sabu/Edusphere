@@ -23,26 +23,33 @@ import {
 function AdminDashboard() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [students, setStudents] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [activeTab, setActiveTab] = useState("students");
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-        const res = await api.get("/students", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setStudents(res.data.students || []);
+        
+        const [resStudents, resTeachers] = await Promise.all([
+          api.get("/students", { headers: { Authorization: `Bearer ${token}` } }),
+          api.get("/teachers", { headers: { Authorization: `Bearer ${token}` } })
+        ]);
+        
+        setStudents(resStudents.data.students || []);
+        setTeachers(resTeachers.data.teachers || []);
       } catch (err) {
-        console.error("Failed to load students:", err);
+        console.error("Failed to load dashboard data:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchStudents();
+    fetchData();
   }, []);
 
   const filteredStudents = students.filter(
@@ -50,6 +57,13 @@ function AdminDashboard() {
       s.fullName?.toLowerCase().includes(search.toLowerCase()) ||
       s.admissionNumber?.toLowerCase().includes(search.toLowerCase()) ||
       s.course?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredTeachers = teachers.filter(
+    (t) =>
+      t.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+      t.employeeId?.toLowerCase().includes(search.toLowerCase()) ||
+      t.department?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -78,7 +92,7 @@ function AdminDashboard() {
       </div>
 
       {/* STATS CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 mb-8">
         <Card className="p-6 border-slate-200">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
@@ -97,14 +111,29 @@ function AdminDashboard() {
         <Card className="p-6 border-slate-200">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              Total Faculty
+            </span>
+            <div className="w-9 h-9 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center">
+              <Users className="w-5 h-5" />
+            </div>
+          </div>
+          <p className="text-3xl font-black text-slate-900">{teachers.length}</p>
+          <p className="text-xs text-teal-600 font-semibold mt-2 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5" /> Active Staff Members
+          </p>
+        </Card>
+
+        <Card className="p-6 border-slate-200">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
               Academic Courses
             </span>
             <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
               <BookOpen className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-3xl font-black text-slate-900">5 Departments</p>
-          <p className="text-xs text-slate-500 mt-2">CSE, ECE, ME, CE, IT</p>
+          <p className="text-3xl font-black text-slate-900">2 Streams</p>
+          <p className="text-xs text-slate-500 mt-2">NEET, JEE</p>
         </Card>
 
         <Card className="p-6 border-slate-200">
@@ -121,16 +150,34 @@ function AdminDashboard() {
         </Card>
       </div>
 
-      {/* STUDENT DIRECTORY OVERVIEW TABLE */}
+      {/* DIRECTORY OVERVIEW TABLE */}
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-purple-600" />
-              Student Directory & Records
-            </h3>
+            <div className="flex bg-slate-100 p-1 rounded-xl w-max mb-2">
+              <button
+                onClick={() => setActiveTab("students")}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition ${
+                  activeTab === "students"
+                    ? "bg-white text-slate-900 shadow"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Student Directory
+              </button>
+              <button
+                onClick={() => setActiveTab("teachers")}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition ${
+                  activeTab === "teachers"
+                    ? "bg-white text-slate-900 shadow"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Teacher Directory
+              </button>
+            </div>
             <p className="text-xs text-slate-500">
-              Browse and inspect enrolled student profiles and academic details
+              Browse and inspect enrolled {activeTab} profiles and details
             </p>
           </div>
 
@@ -156,13 +203,14 @@ function AdminDashboard() {
 
         {loading ? (
           <div className="py-12 text-center text-xs text-slate-400">
-            Loading student records...
+            Loading directory records...
           </div>
-        ) : filteredStudents.length === 0 ? (
-          <div className="py-12 text-center text-xs text-slate-400 border-2 border-dashed border-slate-200 rounded-2xl">
-            No students found matching your search query.
-          </div>
-        ) : (
+        ) : activeTab === "students" ? (
+          filteredStudents.length === 0 ? (
+            <div className="py-12 text-center text-xs text-slate-400 border-2 border-dashed border-slate-200 rounded-2xl">
+              No students found matching your search query.
+            </div>
+          ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-200/80">
@@ -204,6 +252,58 @@ function AdminDashboard() {
               </tbody>
             </table>
           </div>
+          )
+        ) : (
+          filteredTeachers.length === 0 ? (
+            <div className="py-12 text-center text-xs text-slate-400 border-2 border-dashed border-slate-200 rounded-2xl">
+              No teachers found matching your search query.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredTeachers.map((t) => (
+                <div key={t._id || t.id} className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-teal-400/20 to-emerald-600/5 rounded-bl-full pointer-events-none -z-10"></div>
+                  
+                  <div className="flex items-center gap-4 z-10">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white flex items-center justify-center font-extrabold text-xl shadow-lg shadow-teal-500/30">
+                      {(t.fullName || t.name)?.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-base">{t.fullName || t.name}</h4>
+                      <div className="inline-block mt-0.5 px-2 py-0.5 bg-teal-50 border border-teal-100 rounded-md">
+                        <p className="text-[10px] font-mono text-teal-700 font-bold tracking-wider">{t.employeeId || "TCH-PENDING"}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 text-xs mt-2 z-10">
+                    <div className="bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
+                      <span className="block text-slate-400 font-bold text-[10px] uppercase tracking-wider mb-0.5">Department</span>
+                      <strong className="text-slate-800">{t.department || "Unassigned"}</strong>
+                    </div>
+                    <div className="bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
+                      <span className="block text-slate-400 font-bold text-[10px] uppercase tracking-wider mb-0.5">Designation</span>
+                      <strong className="text-slate-800">{t.designation || "Faculty"}</strong>
+                    </div>
+                  </div>
+                  
+                  <div className="text-xs flex items-center gap-2 text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100 z-10">
+                    <Mail className="w-4 h-4 text-slate-400 shrink-0" /> 
+                    <span className="truncate font-medium">{t.email}</span>
+                  </div>
+                  
+                  <div className="pt-2 flex justify-end z-10">
+                    <button 
+                      onClick={() => setSelectedTeacher(t)} 
+                      className="w-full text-teal-700 hover:text-white bg-teal-50 hover:bg-teal-600 px-4 py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Eye className="w-4 h-4" /> View Full Profile
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
         )}
       </Card>
 
@@ -266,6 +366,71 @@ function AdminDashboard() {
             <Button
               onClick={() => setSelectedStudent(null)}
               className="w-full mt-6 py-2.5"
+            >
+              Close Profile
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* VIEW TEACHER PROFILE MODAL */}
+      {selectedTeacher && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-lg bg-white rounded-2xl p-6 shadow-2xl border border-slate-100">
+            <button
+              onClick={() => setSelectedTeacher(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-100 transition"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-extrabold text-lg">
+                {(selectedTeacher.fullName || selectedTeacher.name)?.charAt(0)}
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900 text-lg">{selectedTeacher.fullName || selectedTeacher.name}</h3>
+                <p className="text-xs font-mono text-teal-600 font-bold">
+                  {selectedTeacher.employeeId || "N/A"}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4 text-xs">
+              <div className="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div>
+                  <span className="text-slate-400 block font-semibold">Department</span>
+                  <strong className="text-slate-800">{selectedTeacher.department || "N/A"}</strong>
+                </div>
+                <div>
+                  <span className="text-slate-400 block font-semibold">Designation</span>
+                  <strong className="text-slate-800">{selectedTeacher.designation || "N/A"}</strong>
+                </div>
+                <div>
+                  <span className="text-slate-400 block font-semibold">Status</span>
+                  <strong className="text-slate-800">{selectedTeacher.status || "Active"}</strong>
+                </div>
+                <div>
+                  <span className="text-slate-400 block font-semibold">Role</span>
+                  <strong className="text-slate-800">{selectedTeacher.role || "Teacher"}</strong>
+                </div>
+              </div>
+
+              <div className="space-y-2 p-3 border border-slate-100 rounded-xl">
+                <p className="flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 text-slate-400" /> Email: <strong>{selectedTeacher.email}</strong>
+                </p>
+                {selectedTeacher.phone && (
+                  <p className="flex items-center gap-2">
+                    <User className="w-3.5 h-3.5 text-slate-400" /> Phone: <strong>{selectedTeacher.phone}</strong>
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <Button
+              onClick={() => setSelectedTeacher(null)}
+              className="w-full mt-6 py-2.5 bg-teal-600 hover:bg-teal-700 text-white border-0"
             >
               Close Profile
             </Button>

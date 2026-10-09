@@ -58,7 +58,7 @@ function AdminLayout({ children, title }) {
     if (roleUpper === "STUDENT") {
       return [
         { name: "My Dashboard", path: "/student/dashboard", icon: LayoutDashboard },
-        { name: "My Courses", path: "/student/courses", icon: BookOpen, isPlaceholder: true },
+        { name: "My Quizzes", path: "/student/quizzes", icon: BookOpen },
         { name: "Attendance Record", path: "/student/attendance", icon: CalendarCheck, isPlaceholder: true },
         { name: "Exams & Results", path: "/student/exams", icon: FileText, isPlaceholder: true },
         { name: "Fee Payments", path: "/student/fees", icon: Receipt },
@@ -70,9 +70,9 @@ function AdminLayout({ children, title }) {
       return [
         { name: "Faculty Dashboard", path: "/teacher/dashboard", icon: LayoutDashboard },
         { name: "Manage Subject Teachers", path: "/teacher/subject-teachers", icon: Users },
+        { name: "Quiz Management", path: "/teacher/quizzes", icon: FileText },
         { name: "My Batches", path: "/teacher/batches", icon: Layers, isPlaceholder: true },
         { name: "Mark Attendance", path: "/teacher/attendance", icon: CalendarCheck, isPlaceholder: true },
-        { name: "Exam Marks Entry", path: "/teacher/exams", icon: FileText, isPlaceholder: true },
         { name: "Student Directory", path: "/administrator/students", icon: GraduationCap },
       ];
     }
@@ -83,6 +83,7 @@ function AdminLayout({ children, title }) {
         { name: "Student Directory", path: "/administrator/students", icon: GraduationCap, badge: "View Only" },
         { name: "Batch Management", path: "/administrator/batches", icon: Layers },
         { name: "Attendance Records", path: "/administrator/attendance", icon: CalendarCheck, isPlaceholder: true },
+        { name: "Timetable Allocation", path: "/admin/timetable", icon: CalendarCheck },
         { name: "Fee Management", path: "/admin/fees", icon: Receipt },
         { name: "Reports & Analytics", path: "/administrator/reports", icon: BarChart3, isPlaceholder: true },
         { name: "Change Password", path: "/change-password", icon: Key },
@@ -96,6 +97,7 @@ function AdminLayout({ children, title }) {
       { name: "Teacher Management", path: "/administrator/teachers", icon: Users },
       { name: "Admin Management", path: "/administrator/admins", icon: ShieldCheck },
       { name: "Batch Management", path: "/administrator/batches", icon: Layers, badge: "View Only" },
+      { name: "Timetable Allocation", path: "/administrator/timetable", icon: CalendarCheck },
       { name: "Attendance", path: "/administrator/attendance", icon: CalendarCheck, isPlaceholder: true },
       { name: "Fees", path: "/administrator/fees", icon: Receipt },
       { name: "Exams & Marks", path: "/administrator/exams", icon: FileText, isPlaceholder: true },

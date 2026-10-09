@@ -11,6 +11,24 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
+  const renderMessage = (text) => {
+    return text.split('\n').map((line, i) => {
+      let isBullet = false;
+      if (line.trim().startsWith('* ')) {
+        line = line.trim().substring(2);
+        isBullet = true;
+      }
+      
+      const parts = line.split('**');
+      return (
+        <div key={i} className={`min-h-[1.25rem] ${isBullet ? 'pl-4 relative' : ''}`}>
+          {isBullet && <span className="absolute left-0 top-0">•</span>}
+          {parts.map((part, j) => j % 2 === 1 ? <strong key={j} className="font-bold">{part}</strong> : part)}
+        </div>
+      );
+    });
+  };
+
   useEffect(() => {
     if (documentContext && !isOpen) {
       setIsOpen(true);
@@ -113,13 +131,13 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
             {history.map((msg, idx) => (
               <div 
                 key={idx} 
-                className={`max-w-[85%] rounded-2xl p-3 text-sm ${
+                className={`max-w-[85%] rounded-2xl p-3 text-sm whitespace-pre-wrap ${
                   msg.role === 'user' 
                     ? 'bg-purple-600 text-white self-end rounded-br-sm' 
                     : 'bg-white border border-gray-200 text-gray-800 self-start rounded-bl-sm shadow-sm'
                 }`}
               >
-                {msg.text}
+                {msg.role === 'model' ? renderMessage(msg.text) : msg.text}
               </div>
             ))}
             {loading && (

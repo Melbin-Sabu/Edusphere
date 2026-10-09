@@ -246,8 +246,8 @@ function StudentDashboard() {
       </div>
 
       {/* STUDENT NOTES / STUDY MATERIALS */}
-      <StudentNotesSection 
-        onAskAI={(note) => setActiveDocumentContext(note)} 
+      <StudentNotesSection
+        onAskAI={(note) => setActiveDocumentContext(note)}
         onViewNote={(note) => setViewingNote(note)}
       />
 
@@ -286,9 +286,9 @@ function StudentDashboard() {
       </Card>
       {/* FLOATING CHATBOT */}
       {!viewingNote && (
-        <AIChatbot 
-          documentContext={activeDocumentContext} 
-          onCloseContext={() => setActiveDocumentContext(null)} 
+        <AIChatbot
+          documentContext={activeDocumentContext}
+          onCloseContext={() => setActiveDocumentContext(null)}
         />
       )}
 
@@ -298,8 +298,8 @@ function StudentDashboard() {
           <div className="flex-1 h-full flex flex-col border-r border-slate-200">
             <div className="bg-slate-900 text-white p-3 flex justify-between items-center shadow-md">
               <h3 className="font-bold text-sm truncate pr-4">Viewing: {viewingNote.title}</h3>
-              <button 
-                onClick={() => setViewingNote(null)} 
+              <button
+                onClick={() => setViewingNote(null)}
                 className="p-1.5 hover:bg-slate-700 rounded-full transition-colors flex-shrink-0"
                 title="Close Viewer"
               >
@@ -307,18 +307,18 @@ function StudentDashboard() {
               </button>
             </div>
             <div className="flex-1 bg-slate-100">
-              <iframe 
-                src={viewingNote.fileUrl.startsWith("http") ? viewingNote.fileUrl : `http://${window.location.hostname}:5000${viewingNote.fileUrl}`} 
-                className="w-full h-full border-none" 
+              <iframe
+                src={viewingNote.fileUrl.startsWith("http") ? viewingNote.fileUrl : `http://${window.location.hostname}:5000${viewingNote.fileUrl}`}
+                className="w-full h-full border-none"
                 title={viewingNote.title}
               />
             </div>
           </div>
           <div className="w-full md:w-96 lg:w-[400px] h-full flex-shrink-0 border-t md:border-t-0 md:border-l border-slate-200">
-            <AIChatbot 
-              documentContext={viewingNote} 
-              onCloseContext={() => {}} 
-              inline={true} 
+            <AIChatbot
+              documentContext={viewingNote}
+              onCloseContext={() => { }}
+              inline={true}
             />
           </div>
         </div>

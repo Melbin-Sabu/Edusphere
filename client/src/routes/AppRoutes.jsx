@@ -15,10 +15,18 @@ import BatchManagement from "../pages/administrator/BatchManagement";
 import FeeManagement from "../pages/administrator/FeeManagement";
 
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import TimetableGenerator from "../pages/admin/TimetableGenerator";
 import TeacherDashboard from "../pages/teacher/TeacherDashboard";
 import ManageSubjectTeachers from "../pages/teacher/ManageSubjectTeachers";
+import TeacherQuizDashboard from "../pages/teacher/TeacherQuizDashboard";
+import QuizBuilder from "../pages/teacher/QuizBuilder";
+import QuizResults from "../pages/teacher/QuizResults";
+
 import StudentDashboard from "../pages/student/StudentDashboard";
 import StudentFeeView from "../pages/student/StudentFeeView";
+import StudentQuizList from "../pages/student/StudentQuizList";
+import QuizPlayer from "../pages/student/QuizPlayer";
+import QuizResultView from "../pages/student/QuizResultView";
 
 import { ProtectedRoute, PublicOnlyRoute } from "./ProtectedRoute";
 
@@ -104,6 +112,14 @@ function AppRoutes() {
           }
         />
         <Route
+          path="/administrator/timetable"
+          element={
+            <ProtectedRoute allowedRoles={["ADMINISTRATOR", "ADMIN"]}>
+              <TimetableGenerator />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/administrator/fees"
           element={
             <ProtectedRoute allowedRoles={["ADMINISTRATOR"]}>
@@ -118,6 +134,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/timetable"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <TimetableGenerator />
             </ProtectedRoute>
           }
         />
@@ -146,6 +170,38 @@ function AppRoutes() {
           }
         />
         <Route
+          path="/teacher/quizzes"
+          element={
+            <ProtectedRoute allowedRoles={["TEACHER"]}>
+              <TeacherQuizDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/quizzes/create"
+          element={
+            <ProtectedRoute allowedRoles={["TEACHER"]}>
+              <QuizBuilder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/quizzes/:id/edit"
+          element={
+            <ProtectedRoute allowedRoles={["TEACHER"]}>
+              <QuizBuilder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/quizzes/:id/results"
+          element={
+            <ProtectedRoute allowedRoles={["TEACHER"]}>
+              <QuizResults />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/student/dashboard"
           element={
             <ProtectedRoute allowedRoles={["STUDENT"]}>
@@ -158,6 +214,38 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["STUDENT"]}>
               <StudentFeeView />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/student/quizzes"
+          element={
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
+              <StudentQuizList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/student/quizzes/:id/play"
+          element={
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
+              <QuizPlayer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/student/quizzes/:id/attempt/:attemptId"
+          element={
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
+              <QuizPlayer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/student/quizzes/:id/result"
+          element={
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
+              <QuizResultView />
             </ProtectedRoute>
           }
         />
