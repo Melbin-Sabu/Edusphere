@@ -4,6 +4,7 @@ const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
 const Note = require('../models/Note');
 const Student = require('../models/Student');
+const ChatHistory = require('../models/ChatHistory');
 
 // We bypass the Google SDK and use native fetch to resolve AQ.* token parsing bugs.
 
@@ -115,6 +116,23 @@ const chatWithAI = async (req, res) => {
 
     const answer = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't generate a response.";
 
+    // Save to ChatHistory
+    if (student) {
+      let chatHistory = await ChatHistory.findOne({ studentId: student._id });
+      if (!chatHistory) {
+        chatHistory = new ChatHistory({ studentId: student._id, messages: [] });
+      }
+      chatHistory.messages.push({ role: "user", text: message });
+      chatHistory.messages.push({ role: "model", text: answer });
+      
+      // Keep only last 100 messages to prevent document size explosion
+      if (chatHistory.messages.length > 100) {
+        chatHistory.messages = chatHistory.messages.slice(-100);
+      }
+      
+      await chatHistory.save();
+    }
+
     return res.status(200).json({ answer });
   } catch (error) {
     console.error('Error in chatWithAI:', error);
@@ -124,6 +142,26 @@ const chatWithAI = async (req, res) => {
   }
 };
 
+const getChatHistory = async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user._id }) || await Student.findOne({ student_user: req.user._id });
+    if (!student) {
+      return res.status(404).json({ message: 'Student profile not found' });
+    }
+
+    const chatHistory = await ChatHistory.findOne({ studentId: student._id });
+    
+    // Map to frontend expected format if it exists
+    const history = chatHistory ? chatHistory.messages.map(m => ({ role: m.role, text: m.text })) : [];
+
+    res.status(200).json({ history });
+  } catch (error) {
+    console.error('Error fetching chat history:', error);
+    res.status(500).json({ message: 'Failed to fetch chat history' });
+  }
+};
+
 module.exports = {
-  chatWithAI
+  chatWithAI,
+  getChatHistory
 };

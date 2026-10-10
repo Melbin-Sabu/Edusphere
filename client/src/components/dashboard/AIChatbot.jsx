@@ -6,11 +6,12 @@ import { BASE_URL } from "../../api/api";
 const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [history, setHistory] = useState([
-    { role: "model", text: "Hello! I am your AI Academic Assistant. I can help you with NEET and JEE topics like Physics, Chemistry, Biology, and Mathematics. How can I help you today?" }
-  ]);
+  const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [fetchingHistory, setFetchingHistory] = useState(true);
   const messagesEndRef = useRef(null);
+  
+  const defaultWelcome = { role: "model", text: "Hello! I am your AI Academic Assistant. I can help you with NEET and JEE topics like Physics, Chemistry, Biology, and Mathematics. How can I help you today?" };
 
   const renderMessage = (text) => {
     return text.split('\n').map((line, i) => {
@@ -35,6 +36,29 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
       setIsOpen(true);
     }
   }, [documentContext]);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        const res = await axios.get(`${BASE_URL}/ai/history`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.data && res.data.history && res.data.history.length > 0) {
+          setHistory([defaultWelcome, ...res.data.history]);
+        } else {
+          setHistory([defaultWelcome]);
+        }
+      } catch (err) {
+        console.error("Error fetching chat history:", err);
+        setHistory([defaultWelcome]);
+      } finally {
+        setFetchingHistory(false);
+      }
+    };
+    fetchHistory();
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -129,26 +153,32 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
 
           {/* Messages */}
           <div className="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col space-y-4">
-            {history.map((msg, idx) => (
-              <div 
-                key={idx} 
-                className={`max-w-[85%] rounded-2xl p-3 text-sm whitespace-pre-wrap ${
-                  msg.role === 'user' 
-                    ? 'bg-purple-600 text-white self-end rounded-br-sm' 
-                    : 'bg-white border border-gray-200 text-gray-800 self-start rounded-bl-sm shadow-sm'
-                }`}
-              >
-                {msg.role === 'model' ? renderMessage(msg.text) : msg.text}
-              </div>
-            ))}
-            {loading && (
-              <div className="bg-white border border-gray-200 text-gray-500 self-start rounded-2xl rounded-bl-sm p-3 text-sm shadow-sm max-w-[85%]">
-                <div className="flex space-x-1 items-center">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                </div>
-              </div>
+            {fetchingHistory ? (
+              <div className="text-center text-sm text-gray-500 py-4">Loading your chat history...</div>
+            ) : (
+              <>
+                {history.map((msg, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`max-w-[85%] rounded-2xl p-3 text-sm whitespace-pre-wrap ${
+                      msg.role === 'user' 
+                        ? 'bg-purple-600 text-white self-end rounded-br-sm' 
+                        : 'bg-white border border-gray-200 text-gray-800 self-start rounded-bl-sm shadow-sm'
+                    }`}
+                  >
+                    {msg.role === 'model' ? renderMessage(msg.text) : msg.text}
+                  </div>
+                ))}
+                {loading && (
+                  <div className="bg-white border border-gray-200 text-gray-500 self-start rounded-2xl rounded-bl-sm p-3 text-sm shadow-sm max-w-[85%]">
+                    <div className="flex space-x-1 items-center">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
             <div ref={messagesEndRef} />
           </div>
