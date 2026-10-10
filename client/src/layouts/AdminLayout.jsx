@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -59,8 +60,8 @@ function AdminLayout({ children, title }) {
       return [
         { name: "My Dashboard", path: "/student/dashboard", icon: LayoutDashboard },
         { name: "My Quizzes", path: "/student/quizzes", icon: BookOpen },
-        { name: "Attendance Record", path: "/student/attendance", icon: CalendarCheck, isPlaceholder: true },
-        { name: "Exams & Results", path: "/student/exams", icon: FileText, isPlaceholder: true },
+        { name: "Attendance Record", path: "/student/attendance", icon: CalendarCheck },
+        { name: "Exams & Results", path: "/student/results", icon: FileText },
         { name: "Fee Payments", path: "/student/fees", icon: Receipt },
         { name: "Change Password", path: "/change-password", icon: Key },
       ];
@@ -72,7 +73,7 @@ function AdminLayout({ children, title }) {
         { name: "Manage Subject Teachers", path: "/teacher/subject-teachers", icon: Users },
         { name: "Quiz Management", path: "/teacher/quizzes", icon: FileText },
         { name: "My Batches", path: "/teacher/batches", icon: Layers, isPlaceholder: true },
-        { name: "Mark Attendance", path: "/teacher/attendance", icon: CalendarCheck, isPlaceholder: true },
+        { name: "Mark Attendance", path: "/teacher/attendance", icon: CalendarCheck },
         { name: "Student Directory", path: "/administrator/students", icon: GraduationCap },
       ];
     }
@@ -208,7 +209,7 @@ function AdminLayout({ children, title }) {
                 onClick={(e) => {
                   if (item.isPlaceholder) {
                     e.preventDefault();
-                    alert(`${item.name} module is active under your ${user.role || 'user'} portal.`);
+                    toast.success(`${item.name} module is active under your ${user.role || 'user'} portal.`);
                   } else {
                     setMobileOpen(false);
                   }

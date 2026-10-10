@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// Dynamically use current hostname (localhost on PC, 192.168.x.x on mobile phone)
-const hostname = typeof window !== "undefined" ? window.location.hostname : "localhost";
+// Export BASE_URL so other files can use it for constructing absolute URLs (like images)
+export const BASE_URL = import.meta.env.VITE_API_URL || (typeof window !== "undefined" ? `http://${window.location.hostname}:5000/api` : "http://localhost:5000/api");
 
 const api = axios.create({
-  baseURL: `http://${hostname}:5000/api`,
+  baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },

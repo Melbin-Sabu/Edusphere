@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import api from "../../api/api";
 import { useNavigate } from "react-router-dom";
@@ -77,7 +78,7 @@ function Login() {
       const targetDashboard = getRoleDashboard(roleUpper);
       navigate(targetDashboard, { replace: true });
     } catch (error) {
-      alert(error.response?.data?.message || "Login Failed. Please verify your credentials.");
+      toast.error(error.response?.data?.message || "Login Failed. Please verify your credentials.");
     }
   };
 

@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+import { useConfirm } from "../../context/ConfirmContext";
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Card from "../../components/common/Card";
@@ -6,6 +8,8 @@ import api from "../../api/api";
 import { Clock, AlertTriangle, ArrowRight, ArrowLeft } from "lucide-react";
 
 function QuizPlayer() {
+  const confirm = useConfirm();
+
   const { id, attemptId: paramAttemptId } = useParams();
   const navigate = useNavigate();
 
@@ -57,7 +61,7 @@ function QuizPlayer() {
       setQuestions(startRes.data.questions);
       setAnswers([]); // empty initially
     } catch (err) {
-      alert(err.response?.data?.message || "Could not start quiz");
+      toast.error(err.response?.data?.message || "Could not start quiz");
       navigate("/student/quizzes");
     } finally {
       setLoading(false);
@@ -69,7 +73,7 @@ function QuizPlayer() {
       setLoading(true);
       const res = await api.get(`/quizzes/attempt/${attId}`);
       if (res.data.status !== "IN_PROGRESS") {
-        alert("This attempt is no longer active");
+        toast.success("This attempt is no longer active");
         navigate(`/student/quizzes/${id}/result`);
         return;
       }
@@ -77,7 +81,7 @@ function QuizPlayer() {
       setQuestions(res.data.questions);
       setAnswers(res.data.answers || []);
     } catch (err) {
-      alert("Error resuming attempt");
+      toast.error("Error resuming attempt");
       navigate("/student/quizzes");
     } finally {
       setLoading(false);
@@ -101,13 +105,14 @@ function QuizPlayer() {
   };
 
   const handleManualSubmit = async () => {
-    if (window.confirm("Are you sure you want to submit your quiz? You cannot change your answers after this.")) {
+    const isConfirmed = await confirm({ title: "Submit Quiz", message: "Are you sure you want to submit your quiz? You cannot change your answers after this.", confirmText: "Submit" });
+    if (isConfirmed) {
       submitQuizData();
     }
   };
 
   const handleAutoSubmit = async () => {
-    alert("Time is up! Your quiz is automatically submitted.");
+    toast.success("Time is up! Your quiz is automatically submitted.");
     submitQuizData();
   };
 
@@ -116,7 +121,7 @@ function QuizPlayer() {
       await api.post(`/quizzes/${id}/submit`, { attemptId, answers });
       navigate(`/student/quizzes/${id}/result`);
     } catch (err) {
-      alert(err.response?.data?.message || "Error submitting quiz");
+      toast.error(err.response?.data?.message || "Error submitting quiz");
       navigate(`/student/quizzes/${id}/result`);
     }
   };

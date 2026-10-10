@@ -255,6 +255,189 @@ const registerStudent = async (req, res) => {
 };
 
 // =======================
+// Direct Student Register (Public flow)
+// =======================
+const directStudentRegister = async (req, res) => {
+  try {
+    const {
+      fullName,
+      email,
+      mobileNumber,
+      dob,
+      gender,
+      address,
+      course,
+      batch,
+      tenthPercentage,
+      twelfthPercentage,
+      parentName,
+      parentEmail,
+      parentMobile,
+      relationship,
+    } = req.body;
+
+    if (
+      !fullName || !email || !mobileNumber || !dob || !gender ||
+      !address || !course || !tenthPercentage || !twelfthPercentage ||
+      !parentName || !parentEmail || !parentMobile || !relationship
+    ) {
+      return res.status(400).json({ message: "Please fill all required details" });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanParentEmail = parentEmail.toLowerCase().trim();
+
+    const studentEmailVal = validateDeepEmail(cleanEmail);
+    if (!studentEmailVal.isValid) {
+      return res.status(400).json({
+        message: `Student Email Validation Error: ${studentEmailVal.error}`,
+      });
+    }
+
+    const parentEmailVal = validateDeepEmail(cleanParentEmail);
+    if (!parentEmailVal.isValid) {
+      return res.status(400).json({
+        message: `Parent Email Validation Error: ${parentEmailVal.error}`,
+      });
+    }
+
+    if (cleanEmail === cleanParentEmail) {
+      return res.status(400).json({
+        message: "Parent email address cannot be identical to student email address",
+      });
+    }
+
+    const indianMobileRegex = /^[6-9]\d{9}$/;
+    if (!indianMobileRegex.test(mobileNumber.trim())) {
+      return res.status(400).json({
+        message: "Student mobile number must be a valid 10-digit number starting with 6, 7, 8, or 9",
+      });
+    }
+
+    if (!indianMobileRegex.test(parentMobile.trim())) {
+      return res.status(400).json({
+        message: "Parent mobile number must be a valid 10-digit number starting with 6, 7, 8, or 9",
+      });
+    }
+
+    if (mobileNumber.trim() === parentMobile.trim()) {
+      return res.status(400).json({
+        message: "Parent mobile number cannot be identical to student mobile number",
+      });
+    }
+
+    const dobDate = new Date(dob);
+    const today = new Date();
+    if (isNaN(dobDate.getTime()) || dobDate >= today) {
+      return res.status(400).json({ message: "Invalid Date of Birth" });
+    }
+
+    let age = today.getFullYear() - dobDate.getFullYear();
+    const m = today.getMonth() - dobDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+      age--;
+    }
+
+    if (age < 14 || age > 40) {
+      return res.status(400).json({
+        message: "Student age must be between 14 and 40 years to register",
+      });
+    }
+
+    const tenthNum = Number(tenthPercentage);
+    const twelfthNum = Number(twelfthPercentage);
+    if (isNaN(tenthNum) || tenthNum < 35 || tenthNum > 100) {
+      return res.status(400).json({
+        message: "10th percentage score must be between 35.00% and 100.00%",
+      });
+    }
+
+    if (isNaN(twelfthNum) || twelfthNum < 35 || twelfthNum > 100) {
+      return res.status(400).json({
+        message: "12th percentage score must be between 35.00% and 100.00%",
+      });
+    }
+
+    const existingUser = await User.findOne({ email: cleanEmail });
+    if (existingUser) {
+      return res.status(400).json({ message: "A user with this email already exists" });
+    }
+
+    const admissionNumber = await generateAdmissionNumber();
+    
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashedPassword = await bcrypt.hash(otp, 10);
+
+    const user = await User.create({
+      name: fullName.trim(),
+      email: cleanEmail,
+      admissionNumber,
+      password: hashedPassword,
+      role: "STUDENT",
+      isFirstLogin: true,
+      status: "Active",
+    });
+
+    let tenthCertPath = "";
+    let twelfthCertPath = "";
+    if (req.files) {
+      if (req.files.tenthCertificate && req.files.tenthCertificate[0]) {
+        tenthCertPath = `/uploads/${req.files.tenthCertificate[0].filename}`;
+      }
+      if (req.files.twelfthCertificate && req.files.twelfthCertificate[0]) {
+        twelfthCertPath = `/uploads/${req.files.twelfthCertificate[0].filename}`;
+      }
+    } else {
+      if (req.body.tenthCertificate) tenthCertPath = req.body.tenthCertificate;
+      if (req.body.twelfthCertificate) twelfthCertPath = req.body.twelfthCertificate;
+    }
+
+    const student = await Student.create({
+      user: user._id,
+      fullName: fullName.trim(),
+      email: cleanEmail,
+      mobileNumber: mobileNumber.trim(),
+      dob,
+      gender,
+      address: address.trim(),
+      course: course.trim(),
+      batch: batch ? batch.trim() : `${course.trim()} Batch`,
+      admissionNumber,
+      tenthPercentage: Number(tenthPercentage),
+      twelfthPercentage: Number(twelfthPercentage),
+      parentName: parentName.trim(),
+      parentEmail: parentEmail.trim(),
+      parentMobile: parentMobile.trim(),
+      relationship: relationship.trim(),
+      tenthCertificate: tenthCertPath,
+      twelfthCertificate: twelfthCertPath,
+      status: "Active",
+      paymentStatus: "Pending",
+    });
+
+    // We can reuse sendStudentRegistrationEmail or just send OTP directly.
+    // For now, we will reuse the existing email function or assume it sends the OTP.
+    const emailResult = await sendStudentRegistrationEmail({
+      studentName: fullName,
+      email: cleanEmail,
+      admissionNumber,
+      tempPassword: otp,
+    });
+
+    res.status(201).json({
+      message: "Student registered successfully. OTP sent to email.",
+      email: cleanEmail,
+      admissionNumber,
+      emailSent: emailResult.success,
+    });
+  } catch (error) {
+    console.error("Direct Registration Error:", error);
+    res.status(500).json({ message: error.message || "Failed to register student" });
+  }
+};
+
+// =======================
 // Get All Students
 // =======================
 const getStudents = async (req, res) => {
@@ -322,8 +505,48 @@ const deleteStudent = async (req, res) => {
   }
 };
 
+// =======================
+// Process Direct Registration Payment
+// =======================
+const { processMockPayment } = require("../services/paymentService");
+
+const payRegistrationFee = async (req, res) => {
+  try {
+    const { id } = req.params; // this is user id
+    const { amount } = req.body;
+
+    const student = await Student.findOne({ user: id });
+    if (!student) {
+      return res.status(404).json({ message: "Student record not found" });
+    }
+
+    if (student.paymentStatus === "Success") {
+      return res.status(400).json({ message: "Payment has already been completed." });
+    }
+
+    const paymentResult = await processMockPayment({
+      applicationId: student.admissionNumber,
+      amount: amount || 500,
+    });
+
+    student.paymentStatus = "Success";
+    await student.save();
+
+    res.status(200).json({
+      message: "Registration fee payment successful!",
+      student,
+      paymentResult,
+    });
+  } catch (error) {
+    console.error("Payment Error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   registerStudent,
+  directStudentRegister,
+  payRegistrationFee,
   getStudents,
   deleteStudent,
 };

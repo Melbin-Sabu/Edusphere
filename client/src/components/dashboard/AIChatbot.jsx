@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { FaRobot, FaTimes, FaPaperPlane } from "react-icons/fa";
+import { BASE_URL } from "../../api/api";
 
 const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +52,7 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:5000/api/ai/chat",
+        `${BASE_URL}/ai/chat`,
         {
           message: userMessage,
           noteId: documentContext?._id || null,

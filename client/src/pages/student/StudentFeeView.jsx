@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
@@ -44,10 +45,10 @@ function StudentFeeView() {
       } else if (paymentContext.type === "FULL") {
         await api.post(`/fees/${paymentContext.id}/pay-full`);
       }
-      alert("Fee Payment recorded successfully!");
+      toast.success("Fee Payment recorded successfully!");
       loadFees();
     } catch (err) {
-      alert(err.response?.data?.message || "Payment processed but failed to update fee record.");
+      toast.error(err.response?.data?.message || "Payment processed but failed to update fee record.");
     } finally {
       setIsPaymentModalOpen(false);
     }
@@ -120,7 +121,7 @@ function StudentFeeView() {
       doc.save(`Receipt_${payment.receiptNumber}.pdf`);
     } catch (err) {
       console.error(err);
-      alert("Failed to download receipt. See console for details.");
+      toast.error("Failed to download receipt. See console for details.");
     }
   };
 

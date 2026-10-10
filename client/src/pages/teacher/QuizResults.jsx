@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
@@ -21,7 +22,7 @@ function QuizResults() {
       setResults(res.data);
     } catch (err) {
       console.error(err);
-      alert("Error fetching results");
+      toast.error("Error fetching results");
     } finally {
       setLoading(false);
     }
@@ -40,7 +41,7 @@ function QuizResults() {
         {loading ? (
           <p className="text-center text-slate-500 py-10">Loading results...</p>
         ) : results.length === 0 ? (
-          <p className="text-center text-slate-500 py-10">No students have submitted this quiz yet.</p>
+          <p className="text-center text-slate-500 py-10">No students are currently assigned to this batch.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
@@ -62,11 +63,11 @@ function QuizResults() {
                     <td className="py-3 px-4 font-bold">{r.studentId?.fullName}</td>
                     <td className="py-3 px-4 text-purple-600">{r.studentId?.admissionNumber}</td>
                     <td className="py-3 px-4 font-bold">{r.totalScore}</td>
-                    <td className="py-3 px-4 font-bold text-emerald-600">{r.percentage.toFixed(1)}%</td>
+                    <td className="py-3 px-4 font-bold text-emerald-600">{r.percentage !== undefined ? r.percentage.toFixed(1) : 0}%</td>
                     <td className="py-3 px-4 flex items-center gap-1 text-emerald-600"><CheckCircle2 className="w-4 h-4"/> {r.correctCount}</td>
                     <td className="py-3 px-4 text-red-600">{r.wrongCount}</td>
                     <td className="py-3 px-4 text-xs font-bold text-slate-500">{r.status}</td>
-                    <td className="py-3 px-4 text-xs">{new Date(r.submittedAt).toLocaleString()}</td>
+                    <td className="py-3 px-4 text-xs">{r.submittedAt ? new Date(r.submittedAt).toLocaleString() : "-"}</td>
                   </tr>
                 ))}
               </tbody>

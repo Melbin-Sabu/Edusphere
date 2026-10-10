@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+import { useConfirm } from "../../context/ConfirmContext";
 import React, { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
@@ -51,6 +53,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 function StudentManagement() {
+  const confirm = useConfirm();
+
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const canRegisterStudent = user.role === "Administrator";
 
@@ -118,6 +122,7 @@ function StudentManagement() {
   };
 
   const prevStep = () => {
+  const confirm = useConfirm();
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
@@ -173,21 +178,22 @@ function StudentManagement() {
       setCurrentStep(1);
       fetchStudents();
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to register student");
+      toast.error(error.response?.data?.message || "Failed to register student");
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this student record?")) return;
+    const isConfirmed = await confirm({ title: "Delete Student", message: "Are you sure you want to delete this student record?", confirmText: "Delete", isDanger: true });
+    if (!isConfirmed) return;
     try {
       const token = localStorage.getItem("token");
       await api.delete(`/students/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      alert("Student record deleted successfully");
+      toast.success("Student record deleted successfully");
       fetchStudents();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete student");
+      toast.error(err.response?.data?.message || "Failed to delete student");
     }
   };
 
@@ -226,6 +232,7 @@ function StudentManagement() {
 
   // Export to Excel
   const exportToExcel = () => {
+  const confirm = useConfirm();
     const exportData = filteredStudents.map((s) => ({
       "Admission No": s.admissionNumber || "N/A",
       "Full Name": s.fullName || "N/A",
@@ -245,6 +252,7 @@ function StudentManagement() {
 
   // Export to PDF
   const exportToPDF = () => {
+  const confirm = useConfirm();
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.setTextColor(109, 40, 217);
@@ -275,6 +283,7 @@ function StudentManagement() {
   };
 
   const copyCredentials = () => {
+  const confirm = useConfirm();
     if (!successData) return;
     const text = `EduSphere Account Credentials:\nEmail: ${successData.email}\nAdmission No: ${successData.admissionNumber}`;
     navigator.clipboard.writeText(text);
@@ -834,6 +843,7 @@ function StudentManagement() {
                     const cert12 = viewStudent.twelfthCertificate || viewStudent.applicationId?.twelfthCertificate;
 
                     const handleViewCert = (pathStr) => {
+  const confirm = useConfirm();
                       if (!pathStr) return;
                       const cleanPath = String(pathStr).replace(/\\/g, "/");
                       const filename = cleanPath.split("/").pop();

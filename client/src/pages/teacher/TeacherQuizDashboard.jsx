@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+import { useConfirm } from "../../context/ConfirmContext";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
@@ -7,6 +9,8 @@ import api from "../../api/api";
 import { Plus, Edit, Trash2, Eye, Calendar, Clock, CheckCircle, BookOpen } from "lucide-react";
 
 function TeacherQuizDashboard() {
+  const confirm = useConfirm();
+
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,23 +31,25 @@ function TeacherQuizDashboard() {
   };
 
   const deleteQuiz = async (id) => {
-    if (window.confirm("Are you sure you want to delete this quiz?")) {
+    const isConfirmed = await confirm({ title: "Delete Quiz", message: "Are you sure you want to delete this quiz?", isDanger: true, confirmText: "Delete" });
+    if (isConfirmed) {
       try {
         await api.delete(`/quizzes/${id}`);
         fetchQuizzes();
       } catch (err) {
-        alert(err.response?.data?.message || "Error deleting quiz");
+        toast.error(err.response?.data?.message || "Error deleting quiz");
       }
     }
   };
 
   const publishQuiz = async (id) => {
-    if (window.confirm("Are you sure you want to publish this quiz? It cannot be un-published.")) {
+    const isConfirmed = await confirm({ title: "Publish Quiz", message: "Are you sure you want to publish this quiz? It cannot be un-published.", confirmText: "Publish" });
+    if (isConfirmed) {
       try {
         await api.post(`/quizzes/${id}/publish`);
         fetchQuizzes();
       } catch (err) {
-        alert(err.response?.data?.message || "Error publishing quiz");
+        toast.error(err.response?.data?.message || "Error publishing quiz");
       }
     }
   };

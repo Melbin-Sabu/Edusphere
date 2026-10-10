@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+import { useConfirm } from "../../context/ConfirmContext";
 import React, { useState, useEffect } from "react";
 import Card from "../common/Card";
 import Button from "../common/Button";
@@ -5,6 +7,7 @@ import api from "../../api/api";
 import { BookOpen, Upload, Trash2, Eye, FileText, X, Users, CheckCircle2, Clock } from "lucide-react";
 
 export default function TeacherNotesSection({ assignedBatches, uploadableBatches = [] }) {
+  const confirm = useConfirm();
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -48,17 +51,18 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
   }, []);
 
   const handleFileChange = (e) => {
+  const confirm = useConfirm();
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       const validTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"];
       
       if (!validTypes.includes(selectedFile.type)) {
-        alert("Please upload a valid PDF, DOC/DOCX, or PPT/PPTX file.");
+        toast.success("Please upload a valid PDF, DOC/DOCX, or PPT/PPTX file.");
         return;
       }
       
       if (selectedFile.size > 15 * 1024 * 1024) {
-        alert("File size exceeds the 15MB limit.");
+        toast.success("File size exceeds the 15MB limit.");
         return;
       }
       
@@ -69,7 +73,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!title || !file) {
-      alert("Please provide a title and select a file.");
+      toast.error("Please provide a title and select a file.");
       return;
     }
 
@@ -92,7 +96,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
         }
       });
       
-      alert("Note uploaded successfully!");
+      toast.success("Note uploaded successfully!");
       setShowUploadModal(false);
       setTitle("");
       setDescription("");
@@ -100,14 +104,15 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
       fetchNotes();
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Failed to upload note.");
+      toast.error(err.response?.data?.message || "Failed to upload note.");
     } finally {
       setUploading(false);
     }
   };
 
   const handleDelete = async (noteId) => {
-    if (!window.confirm("Are you sure you want to delete this study material?")) return;
+    const isConfirmed = await confirm({ title: "Delete Note", message: "Are you sure you want to delete this study material?", confirmText: "Delete", isDanger: true });
+    if (!isConfirmed) return;
     
     try {
       const token = localStorage.getItem("token");
@@ -116,7 +121,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
       });
       fetchNotes();
     } catch (err) {
-      alert("Failed to delete note.");
+      toast.error("Failed to delete note.");
     }
   };
 
@@ -130,7 +135,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
       });
       setStudentStats(res.data.stats || []);
     } catch (err) {
-      alert("Failed to fetch student view statistics.");
+      toast.error("Failed to fetch student view statistics.");
       setStatsNote(null);
     } finally {
       setLoadingStats(false);

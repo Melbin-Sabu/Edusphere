@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState } from "react";
 import AuthLayout from "../../layouts/AuthLayout";
 import Input from "../../components/common/Input";
@@ -88,7 +89,7 @@ function ForgotPassword() {
       const user = response.data.user;
       login(response.data.token, user);
 
-      alert("Password updated successfully! Welcome to EduSphere.");
+      toast.success("Password updated successfully! Welcome to EduSphere.");
 
       // Route user directly to role dashboard
       const roleUpper = (user.role || "").toUpperCase();

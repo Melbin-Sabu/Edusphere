@@ -23,15 +23,11 @@ class TestQuizmanagement():
     self.driver.get("http://localhost:5173/login")
     self.driver.set_window_size(1552, 880)
     self.driver.find_element(By.NAME, "email").send_keys("alen.chemistry@edusphere.com")
-    self.driver.find_element(By.NAME, "password").send_keys("Edu@123", Keys.RETURN)
+    self.driver.find_element(By.NAME, "password").send_keys("123456", Keys.RETURN)
     WebDriverWait(self.driver, 10).until(
         expected_conditions.url_contains("/teacher")
     )
-    self.driver.get("http://localhost:5173/teacher/quizzes")
-    WebDriverWait(self.driver, 10).until(
-        expected_conditions.presence_of_element_located((By.CSS_SELECTOR, ".to-purple-600"))
-    )
-    self.driver.find_element(By.CSS_SELECTOR, ".to-purple-600").click()
+    self.driver.get("http://localhost:5173/teacher/quizzes/create")
     WebDriverWait(self.driver, 10).until(
         expected_conditions.presence_of_element_located((By.NAME, "title"))
     )
@@ -40,32 +36,22 @@ class TestQuizmanagement():
     from selenium.webdriver.support.ui import Select
     Select(self.driver.find_element(By.NAME, "batch")).select_by_visible_text("JEE Evening Batch")
     Select(self.driver.find_element(By.NAME, "subject")).select_by_index(1)
-    self.driver.execute_script("let el = document.getElementsByName('startDate')[0]; let tracker = el._valueTracker; if (tracker) tracker.setValue(el.value); el.value = '2026-10-01'; el.dispatchEvent(new Event('input', {bubbles: true})); el.dispatchEvent(new Event('change', {bubbles: true}));")
-    self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(1)").click()
-    dropdown = self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(1)")
-    dropdown.find_element(By.XPATH, "//option[. = '09']").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(3)").click()
-    dropdown = self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(3)")
-    dropdown.find_element(By.XPATH, "//option[. = '59']").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(4)").click()
-    dropdown = self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(4)")
-    dropdown.find_element(By.XPATH, "//option[. = 'AM']").click()
-    self.driver.execute_script("let el = document.getElementsByName('endDate')[0]; let tracker = el._valueTracker; if (tracker) tracker.setValue(el.value); el.value = '2026-10-01'; el.dispatchEvent(new Event('input', {bubbles: true})); el.dispatchEvent(new Event('change', {bubbles: true}));")
-    self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(1)").click()
-    dropdown = self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(1)")
-    dropdown.find_element(By.XPATH, "//option[. = '10']").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(3)").click()
-    dropdown = self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(3)")
-    dropdown.find_element(By.XPATH, "//option[. = '05']").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(4)").click()
-    dropdown = self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(4)")
-    dropdown.find_element(By.XPATH, "//option[. = 'AM']").click()
+    self.driver.find_element(By.NAME, "startDate").send_keys("10-10-2026")
+    Select(self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(1)")).select_by_visible_text("09")
+    Select(self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(3)")).select_by_visible_text("59")
+    Select(self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(5) .border:nth-child(4)")).select_by_visible_text("AM")
+    self.driver.find_element(By.NAME, "endDate").send_keys("10-10-2026")
+    Select(self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(1)")).select_by_visible_text("10")
+    Select(self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(3)")).select_by_visible_text("05")
+    Select(self.driver.find_element(By.CSS_SELECTOR, ".grid:nth-child(6) .border:nth-child(4)")).select_by_visible_text("AM")
     self.driver.find_element(By.NAME, "negativeMarkingEnabled").click()
     self.driver.find_element(By.NAME, "defaultNegativeMark").clear()
     self.driver.find_element(By.NAME, "defaultNegativeMark").send_keys("4")
     self.driver.execute_script("document.querySelectorAll('input, select, textarea').forEach(el => el.removeAttribute('required'));")
     submit_btn = self.driver.find_element(By.XPATH, "//button[contains(., 'Save & Continue')]")
-    self.driver.execute_script("arguments[0].click();", submit_btn)
+    self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", submit_btn)
+    time.sleep(1)
+    submit_btn.click()
     try:
         WebDriverWait(self.driver, 5).until(
             expected_conditions.url_contains("/edit")
@@ -76,9 +62,15 @@ class TestQuizmanagement():
             self.driver.switch_to.alert.accept()
         except:
             print("No alert, URL didn't change.")
-    WebDriverWait(self.driver, 10).until(
-        expected_conditions.element_to_be_clickable((By.XPATH, "//button[contains(., 'Add Question')]"))
-    )
+    try:
+        WebDriverWait(self.driver, 10).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, "//button[contains(., 'Add Question')]"))
+        )
+    except Exception as e:
+        self.driver.save_screenshot("error_screenshot.png")
+        for entry in self.driver.get_log('browser'):
+            print("BROWSER LOG:", entry)
+        raise e
     self.driver.find_element(By.XPATH, "//button[contains(., 'Add Question')]").click()
     WebDriverWait(self.driver, 10).until(
         expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "textarea.p-3"))

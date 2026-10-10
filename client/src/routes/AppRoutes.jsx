@@ -21,12 +21,15 @@ import ManageSubjectTeachers from "../pages/teacher/ManageSubjectTeachers";
 import TeacherQuizDashboard from "../pages/teacher/TeacherQuizDashboard";
 import QuizBuilder from "../pages/teacher/QuizBuilder";
 import QuizResults from "../pages/teacher/QuizResults";
+import TeacherAttendance from "../pages/teacher/TeacherAttendance";
 
 import StudentDashboard from "../pages/student/StudentDashboard";
 import StudentFeeView from "../pages/student/StudentFeeView";
 import StudentQuizList from "../pages/student/StudentQuizList";
 import QuizPlayer from "../pages/student/QuizPlayer";
 import QuizResultView from "../pages/student/QuizResultView";
+import StudentResultDashboard from "../pages/student/StudentResultDashboard";
+import StudentAttendance from "../pages/student/StudentAttendance";
 
 import { ProtectedRoute, PublicOnlyRoute } from "./ProtectedRoute";
 
@@ -202,6 +205,14 @@ function AppRoutes() {
           }
         />
         <Route
+          path="/teacher/attendance"
+          element={
+            <ProtectedRoute allowedRoles={["TEACHER"]}>
+              <TeacherAttendance />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/student/dashboard"
           element={
             <ProtectedRoute allowedRoles={["STUDENT"]}>
@@ -246,6 +257,22 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["STUDENT"]}>
               <QuizResultView />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/student/results"
+          element={
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
+              <StudentResultDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/student/attendance"
+          element={
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
+              <StudentAttendance />
             </ProtectedRoute>
           }
         />

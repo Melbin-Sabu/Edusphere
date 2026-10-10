@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import Card from "../common/Card";
 import Button from "../common/Button";
@@ -38,7 +39,7 @@ export default function SubjectTeacherManagement({ assignedBatches }) {
 
   const handleToggleSubjectTeacher = async (teacherId) => {
     if (!selectedBatch) {
-      alert("Please select a batch first.");
+      toast.success("Please select a batch first.");
       return;
     }
 
@@ -57,7 +58,7 @@ export default function SubjectTeacherManagement({ assignedBatches }) {
       );
 
       if (existingAssignedTeacher) {
-        alert(`Cannot assign ${targetTeacher.fullName}. ${existingAssignedTeacher.fullName} is already assigned for ${subject} in this batch. Please unassign them first.`);
+        toast.success(`Cannot assign ${targetTeacher.fullName}. ${existingAssignedTeacher.fullName} is already assigned for ${subject} in this batch. Please unassign them first.`);
         return;
       }
     }
@@ -82,7 +83,7 @@ export default function SubjectTeacherManagement({ assignedBatches }) {
         return t;
       }));
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update subject teacher assignment.");
+      toast.error(err.response?.data?.message || "Failed to update subject teacher assignment.");
     }
   };
 

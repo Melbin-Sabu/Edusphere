@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import Card from "../common/Card";
 import Button from "../common/Button";
@@ -67,7 +68,7 @@ export default function StudentNotesSection({ onAskAI, onViewNote }) {
 
     } catch (err) {
       console.error("Error opening note:", err);
-      alert("Failed to open note.");
+      toast.error("Failed to open note.");
     }
   };
 

@@ -13,7 +13,7 @@ const quizSchema = new mongoose.Schema(
     },
     course: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     batch: {

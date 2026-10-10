@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+import { useConfirm } from "../../context/ConfirmContext";
 import React, { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
@@ -22,6 +24,8 @@ import {
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 function FeeManagement() {
+  const confirm = useConfirm();
+
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [activeTab, setActiveTab] = useState("overview");
 
@@ -83,6 +87,7 @@ function FeeManagement() {
   };
 
   const handleAddStructureComponent = () => {
+  const confirm = useConfirm();
     setFeeForm({
       ...feeForm,
       components: [...feeForm.components, { name: "", amount: 0 }]
@@ -90,11 +95,13 @@ function FeeManagement() {
   };
 
   const handleRemoveStructureComponent = (idx) => {
+  const confirm = useConfirm();
     const newComponents = feeForm.components.filter((_, i) => i !== idx);
     setFeeForm({ ...feeForm, components: newComponents });
   };
 
   const handleComponentChange = (idx, field, value) => {
+  const confirm = useConfirm();
     const newComponents = [...feeForm.components];
     newComponents[idx][field] = field === "amount" ? Number(value) : value;
     setFeeForm({ ...feeForm, components: newComponents });
@@ -104,22 +111,23 @@ function FeeManagement() {
     e.preventDefault();
     try {
       await api.post("/fees/structures", feeForm);
-      alert("Fee Structure Created Successfully!");
+      toast.success("Fee Structure Created Successfully!");
       setShowStructureModal(false);
       loadData("structures");
     } catch (err) {
-      alert(err.response?.data?.message || "Error creating fee structure");
+      toast.error(err.response?.data?.message || "Error creating fee structure");
     }
   };
 
   const deleteStructure = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this fee structure? This will also remove the fee assignments from students.")) return;
+    const isConfirmed = await confirm({ title: "Delete Fee Structure", message: "Are you sure you want to delete this fee structure? This will also remove the fee assignments from students.", confirmText: "Delete", isDanger: true });
+    if (!isConfirmed) return;
     try {
       await api.delete(`/fees/structures/${id}`);
-      alert("Fee structure deleted.");
+      toast.success("Fee structure deleted.");
       loadData("structures");
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete fee structure");
+      toast.error(err.response?.data?.message || "Failed to delete fee structure");
     }
   };
 
@@ -128,7 +136,7 @@ function FeeManagement() {
     if (!selectedStudentFee) return;
     
     if (paymentForm.amount <= 0 || paymentForm.amount > selectedStudentFee.pendingAmount) {
-      alert("Invalid payment amount. Must be between 1 and " + selectedStudentFee.pendingAmount);
+      toast.error("Invalid payment amount. Must be between 1 and " + selectedStudentFee.pendingAmount);
       return;
     }
 
@@ -137,12 +145,12 @@ function FeeManagement() {
         studentFeeId: selectedStudentFee._id,
         ...paymentForm
       });
-      alert("Payment Recorded Successfully!");
+      toast.success("Payment Recorded Successfully!");
       setShowPaymentModal(false);
       setSelectedStudentFee(null);
       loadData("students");
     } catch (err) {
-      alert(err.response?.data?.message || "Error recording payment");
+      toast.error(err.response?.data?.message || "Error recording payment");
     }
   };
 
@@ -198,7 +206,7 @@ function FeeManagement() {
       doc.save(`Receipt_${payment.receiptNumber}.pdf`);
     } catch (err) {
       console.error("Error generating receipt", err);
-      alert("Failed to generate receipt.");
+      toast.error("Failed to generate receipt.");
     }
   };
 

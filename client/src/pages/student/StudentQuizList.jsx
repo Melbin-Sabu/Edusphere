@@ -55,7 +55,7 @@ function StudentQuizList() {
                 <p>Your attempts: {quiz.attemptCount}</p>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 mt-auto">
+              <div className="pt-4 border-t border-slate-100 mt-auto flex flex-col gap-2">
                 {quiz.hasActiveAttempt ? (
                   <Link to={`/student/quizzes/${quiz._id}/attempt/${quiz.activeAttemptId}`}>
                     <Button className="w-full bg-amber-500 hover:bg-amber-600 text-white" icon={PlayCircle}>Resume Attempt</Button>
@@ -65,9 +65,16 @@ function StudentQuizList() {
                     <Button variant="outline" className="w-full text-indigo-600 border-indigo-200 hover:bg-indigo-50" icon={CheckCircle}>View Result</Button>
                   </Link>
                 ) : (
-                  <Link to={`/student/quizzes/${quiz._id}/play`}>
-                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" icon={PlayCircle}>Start Quiz</Button>
-                  </Link>
+                  <>
+                    <Link to={`/student/quizzes/${quiz._id}/play`}>
+                      <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" icon={PlayCircle}>Start Quiz</Button>
+                    </Link>
+                    {quiz.attemptCount > 0 && (
+                      <Link to={`/student/quizzes/${quiz._id}/result`}>
+                        <Button variant="outline" className="w-full text-indigo-600 border-indigo-200 hover:bg-indigo-50 mt-2" icon={CheckCircle}>View Last Result</Button>
+                      </Link>
+                    )}
+                  </>
                 )}
               </div>
             </Card>

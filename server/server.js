@@ -16,6 +16,7 @@ const noteRoutes = require("./routes/noteRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const feeRoutes = require("./routes/feeRoutes");
 const quizRoutes = require("./routes/quizRoutes");
+const attendanceRoutes = require("./routes/attendanceRoutes");
 
 const app = express();
 
@@ -23,7 +24,13 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors());
+// CORS Configuration
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "*", // Use FRONTEND_URL from env in production
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -57,6 +64,7 @@ app.use("/api/notes", noteRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/fees", feeRoutes);
 app.use("/api/quizzes", quizRoutes);
+app.use("/api/attendance", attendanceRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

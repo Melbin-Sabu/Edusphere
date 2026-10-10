@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
@@ -71,7 +72,7 @@ function BatchManagement() {
         // Check if another teacher is already assigned to this batch
         const existingTeacher = teachers.find(t => t.assignedBatches?.includes(batchName));
         if (existingTeacher) {
-          alert(`This batch is already assigned to ${existingTeacher.fullName}. Please unassign them first before assigning a new teacher.`);
+          toast.success(`This batch is already assigned to ${existingTeacher.fullName}. Please unassign them first before assigning a new teacher.`);
           return;
         }
 
@@ -93,7 +94,7 @@ function BatchManagement() {
       ));
 
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update batch allocation.");
+      toast.error(err.response?.data?.message || "Failed to update batch allocation.");
     }
   };
 

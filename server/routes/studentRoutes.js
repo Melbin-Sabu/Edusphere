@@ -6,6 +6,8 @@ const fs = require("fs");
 
 const {
   registerStudent,
+  directStudentRegister,
+  payRegistrationFee,
   getStudents,
   deleteStudent,
 } = require("../controllers/studentController");
@@ -61,6 +63,19 @@ router.post(
   authorizeRoles("Administrator"),
   uploadFields,
   registerStudent
+);
+
+// Direct Student Registration Route (Public)
+router.post(
+  "/direct-register",
+  uploadFields,
+  directStudentRegister
+);
+
+router.post(
+  "/:id/payment",
+  protect,
+  payRegistrationFee
 );
 
 // Get All Students Route (Administrator / Admin / Teacher)

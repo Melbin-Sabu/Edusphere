@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
@@ -24,7 +25,7 @@ function QuizResultView() {
       setQuestions(res.data.questions);
     } catch (err) {
       console.error(err);
-      alert("Error fetching result or result not found.");
+      toast.error("Error fetching result or result not found.");
     } finally {
       setLoading(false);
     }

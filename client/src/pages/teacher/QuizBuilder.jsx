@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+import { useConfirm } from "../../context/ConfirmContext";
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
@@ -7,14 +9,16 @@ import api from "../../api/api";
 import { Save, Plus, Trash2, ArrowLeft, CheckCircle } from "lucide-react";
 
 function QuizBuilder() {
+  const confirm = useConfirm();
+
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
-  
+
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user") || "{}"));
   const [assignedBatches, setAssignedBatches] = useState([]);
   const [subjectBatches, setSubjectBatches] = useState([]);
-  
+
   const [quizForm, setQuizForm] = useState({
     title: "",
     description: "",
@@ -26,11 +30,14 @@ function QuizBuilder() {
     defaultPositiveMark: 4,
     defaultNegativeMark: 1,
     startDate: "",
-    startTime: "",
+    startTime: "09:00",
     endDate: "",
-    endTime: "",
+    endTime: "10:00",
     attemptLimit: 1
   });
+
+  const [docFile, setDocFile] = useState(null);
+  const [docQuestionCount, setDocQuestionCount] = useState(5);
 
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(isEdit);
@@ -52,7 +59,7 @@ function QuizBuilder() {
           const subs = me.subjectBatches || [];
           if (me.subject && !subs.includes(me.subject)) subs.push(me.subject);
           setSubjectBatches(subs);
-          
+
           if (!isEdit) {
             setQuizForm(prev => ({
               ...prev,
@@ -78,7 +85,7 @@ function QuizBuilder() {
       });
       setQuestions(questions || []);
     } catch (err) {
-      alert("Error fetching quiz");
+      toast.error("Error fetching quiz");
       navigate("/teacher/quizzes");
     } finally {
       setLoading(false);
@@ -95,16 +102,40 @@ function QuizBuilder() {
 
   const handleSaveQuiz = async (e) => {
     e.preventDefault();
+    
+    // Validation
+    const start = new Date(`${quizForm.startDate}T${quizForm.startTime}`);
+    const end = new Date(`${quizForm.endDate}T${quizForm.endTime}`);
+    if (end <= start) {
+      toast.error("End date/time must be after start date/time");
+      return;
+    }
+    if (quizForm.durationMinutes < 1) {
+      toast.error("Duration must be at least 1 minute");
+      return;
+    }
+
     try {
       if (isEdit) {
-        await api.put(`/quizzes/${id}`, quizForm);
-        alert("Quiz updated successfully");
+        await api.put(`/quizzes/${id}`, { ...quizForm, course: "General" });
+        toast.success("Quiz updated successfully");
       } else {
-        const res = await api.post("/quizzes", quizForm);
+        let res;
+        if (docFile) {
+          const formData = new FormData();
+          Object.keys(quizForm).forEach(key => formData.append(key, quizForm[key]));
+          formData.append("document", docFile);
+          formData.append("docQuestionCount", docQuestionCount);
+          res = await api.post("/quizzes", formData, { headers: { 'Content-Type': 'multipart/form-data' }});
+          toast.success("Quiz created and questions generated successfully!");
+        } else {
+          res = await api.post("/quizzes", { ...quizForm, course: "General" });
+          toast.success("Quiz created successfully");
+        }
         navigate(`/teacher/quizzes/${res.data._id}/edit`);
       }
     } catch (err) {
-      alert(err.response?.data?.message || "Error saving quiz");
+      toast.error((err.response?.data?.message || "Error saving quiz") + ": " + (err.response?.data?.error || ""));
     }
   };
 
@@ -117,12 +148,12 @@ function QuizBuilder() {
       negativeMark: quizForm.negativeMarkingEnabled ? quizForm.defaultNegativeMark : 0,
       order: questions.length + 1
     };
-    
+
     try {
       const res = await api.post(`/quizzes/${id}/questions`, defaultQuestion);
       setQuestions([...questions, res.data]);
     } catch (err) {
-      alert(err.response?.data?.message || "Error adding question");
+      toast.error(err.response?.data?.message || "Error adding question");
     }
   };
 
@@ -132,7 +163,7 @@ function QuizBuilder() {
       setQuestions(prev => prev.map(q => q._id === qId ? res.data : q));
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Error updating question");
+      toast.error(err.response?.data?.message || "Error updating question");
     }
   };
 
@@ -141,27 +172,29 @@ function QuizBuilder() {
   };
 
   const handleDeleteQuestion = async (qId) => {
-    if (window.confirm("Delete this question?")) {
+    const isConfirmed = await confirm({ title: "Delete Question", message: "Delete this question?", isDanger: true, confirmText: "Delete" });
+    if (isConfirmed) {
       try {
         await api.delete(`/quizzes/${id}/questions/${qId}`);
         setQuestions(questions.filter(q => q._id !== qId));
       } catch (err) {
-        alert("Error deleting question");
+        toast.error("Error deleting question");
       }
     }
   };
 
   const handlePublish = async () => {
     if (questions.length === 0) {
-      alert("You need to add at least one question before publishing.");
+      toast.success("You need to add at least one question before publishing.");
       return;
     }
-    if (window.confirm("Are you sure you want to publish this quiz? It cannot be edited afterward.")) {
+    const isConfirmed = await confirm({ title: "Publish Quiz", message: "Are you sure you want to publish this quiz? It cannot be edited afterward.", confirmText: "Publish" });
+    if (isConfirmed) {
       try {
         await api.post(`/quizzes/${id}/publish`);
         navigate("/teacher/quizzes");
       } catch (err) {
-        alert(err.response?.data?.message || "Error publishing quiz");
+        toast.error(err.response?.data?.message || "Error publishing quiz");
       }
     }
   };
@@ -175,38 +208,38 @@ function QuizBuilder() {
     const ampm = hour >= 12 ? "PM" : "AM";
     hour = hour % 12 || 12;
     const hourStr = hour.toString().padStart(2, "0");
-    
+
     return (
       <div className="flex items-center gap-1">
-        <select 
+        <select
           className="border rounded p-2 text-sm bg-white"
           value={hourStr}
           onChange={(e) => {
             let newH = parseInt(e.target.value, 10);
             if (ampm === "PM" && newH !== 12) newH += 12;
             if (ampm === "AM" && newH === 12) newH = 0;
-            handleInputChange({ target: { name, type: 'text', value: `${newH.toString().padStart(2,"0")}:${m}` }});
+            handleInputChange({ target: { name, type: 'text', value: `${newH.toString().padStart(2, "0")}:${m}` } });
           }}
         >
-          {Array.from({length: 12}, (_, i) => {
-            const val = (i+1).toString().padStart(2,"0");
+          {Array.from({ length: 12 }, (_, i) => {
+            const val = (i + 1).toString().padStart(2, "0");
             return <option key={val} value={val}>{val}</option>;
           })}
         </select>
         <span>:</span>
-        <select 
+        <select
           className="border rounded p-2 text-sm bg-white"
           value={m}
           onChange={(e) => {
-            handleInputChange({ target: { name, type: 'text', value: `${h}:${e.target.value}` }});
+            handleInputChange({ target: { name, type: 'text', value: `${h}:${e.target.value}` } });
           }}
         >
-          {Array.from({length: 60}, (_, i) => {
-            const val = i.toString().padStart(2,"0");
+          {Array.from({ length: 60 }, (_, i) => {
+            const val = i.toString().padStart(2, "0");
             return <option key={val} value={val}>{val}</option>;
           })}
         </select>
-        <select 
+        <select
           className="border rounded p-2 text-sm bg-white"
           value={ampm}
           onChange={(e) => {
@@ -214,7 +247,7 @@ function QuizBuilder() {
             let newH = parseInt(h, 10);
             if (newAmpm === "PM" && newH < 12) newH += 12;
             if (newAmpm === "AM" && newH >= 12) newH -= 12;
-            handleInputChange({ target: { name, type: 'text', value: `${newH.toString().padStart(2,"0")}:${m}` }});
+            handleInputChange({ target: { name, type: 'text', value: `${newH.toString().padStart(2, "0")}:${m}` } });
           }}
         >
           <option value="AM">AM</option>
@@ -251,7 +284,7 @@ function QuizBuilder() {
                 <label className="block text-xs font-bold text-slate-600 mb-1">Title</label>
                 <input required name="title" value={quizForm.title} onChange={handleInputChange} className="w-full border rounded-lg p-2 text-sm" />
               </div>
-              
+
               <div>
                 <label className="block text-xs font-bold text-slate-600 mb-1">Batch</label>
                 <select required name="batch" value={quizForm.batch} onChange={handleInputChange} className="w-full border rounded-lg p-2 text-sm">
@@ -320,6 +353,22 @@ function QuizBuilder() {
                 </div>
               </div>
 
+              {!isEdit && (
+                <div className="border-t pt-4 space-y-3 bg-purple-50 -mx-5 px-5 pb-4 rounded-b-lg">
+                  <h4 className="font-bold text-sm text-purple-700">Generate Questions with AI (Optional)</h4>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-2">
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Upload Document (.pdf, .docx, .txt)</label>
+                      <input type="file" accept=".pdf,.docx,.txt" onChange={(e) => setDocFile(e.target.files[0])} className="w-full border rounded-lg p-1.5 text-sm bg-white" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Count</label>
+                      <input type="number" min="1" max="20" value={docQuestionCount} onChange={(e) => setDocQuestionCount(e.target.value)} className="w-full border rounded-lg p-2 text-sm bg-white" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <Button type="submit" className="w-full" icon={Save}>{isEdit ? "Update Settings" : "Save & Continue"}</Button>
             </form>
           </Card>
@@ -343,8 +392,8 @@ function QuizBuilder() {
                   </div>
 
                   <div className="space-y-4">
-                    <textarea 
-                      value={q.questionText} 
+                    <textarea
+                      value={q.questionText}
                       onChange={(e) => handleLocalChange(q._id, { questionText: e.target.value })}
                       onBlur={() => handleUpdateQuestion(q._id, q)}
                       className="w-full border rounded-lg p-3 text-sm font-medium focus:outline-purple-500"
@@ -354,10 +403,10 @@ function QuizBuilder() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {q.options.map((opt, oIdx) => (
                         <div key={oIdx} className="flex items-center gap-2">
-                          <input 
-                            type="radio" 
-                            name={`correct-${q._id}`} 
-                            checked={q.correctAnswer === opt} 
+                          <input
+                            type="radio"
+                            name={`correct-${q._id}`}
+                            checked={q.correctAnswer === opt}
                             onChange={() => {
                               const updated = { ...q, correctAnswer: opt };
                               handleLocalChange(q._id, updated);
@@ -365,13 +414,13 @@ function QuizBuilder() {
                             }}
                             className="w-4 h-4 text-purple-600"
                           />
-                          <input 
-                            value={opt} 
+                          <input
+                            value={opt}
                             onChange={(e) => {
                               const newOpts = [...q.options];
                               newOpts[oIdx] = e.target.value;
                               const isCorrect = q.correctAnswer === opt;
-                              handleLocalChange(q._id, { 
+                              handleLocalChange(q._id, {
                                 options: newOpts,
                                 correctAnswer: isCorrect ? e.target.value : q.correctAnswer
                               });
@@ -385,7 +434,7 @@ function QuizBuilder() {
                   </div>
                 </Card>
               ))}
-              
+
               {questions.length === 0 && (
                 <div className="text-center p-10 border-2 border-dashed rounded-xl border-slate-300 text-slate-500">
                   No questions added yet.

@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+import { useConfirm } from "../../context/ConfirmContext";
 import React, { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
@@ -35,6 +37,8 @@ import {
 } from "lucide-react";
 
 function TeacherManagement() {
+  const confirm = useConfirm();
+
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -70,7 +74,7 @@ function TeacherManagement() {
       mobileNumber: "",
       department: "JEE",
       subject: "Physics",
-      designation: "Assistant Professor",
+      designation: "Lecturer",
       qualification: "M.Tech / Ph.D.",
       experience: "3 Years",
       gender: "Male",
@@ -145,6 +149,7 @@ function TeacherManagement() {
   }, []);
 
   const copyToClipboard = (text) => {
+  const confirm = useConfirm();
     if (!text) return;
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -154,7 +159,8 @@ function TeacherManagement() {
   const handleToggleStatus = async (teacherId, currentStatus) => {
     const newStatus = currentStatus === "Active" ? "Inactive" : "Active";
     const confirmMsg = `Are you sure you want to change this faculty member status to ${newStatus}?`;
-    if (!window.confirm(confirmMsg)) return;
+    const isConfirmed = await confirm({ title: "Change Status", message: confirmMsg, confirmText: "Yes, Change", isDanger: newStatus === "Inactive" });
+    if (!isConfirmed) return;
 
     try {
       const token = localStorage.getItem("token");
@@ -168,13 +174,14 @@ function TeacherManagement() {
       }
       fetchTeachers();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update faculty status.");
+      toast.error(err.response?.data?.message || "Failed to update faculty status.");
     }
   };
 
   const handleDeleteTeacher = async (teacherId, teacherName) => {
     const confirmMsg = `Are you sure you want to permanently delete faculty member "${teacherName}" from the database?`;
-    if (!window.confirm(confirmMsg)) return;
+    const isConfirmed = await confirm({ title: "Delete Faculty", message: confirmMsg, confirmText: "Delete", isDanger: true });
+    if (!isConfirmed) return;
 
     try {
       const token = localStorage.getItem("token");
@@ -184,10 +191,10 @@ function TeacherManagement() {
       if (viewTeacher && (viewTeacher._id === teacherId || viewTeacher.id === teacherId)) {
         setViewTeacher(null);
       }
-      alert(`Faculty member "${teacherName}" deleted successfully from database.`);
+      toast.success(`Faculty member "${teacherName}" deleted successfully from database.`);
       fetchTeachers();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete faculty record.");
+      toast.error(err.response?.data?.message || "Failed to delete faculty record.");
     }
   };
 
@@ -203,9 +210,9 @@ function TeacherManagement() {
       setAllocationTeacher(null);
       setSelectedBatches([]);
       fetchTeachers();
-      alert("Batches allocated successfully!");
+      toast.success("Batches allocated successfully!");
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to allocate batches.");
+      toast.error(err.response?.data?.message || "Failed to allocate batches.");
     }
   };
 
@@ -675,10 +682,6 @@ function TeacherManagement() {
                     className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.designation ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   >
-                    <option value="Head of Department">Head of Department (HOD)</option>
-                    <option value="Professor">Professor</option>
-                    <option value="Associate Professor">Associate Professor</option>
-                    <option value="Assistant Professor">Assistant Professor</option>
                     <option value="Senior Lecturer">Senior Lecturer</option>
                     <option value="Lecturer">Lecturer</option>
                   </select>

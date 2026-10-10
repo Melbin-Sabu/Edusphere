@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { applicationSchema } from "../../validation/applicationSchema";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { User, BookOpen, Users, FileCheck, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../api/api";
+import { User, BookOpen, Users, FileCheck, ArrowLeft, ArrowRight, CheckCircle2, Lock } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 import Input from "../../components/common/Input";
 import SelectInput from "../../components/common/SelectInput";
@@ -12,19 +13,25 @@ import TextArea from "../../components/common/TextArea";
 import FileUpload from "../../components/common/FileUpload";
 import Button from "../../components/common/Button";
 import AuthLayout from "../../layouts/AuthLayout";
+import PaymentModal from "../../components/common/PaymentModal";
 
 function Register() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  
   const [currentStep, setCurrentStep] = useState(1);
-  const [submissionResult, setSubmissionResult] = useState(null);
-  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [serverError, setServerError] = useState("");
-  const [existingAppInfo, setExistingAppInfo] = useState(null);
+  const [registeredEmail, setRegisteredEmail] = useState("");
+  const [admissionNumber, setAdmissionNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState(null);
 
   const {
     register,
     handleSubmit,
     trigger,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(applicationSchema),
@@ -36,6 +43,7 @@ function Register() {
     { number: 2, title: "Academic", icon: BookOpen },
     { number: 3, title: "Parent", icon: Users },
     { number: 4, title: "Documents", icon: FileCheck },
+    { number: 5, title: "Verify", icon: Lock },
   ];
 
   const validateAndNext = async (fieldsToValidate) => {
@@ -51,19 +59,16 @@ function Register() {
 
   const onSubmit = async (data) => {
     setServerError("");
-    setExistingAppInfo(null);
-    setSubmissionResult(null);
-
     try {
       const formData = new FormData();
       formData.append("fullName", data.fullName);
       formData.append("email", data.email);
-      formData.append("mobile", data.mobile);
-      formData.append("dateOfBirth", data.dateOfBirth);
+      formData.append("mobileNumber", data.mobile);
+      formData.append("dob", data.dateOfBirth);
       formData.append("gender", data.gender);
       formData.append("address", data.address);
-      formData.append("courseId", data.courseId);
-      formData.append("batchId", data.batchId || "General");
+      formData.append("course", data.courseId);
+      formData.append("batch", data.batchId || "General");
       formData.append("tenthPercentage", data.tenthPercentage);
       formData.append("twelfthPercentage", data.twelfthPercentage);
       formData.append("parentName", data.parentName);
@@ -78,140 +83,107 @@ function Register() {
         formData.append("twelfthCertificate", data.twelfthCertificate[0]);
       }
 
-      const res = await axios.post("http://localhost:5000/api/applications", formData, {
+      const res = await api.post("/students/direct-register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      setSubmissionResult(res.data);
-      reset();
+      setRegisteredEmail(res.data.email);
+      setAdmissionNumber(res.data.admissionNumber);
+      setCurrentStep(5); // Move to OTP step
     } catch (err) {
       console.error("Submission error:", err);
-      const errMsg = err.response?.data?.message || "Failed to submit admission application. Please try again.";
-      setServerError(errMsg);
-      if (err.response?.data?.applicationId) {
-        setExistingAppInfo({
-          applicationId: err.response.data.applicationId,
-          status: err.response.data.status,
-        });
-      }
+      setServerError(err.response?.data?.message || "Failed to submit registration. Please try again.");
     }
   };
 
-  const handlePayRegistrationFee = async () => {
-    if (!submissionResult?.application?._id && !submissionResult?.application?.applicationId) return;
-
-    setIsProcessingPayment(true);
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setServerError("");
+    setIsVerifying(true);
     try {
-      const appId = submissionResult.application._id || submissionResult.application.applicationId;
-      const res = await axios.post(`http://localhost:5000/api/applications/${appId}/payment`, {
-        amount: 500,
+      // Login with OTP
+      const res = await api.post("/auth/login", {
+        identifier: registeredEmail,
+        password: otp,
       });
 
-      setSubmissionResult((prev) => ({
-        ...prev,
-        application: res.data.application,
-        paymentResult: res.data.paymentResult,
-      }));
+      setRegisteredUser(res.data.user);
+      
+      // Update context state
+      login(res.data.token, res.data.user);
+      
+      // Show payment modal
+      setShowPaymentModal(true);
     } catch (err) {
-      alert(err.response?.data?.message || "Payment failed.");
+      setServerError(err.response?.data?.message || "Invalid OTP. Please try again.");
     } finally {
-      setIsProcessingPayment(false);
+      setIsVerifying(false);
+    }
+  };
+
+  const handlePaymentSuccess = async (receiptData, verifyRes) => {
+    setShowPaymentModal(false);
+    try {
+      // Mark as paid in backend
+      await api.post(`/students/${registeredUser.id}/payment`, {
+        amount: 500
+      });
+      // Navigate to change password
+      navigate("/change-password", { replace: true });
+    } catch(err) {
+      console.error(err);
+      navigate("/change-password", { replace: true }); // navigate anyway
     }
   };
 
   return (
     <AuthLayout
       wide={true}
-      title="Admission Application"
-      subtitle="Complete your step-by-step application for EduSphere enrollment"
+      title="Student Registration"
+      subtitle="Complete your step-by-step registration for EduSphere enrollment"
     >
       {serverError && (
         <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm space-y-2">
           <p className="font-semibold">{serverError}</p>
-          {existingAppInfo && (
-            <div className="pt-2 border-t border-red-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-              <span>Existing Application ID: <strong className="font-mono text-purple-300">{existingAppInfo.applicationId}</strong></span>
-              <Link
-                to={`/apply/payment?appId=${existingAppInfo.applicationId}`}
-                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-bold transition text-center"
-              >
-                Track / Pay Registration Fee &rarr;
-              </Link>
-            </div>
-          )}
         </div>
       )}
 
-      {submissionResult ? (
+      {currentStep === 5 ? (
         <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center space-y-6">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-500/10 text-indigo-400 text-2xl font-bold mb-2">
-            ✓
+            <Lock />
           </div>
 
           <div>
-            <h3 className="text-xl font-bold text-white">Application Submitted!</h3>
+            <h3 className="text-xl font-bold text-white">Verify Your Email</h3>
             <p className="text-sm text-slate-400 mt-1">
-              Application ID:{" "}
-              <span className="font-mono text-indigo-400 font-semibold">
-                {submissionResult.application?.applicationId}
-              </span>
+              We have sent a 6-digit OTP (Temporary Password) to <br/>
+              <span className="font-mono text-indigo-400 font-semibold">{registeredEmail}</span>
             </p>
           </div>
 
-          {/* Instruction & Status Card */}
-          <div className="p-5 rounded-2xl bg-gradient-to-b from-purple-950/40 via-slate-900 to-slate-900 border border-purple-800/40 text-left space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-400">Application Stage:</span>
-              <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-wider">
-                Under Administrator Review
-              </span>
-            </div>
-
-            <div className="pt-3 border-t border-slate-800 space-y-3 text-xs text-slate-300">
-              <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-[11px] shrink-0 mt-0.5">
-                  1
-                </span>
-                <p>
-                  <strong>Application Submitted:</strong> Your details and 10th & 12th certificates have been successfully received in our system.
-                </p>
-              </div>
-
-              <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center font-bold text-[11px] shrink-0 mt-0.5">
-                  2
-                </span>
-                <p>
-                  <strong>Administrator Verification:</strong> Our Administration will review your uploaded certificates and academic details in the Administrator Control Hub.
-                </p>
-              </div>
-
-              <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-bold text-[11px] shrink-0 mt-0.5">
-                  3
-                </span>
-                <p>
-                  <strong>Email Notification:</strong> Once the Administrator accepts your application as <strong>ELIGIBLE</strong>, an email notification containing your <strong>Registration Fee Payment Link (₹500)</strong> will be dispatched to <strong className="text-purple-300 font-mono">{submissionResult.application?.email}</strong>.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-4 border-t border-slate-800 flex justify-between items-center text-xs">
-            <button
-              type="button"
-              onClick={() => {
-                setSubmissionResult(null);
-                setCurrentStep(1);
-              }}
-              className="text-slate-400 hover:text-white underline"
-            >
-              Submit Another Application
-            </button>
-            <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-semibold">
-              Go to Login Page &rarr;
-            </Link>
-          </div>
+          <form onSubmit={handleVerifyOtp} className="max-w-xs mx-auto space-y-4">
+            <Input
+              type="text"
+              label="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="e.g. 123456"
+              required
+            />
+            <Button type="submit" disabled={isVerifying} className="w-full">
+              {isVerifying ? "Verifying..." : "Verify & Pay ₹500"}
+            </Button>
+          </form>
+          
+          <PaymentModal
+            isOpen={showPaymentModal}
+            onClose={() => setShowPaymentModal(false)}
+            userEmail={registeredEmail}
+            applicationId={admissionNumber}
+            amount={500}
+            onSuccess={handlePaymentSuccess}
+          />
         </div>
       ) : (
         <div>
@@ -219,7 +191,7 @@ function Register() {
           <div className="mb-8 px-2">
             <div className="flex items-center justify-between relative">
               <div className="absolute top-5 left-4 right-4 h-0.5 bg-slate-800 -translate-y-1/2 z-0"></div>
-              {steps.map((st) => {
+              {steps.slice(0, 4).map((st) => {
                 const IconComp = st.icon;
                 const isActive = currentStep === st.number;
                 const isCompleted = currentStep > st.number;
@@ -445,7 +417,7 @@ function Register() {
                 </button>
               ) : (
                 <Button type="submit" disabled={isSubmitting} className="py-2.5 px-6">
-                  {isSubmitting ? "Submitting Application..." : "Submit Admission Application"}
+                  {isSubmitting ? "Registering..." : "Register"}
                 </Button>
               )}
             </div>

@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+import { useConfirm } from "../../context/ConfirmContext";
 import React, { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
@@ -46,6 +48,8 @@ import {
 } from "recharts";
 
 function AdministratorDashboard() {
+  const confirm = useConfirm();
+
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [activeTab, setActiveTab] = useState("applications"); // 'applications' or 'students'
   const [allStudents, setAllStudents] = useState([]);
@@ -90,7 +94,8 @@ function AdministratorDashboard() {
   }, []);
 
   const handleMarkEligible = async (appId) => {
-    if (!window.confirm("Mark application as ELIGIBLE and dispatch fee payment email to applicant?")) {
+    const isConfirmed = await confirm({ title: "Approve Application", message: "Mark application as ELIGIBLE and dispatch fee payment email to applicant?", confirmText: "Approve" });
+    if (!isConfirmed) {
       return;
     }
     setActionLoading(true);
@@ -101,17 +106,18 @@ function AdministratorDashboard() {
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Application marked as ELIGIBLE! Registration fee payment link dispatched to applicant email.");
+      toast.success("Application marked as ELIGIBLE! Registration fee payment link dispatched to applicant email.");
       loadData();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update application eligibility.");
+      toast.error(err.response?.data?.message || "Failed to update application eligibility.");
     } finally {
       setActionLoading(false);
     }
   };
 
   const handleApprove = async (appId) => {
-    if (!window.confirm("Are you sure you want to give final approval and generate student credentials?")) {
+    const isConfirmed = await confirm({ title: "Final Approval", message: "Are you sure you want to give final approval and generate student credentials?", confirmText: "Approve" });
+    if (!isConfirmed) {
       return;
     }
     setActionLoading(true);
@@ -126,7 +132,7 @@ function AdministratorDashboard() {
       setApprovalResult(res.data);
       loadData();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to approve application.");
+      toast.error(err.response?.data?.message || "Failed to approve application.");
     } finally {
       setActionLoading(false);
     }
@@ -134,7 +140,7 @@ function AdministratorDashboard() {
 
   const handleReject = async () => {
     if (!rejectModalApp || !rejectionReason.trim()) {
-      alert("Please provide a rejection reason.");
+      toast.error("Please provide a rejection reason.");
       return;
     }
     setActionLoading(true);
@@ -146,12 +152,12 @@ function AdministratorDashboard() {
         { rejectionReason },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Application has been rejected.");
+      toast.success("Application has been rejected.");
       setRejectModalApp(null);
       setRejectionReason("");
       loadData();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to reject application.");
+      toast.error(err.response?.data?.message || "Failed to reject application.");
     } finally {
       setActionLoading(false);
     }

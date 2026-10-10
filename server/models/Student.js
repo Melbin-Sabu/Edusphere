@@ -133,6 +133,12 @@ const studentSchema = new mongoose.Schema(
       default: "Active",
     },
 
+    paymentStatus: {
+      type: String,
+      enum: ["Pending", "Success"],
+      default: "Pending",
+    },
+
     profilePic: {
       type: String,
       default: "",

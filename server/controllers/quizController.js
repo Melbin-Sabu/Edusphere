@@ -3,6 +3,13 @@ const Question = require("../models/Question");
 const QuizAttempt = require("../models/QuizAttempt");
 const Teacher = require("../models/Teacher");
 const Student = require("../models/Student");
+const fs = require("fs");
+const pdfParse = require("pdf-parse");
+const mammoth = require("mammoth");
+const { GoogleGenAI } = require("@google/genai");
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
 
 // =======================
 // TEACHER CONTROLLERS
@@ -42,7 +49,7 @@ const createQuiz = async (req, res) => {
     // Verify subject (either primary subject or in subjectBatches array)
     const isPrimarySubject = teacher.subject === subject;
     const isSubjectBatch = teacher.subjectBatches && teacher.subjectBatches.includes(subject);
-    
+
     if (!isPrimarySubject && !isSubjectBatch) {
       return res.status(403).json({ message: "You are not assigned to this subject." });
     }
@@ -68,8 +75,80 @@ const createQuiz = async (req, res) => {
     });
 
     await quiz.save();
+
+    // Generate questions if document uploaded
+    if (req.file) {
+      let textContent = "";
+      const filePath = req.file.path;
+      const mimeType = req.file.mimetype;
+      const { docQuestionCount } = req.body;
+      const numQuestions = parseInt(docQuestionCount) || 5;
+
+      try {
+        if (mimeType === "application/pdf") {
+          const dataBuffer = fs.readFileSync(filePath);
+          const pdfData = await pdfParse(dataBuffer);
+          textContent = pdfData.text;
+        } else if (
+          mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || 
+          mimeType === "application/msword"
+        ) {
+          const result = await mammoth.extractRawText({ path: filePath });
+          textContent = result.value;
+        } else if (mimeType === "text/plain") {
+          textContent = fs.readFileSync(filePath, "utf-8");
+        }
+      } catch (err) {
+        console.error("Extraction error", err);
+      } finally {
+        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      }
+
+      if (textContent && textContent.trim() !== "") {
+        const truncatedText = textContent.slice(0, 20000);
+        const prompt = `Generate exactly ${numQuestions} multiple-choice questions based on the following text. 
+        Respond ONLY with a JSON array where each object has:
+        - "questionText" (string)
+        - "options" (array of exactly 4 strings)
+        - "correctAnswer" (string, must exactly match one of the options)
+        
+        Text:
+        ${truncatedText}`;
+
+        try {
+          const response = await ai.models.generateContent({
+            model: "gemini-3.8-flash",
+            contents: prompt,
+            config: { responseMimeType: "application/json" },
+          });
+
+          let generatedData = response.text.replace(/```json/g, "").replace(/```/g, "").trim();
+          const newQuestions = JSON.parse(generatedData);
+          
+          let currentOrder = 1;
+          for (let q of newQuestions) {
+            if (q.options && q.options.length === 4 && q.options.includes(q.correctAnswer)) {
+              const question = new Question({
+                quizId: quiz._id,
+                questionText: q.questionText,
+                options: q.options,
+                correctAnswer: q.correctAnswer,
+                positiveMark: quiz.defaultPositiveMark || 4,
+                negativeMark: quiz.negativeMarkingEnabled ? (quiz.defaultNegativeMark || 1) : 0,
+                order: currentOrder++
+              });
+              await question.save();
+            }
+          }
+        } catch (aiErr) {
+          console.error("AI Generation failed:", aiErr);
+        }
+      }
+    }
+
     res.status(201).json(quiz);
   } catch (error) {
+    if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
     res.status(500).json({ message: "Error creating quiz", error: error.message });
   }
 };
@@ -119,17 +198,17 @@ const updateQuiz = async (req, res) => {
 
     // if batch or subject changed, verify again
     if (req.body.batch && req.body.batch !== quiz.batch) {
-       const allTeacherBatches = [...(teacher.assignedBatches || []), ...(teacher.subjectBatches || [])];
-       if (!allTeacherBatches.includes(req.body.batch)) {
-         return res.status(403).json({ message: "You are not assigned to this batch." });
-       }
+      const allTeacherBatches = [...(teacher.assignedBatches || []), ...(teacher.subjectBatches || [])];
+      if (!allTeacherBatches.includes(req.body.batch)) {
+        return res.status(403).json({ message: "You are not assigned to this batch." });
+      }
     }
     if (req.body.subject && req.body.subject !== quiz.subject) {
-       const isPrimarySubject = teacher.subject === req.body.subject;
-       const isSubjectBatch = teacher.subjectBatches && teacher.subjectBatches.includes(req.body.subject);
-       if (!isPrimarySubject && !isSubjectBatch) {
-         return res.status(403).json({ message: "You are not assigned to this subject." });
-       }
+      const isPrimarySubject = teacher.subject === req.body.subject;
+      const isSubjectBatch = teacher.subjectBatches && teacher.subjectBatches.includes(req.body.subject);
+      if (!isPrimarySubject && !isSubjectBatch) {
+        return res.status(403).json({ message: "You are not assigned to this subject." });
+      }
     }
 
     Object.assign(quiz, req.body);
@@ -205,7 +284,7 @@ const addQuestion = async (req, res) => {
     }
 
     const { questionText, options, correctAnswer, positiveMark, negativeMark, explanation, order } = req.body;
-    
+
     if (!options || options.length < 2) {
       return res.status(400).json({ message: "At least 2 options are required." });
     }
@@ -234,7 +313,7 @@ const addQuestion = async (req, res) => {
 const updateQuestion = async (req, res) => {
   try {
     const { id, questionId } = req.params;
-    
+
     const quiz = await Quiz.findById(id);
     if (!quiz) return res.status(404).json({ message: "Quiz not found" });
 
@@ -269,7 +348,7 @@ const updateQuestion = async (req, res) => {
 const deleteQuestion = async (req, res) => {
   try {
     const { id, questionId } = req.params;
-    
+
     const quiz = await Quiz.findById(id);
     if (!quiz) return res.status(404).json({ message: "Quiz not found" });
 
@@ -299,11 +378,47 @@ const getQuizResultsTeacher = async (req, res) => {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    const attempts = await QuizAttempt.find({ quizId: quiz._id, status: { $in: ["SUBMITTED", "AUTO_SUBMITTED"] } })
-                                      .populate("studentId", "fullName admissionNumber")
-                                      .sort({ submittedAt: -1 });
+    const allStudents = await Student.find({ status: "Active" }).sort({ fullName: 1 });
+    const students = allStudents.filter(s => {
+      const sCourse = (s.course || "").toUpperCase();
+      const sBatch = (s.batch || "").toLowerCase();
+      const bName = quiz.batch.toLowerCase();
+      
+      return s.batch === quiz.batch || 
+             (bName.toUpperCase().includes(sCourse) && bName.includes(sBatch));
+    });
+    const attempts = await QuizAttempt.find({ quizId: quiz._id });
 
-    res.json(attempts);
+    const results = students.map(student => {
+      const attempt = attempts.find(a => a.studentId.toString() === student._id.toString());
+      if (attempt) {
+        return {
+          ...attempt.toObject(),
+          studentId: {
+            _id: student._id,
+            fullName: student.fullName,
+            admissionNumber: student.admissionNumber
+          }
+        };
+      } else {
+        return {
+          _id: student._id,
+          studentId: {
+            _id: student._id,
+            fullName: student.fullName,
+            admissionNumber: student.admissionNumber
+          },
+          totalScore: "-",
+          percentage: 0,
+          correctCount: "-",
+          wrongCount: "-",
+          status: "NOT_STARTED",
+          submittedAt: null
+        };
+      }
+    });
+
+    res.json(results);
   } catch (error) {
     res.status(500).json({ message: "Error fetching results", error: error.message });
   }
@@ -320,7 +435,7 @@ const getStudentQuizzes = async (req, res) => {
     if (!student) return res.status(403).json({ message: "Student not found" });
 
     // Return quizzes for this student's batch
-    const quizzes = await Quiz.find({ 
+    const quizzes = await Quiz.find({
       batch: student.batch,
       status: { $in: ["PUBLISHED", "ACTIVE"] }
     }).populate("teacherId", "fullName").sort({ startDate: 1 });
@@ -391,7 +506,7 @@ const startQuiz = async (req, res) => {
     // Let's do a simple check:
     const quizStartMs = new Date(quiz.startDate).setHours(parseInt(quiz.startTime.split(':')[0]), parseInt(quiz.startTime.split(':')[1]), 0);
     const quizEndMs = new Date(quiz.endDate).setHours(parseInt(quiz.endTime.split(':')[0]), parseInt(quiz.endTime.split(':')[1]), 0);
-    
+
     if (now.getTime() < quizStartMs || now.getTime() > quizEndMs) {
       return res.status(403).json({ message: "Quiz is outside of its availability window." });
     }
@@ -449,7 +564,7 @@ const getAttempt = async (req, res) => {
     if (!attempt || attempt.studentId.toString() !== student._id.toString()) {
       return res.status(404).json({ message: "Attempt not found" });
     }
-    
+
     // Return questions WITHOUT correct answers
     const questions = await Question.find({ quizId: attempt.quizId }).select("-correctAnswer").sort({ order: 1 });
 
@@ -471,7 +586,7 @@ const getAttempt = async (req, res) => {
 const submitQuiz = async (req, res) => {
   try {
     const { attemptId, answers } = req.body;
-    
+
     const student = await Student.findOne({ user: req.user._id });
     if (!student) return res.status(403).json({ message: "Student not found" });
 
@@ -504,7 +619,7 @@ const submitQuiz = async (req, res) => {
     // Evaluate answers
     for (let q of questions) {
       const submittedAns = answers.find(a => a.questionId === q._id.toString());
-      
+
       let finalAnsStr = submittedAns && submittedAns.answer ? submittedAns.answer : null;
 
       answerRecord.push({
