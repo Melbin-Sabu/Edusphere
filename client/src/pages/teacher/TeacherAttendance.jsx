@@ -18,7 +18,7 @@ function TeacherAttendance() {
     fetchTeacherBatches();
   }, []);
 
-  const fetchTeacherBatches = async () => {
+  async function fetchTeacherBatches() {
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const res = await api.get("/teachers"); 
@@ -46,7 +46,7 @@ function TeacherAttendance() {
     }
   }, [selectedBatch, selectedDate]);
 
-  const fetchAttendance = async () => {
+  async function fetchAttendance() {
     try {
       setLoading(true);
       const res = await api.get(`/attendance/batch/${encodeURIComponent(selectedBatch)}/date/${selectedDate}`);

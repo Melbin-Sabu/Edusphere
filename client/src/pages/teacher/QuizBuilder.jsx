@@ -49,7 +49,7 @@ function QuizBuilder() {
     }
   }, [id]);
 
-  const fetchTeacherAssignments = async () => {
+  async function fetchTeacherAssignments() {
     try {
       const res = await api.get("/teachers");
       if (res.data?.teachers) {
@@ -74,7 +74,7 @@ function QuizBuilder() {
     }
   };
 
-  const fetchQuizDetails = async () => {
+  async function fetchQuizDetails() {
     try {
       const res = await api.get(`/quizzes/${id}/teacher`);
       const { quiz, questions } = res.data;

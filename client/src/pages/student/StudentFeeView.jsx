@@ -21,7 +21,7 @@ function StudentFeeView() {
     loadFees();
   }, []);
 
-  const loadFees = async () => {
+  async function loadFees() {
     try {
       const res = await api.get("/fees/my-fees");
       setFees(res.data.myFees);

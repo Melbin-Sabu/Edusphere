@@ -23,10 +23,6 @@ function TeacherLeave() {
   const [remarks, setRemarks] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    fetchLeaves();
-  }, []);
-
   const fetchLeaves = async () => {
     try {
       setLoading(true);
@@ -40,6 +36,10 @@ function TeacherLeave() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchLeaves();
+  }, []);
 
   const openActionModal = (leave, type) => {
     setSelectedLeave(leave);

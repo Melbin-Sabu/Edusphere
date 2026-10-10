@@ -25,7 +25,7 @@ function AdminReports() {
     fetchAnalytics();
   }, []);
 
-  const fetchAnalytics = async () => {
+  async function fetchAnalytics() {
     try {
       setLoading(true);
       const res = await api.get("/reports/analytics");

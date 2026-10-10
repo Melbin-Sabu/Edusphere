@@ -27,7 +27,7 @@ function StudentLeave() {
     fetchLeaves();
   }, []);
 
-  const fetchLeaves = async () => {
+  async function fetchLeaves() {
     try {
       setLoading(true);
       const res = await api.get("/leaves/student");

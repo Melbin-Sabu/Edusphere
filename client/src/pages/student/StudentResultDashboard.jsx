@@ -14,7 +14,7 @@ function StudentResultDashboard() {
     fetchQuizzes();
   }, []);
 
-  const fetchQuizzes = async () => {
+  async function fetchQuizzes() {
     try {
       setLoading(true);
       const res = await api.get("/quizzes/student");

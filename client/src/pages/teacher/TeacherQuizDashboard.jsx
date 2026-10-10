@@ -14,10 +14,6 @@ function TeacherQuizDashboard() {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchQuizzes();
-  }, []);
-
   const fetchQuizzes = async () => {
     try {
       setLoading(true);
@@ -29,6 +25,10 @@ function TeacherQuizDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchQuizzes();
+  }, []);
 
   const deleteQuiz = async (id) => {
     const isConfirmed = await confirm({ title: "Delete Quiz", message: "Are you sure you want to delete this quiz?", isDanger: true, confirmText: "Delete" });

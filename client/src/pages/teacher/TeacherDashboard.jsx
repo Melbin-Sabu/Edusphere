@@ -3,7 +3,7 @@ import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
-import api from "../../api/api";
+import api, { MEDIA_URL } from "../../api/api";
 import {
   Users,
   BookOpen,

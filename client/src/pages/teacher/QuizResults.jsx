@@ -15,7 +15,7 @@ function QuizResults() {
     fetchResults();
   }, [id]);
 
-  const fetchResults = async () => {
+  async function fetchResults() {
     try {
       setLoading(true);
       const res = await api.get(`/quizzes/${id}/results`);
