@@ -12,12 +12,12 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
   const [loading, setLoading] = useState(true);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploading, setUploading] = useState(false);
-  
+
   // Upload form state
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
-  
+
   // Stats modal state
   const [statsNote, setStatsNote] = useState(null);
   const [studentStats, setStudentStats] = useState([]);
@@ -51,21 +51,20 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
   }, []);
 
   const handleFileChange = (e) => {
-  const confirm = useConfirm();
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       const validTypes = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"];
-      
+
       if (!validTypes.includes(selectedFile.type)) {
         toast.success("Please upload a valid PDF, DOC/DOCX, or PPT/PPTX file.");
         return;
       }
-      
+
       if (selectedFile.size > 15 * 1024 * 1024) {
         toast.success("File size exceeds the 15MB limit.");
         return;
       }
-      
+
       setFile(selectedFile);
     }
   };
@@ -84,18 +83,18 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
       formData.append("title", title);
       formData.append("description", description);
       formData.append("file", file);
-      
+
       if (selectedBatchId) {
         formData.append("batchId", selectedBatchId);
       }
 
       await api.post("/notes", formData, {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data"
         }
       });
-      
+
       toast.success("Note uploaded successfully!");
       setShowUploadModal(false);
       setTitle("");
@@ -113,7 +112,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
   const handleDelete = async (noteId) => {
     const isConfirmed = await confirm({ title: "Delete Note", message: "Are you sure you want to delete this study material?", confirmText: "Delete", isDanger: true });
     if (!isConfirmed) return;
-    
+
     try {
       const token = localStorage.getItem("token");
       await api.delete(`/notes/${noteId}`, {
@@ -158,9 +157,9 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
             Upload study materials (PDF, DOC, PPT) for your assigned batches.
           </p>
         </div>
-        
+
         {uploadableBatches.length > 0 && (
-          <Button 
+          <Button
             onClick={() => setShowUploadModal(true)}
             className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2 text-xs py-2 px-4"
           >
@@ -176,7 +175,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
           <FileText className="w-8 h-8 text-slate-300 mb-2" />
           <p className="text-sm font-bold text-slate-600">No materials available yet</p>
           <p className="text-xs text-slate-400 max-w-xs mt-1">
-            {uploadableBatches.length > 0 
+            {uploadableBatches.length > 0
               ? "You haven't uploaded any study materials for your assigned batches."
               : "Subject teachers haven't uploaded any study materials for your assigned batches yet."}
           </p>
@@ -193,10 +192,10 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
                   {note.batchId}
                 </span>
               </div>
-              
+
               <h4 className="font-bold text-slate-900 mt-2 truncate" title={note.title}>{note.title}</h4>
               <p className="text-xs text-slate-500 line-clamp-2 mt-1 min-h-[32px]">{note.description || "No description"}</p>
-              
+
               <div className="mt-4 pt-4 border-t border-slate-100 flex-grow flex flex-col justify-end">
                 <div className="flex items-center justify-between text-xs mb-3">
                   <span className="text-slate-500 flex items-center gap-1">
@@ -206,15 +205,15 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
                     {(note.fileSize / 1024 / 1024).toFixed(1)} MB
                   </span>
                 </div>
-                
+
                 <div className="flex gap-2">
-                  <button 
+                  <button
                     onClick={() => openStatsModal(note)}
                     className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1"
                   >
                     <Users className="w-3.5 h-3.5" /> View Stats
                   </button>
-                  <button 
+                  <button
                     onClick={() => handleDelete(note._id)}
                     className="w-8 flex items-center justify-center bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition"
                     title="Delete Note"
@@ -246,8 +245,8 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
             <form onSubmit={handleUpload} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Title *</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-purple-500 transition"
@@ -258,7 +257,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Description (Optional)</label>
-                <textarea 
+                <textarea
                   value={description}
                   onChange={e => setDescription(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-purple-500 transition resize-none h-20"
@@ -282,18 +281,18 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">File * (PDF, DOCX, PPTX - Max 15MB)</label>
-                <input 
-                  type="file" 
+                <input
+                  type="file"
                   onChange={handleFileChange}
                   accept=".pdf,.doc,.docx,.ppt,.pptx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
                   className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
                   required
                 />
               </div>
-              
+
               <div className="pt-2">
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white"
                   disabled={uploading}
                 >
@@ -320,7 +319,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
               <h3 className="font-bold text-slate-900 text-lg line-clamp-1">{statsNote.title}</h3>
               <p className="text-xs font-semibold text-purple-600 mt-1">View Statistics &bull; {statsNote.batchId}</p>
             </div>
-            
+
             <div className="flex gap-4 mb-4">
               <div className="flex-1 bg-emerald-50 border border-emerald-100 rounded-xl p-3">
                 <span className="text-[10px] font-bold text-emerald-600 uppercase">Viewed By</span>

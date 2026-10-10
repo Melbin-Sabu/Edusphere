@@ -20,16 +20,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // Multer Storage Config
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const ext = path.extname(file.originalname);
-    cb(null, `note-${uniqueSuffix}${ext}`);
-  },
-});
+const storage = multer.memoryStorage(); // Use memory storage for cloud upload
 
 // File Filter (Documents & PDFs)
 const fileFilter = (req, file, cb) => {
