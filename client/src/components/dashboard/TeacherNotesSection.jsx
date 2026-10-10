@@ -149,8 +149,8 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
     <Card className="p-6 mt-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-purple-600" />
+          <h3 className="text-lg font-bold text-[#0D2F24] flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-orange-600" />
             Study Materials & Notes
           </h3>
           <p className="text-xs text-slate-500 mt-1">
@@ -161,7 +161,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
         {uploadableBatches.length > 0 && (
           <Button
             onClick={() => setShowUploadModal(true)}
-            className="bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-2 text-xs py-2 px-4"
+            className="bg-orange-600 hover:bg-orange-700 text-white flex items-center gap-2 text-xs py-2 px-4"
           >
             <Upload className="w-4 h-4" /> Upload Material
           </Button>
@@ -183,17 +183,17 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {notes.map(note => (
-            <div key={note._id} className="border border-slate-200 rounded-xl p-4 hover:border-purple-300 transition hover:shadow-sm bg-white flex flex-col h-full">
+            <div key={note._id} className="border border-slate-200 rounded-xl p-4 hover:border-orange-300 transition hover:shadow-sm bg-white flex flex-col h-full">
               <div className="flex justify-between items-start mb-2">
-                <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center shrink-0">
-                  <FileText className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center shrink-0">
+                  <FileText className="w-5 h-5 text-orange-600" />
                 </div>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
                   {note.batchId}
                 </span>
               </div>
 
-              <h4 className="font-bold text-slate-900 mt-2 truncate" title={note.title}>{note.title}</h4>
+              <h4 className="font-bold text-[#0D2F24] mt-2 truncate" title={note.title}>{note.title}</h4>
               <p className="text-xs text-slate-500 line-clamp-2 mt-1 min-h-[32px]">{note.description || "No description"}</p>
 
               <div className="mt-4 pt-4 border-t border-slate-100 flex-grow flex flex-col justify-end">
@@ -229,7 +229,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
 
       {/* UPLOAD MODAL */}
       {showUploadModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-slate-100">
             <button
               onClick={() => setShowUploadModal(false)}
@@ -238,8 +238,8 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
-              <Upload className="w-5 h-5 text-purple-600" /> Upload Study Material
+            <h3 className="font-bold text-[#0D2F24] text-lg mb-4 flex items-center gap-2">
+              <Upload className="w-5 h-5 text-orange-600" /> Upload Study Material
             </h3>
 
             <form onSubmit={handleUpload} className="space-y-4">
@@ -249,7 +249,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
                   type="text"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-purple-500 transition"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-orange-500 transition"
                   placeholder="e.g. Newton's Laws - Chapter 1"
                   required
                 />
@@ -260,7 +260,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
                 <textarea
                   value={description}
                   onChange={e => setDescription(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-purple-500 transition resize-none h-20"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-orange-500 transition resize-none h-20"
                   placeholder="Brief context about this material..."
                 />
               </div>
@@ -270,7 +270,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
                 <select
                   value={selectedBatchId}
                   onChange={e => setSelectedBatchId(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-purple-500 transition"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-orange-500 transition"
                   required
                 >
                   {uploadableBatches.map(b => (
@@ -285,7 +285,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
                   type="file"
                   onChange={handleFileChange}
                   accept=".pdf,.doc,.docx,.ppt,.pptx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                  className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                  className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
                   required
                 />
               </div>
@@ -293,7 +293,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
               <div className="pt-2">
                 <Button
                   type="submit"
-                  className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white"
+                  className="w-full py-2 bg-orange-600 hover:bg-orange-700 text-white"
                   disabled={uploading}
                 >
                   {uploading ? "Uploading..." : "Upload Material"}
@@ -306,7 +306,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
 
       {/* STATS MODAL */}
       {statsNote && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-2xl bg-white rounded-2xl p-6 shadow-2xl border border-slate-100 flex flex-col max-h-[85vh]">
             <button
               onClick={() => setStatsNote(null)}
@@ -316,8 +316,8 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
             </button>
 
             <div className="mb-4 pr-8">
-              <h3 className="font-bold text-slate-900 text-lg line-clamp-1">{statsNote.title}</h3>
-              <p className="text-xs font-semibold text-purple-600 mt-1">View Statistics &bull; {statsNote.batchId}</p>
+              <h3 className="font-bold text-[#0D2F24] text-lg line-clamp-1">{statsNote.title}</h3>
+              <p className="text-xs font-semibold text-orange-600 mt-1">View Statistics &bull; {statsNote.batchId}</p>
             </div>
 
             <div className="flex gap-4 mb-4">
@@ -347,7 +347,7 @@ export default function TeacherNotesSection({ assignedBatches, uploadableBatches
                           {student.fullName?.charAt(0)}
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-slate-900 leading-tight">{student.fullName}</p>
+                          <p className="text-sm font-bold text-[#0D2F24] leading-tight">{student.fullName}</p>
                           <p className="text-[10px] font-mono text-slate-500">{student.admissionNumber}</p>
                         </div>
                       </div>

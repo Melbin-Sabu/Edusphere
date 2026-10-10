@@ -121,7 +121,7 @@ function BatchManagement() {
   return (
     <AdminLayout title="Batch Management">
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-[#0D2F24] flex items-center gap-2">
           <Layers className="w-6 h-6 text-blue-600" /> Class Batch Allocations
         </h2>
         <p className="text-sm text-slate-500 mt-1">
@@ -144,13 +144,13 @@ function BatchManagement() {
             <Card key={batch.id} className="p-5 border-slate-200 hover:border-blue-300 transition hover:shadow-md flex flex-col h-full">
               <div className="flex items-start justify-between mb-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  batch.type === "JEE" ? "bg-indigo-100 text-indigo-600" : "bg-emerald-100 text-emerald-600"
+                  batch.type === "JEE" ? "bg-indigo-100 text-emerald-800" : "bg-emerald-100 text-emerald-600"
                 }`}>
                   <Icon className="w-6 h-6" />
                 </div>
               </div>
               
-              <h3 className="font-bold text-slate-900">{batch.name}</h3>
+              <h3 className="font-bold text-[#0D2F24]">{batch.name}</h3>
               
               <div className="mt-3 mb-5 flex gap-4 flex-grow">
                 <div>
@@ -186,7 +186,7 @@ function BatchManagement() {
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-4">
           <Users className="w-5 h-5 text-slate-600" />
-          <h3 className="font-bold text-slate-900 text-lg">All Allocated Teachers</h3>
+          <h3 className="font-bold text-[#0D2F24] text-lg">All Allocated Teachers</h3>
         </div>
         
         {loading ? (
@@ -209,7 +209,7 @@ function BatchManagement() {
                         {t.fullName?.charAt(0) || "T"}
                        </div>
                        <div>
-                         <span className="block font-bold text-slate-900">{t.fullName}</span>
+                         <span className="block font-bold text-[#0D2F24]">{t.fullName}</span>
                          <span className="text-[10px] text-slate-400 font-mono">{t.employeeId || "N/A"}</span>
                        </div>
                     </td>
@@ -248,7 +248,7 @@ function BatchManagement() {
 
       {/* ALLOCATION MODAL */}
       {showAssignModal && selectedBatch && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-2xl bg-white rounded-2xl p-6 shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
             <button
               onClick={() => setShowAssignModal(false)}
@@ -258,7 +258,7 @@ function BatchManagement() {
             </button>
             
             <div className="mb-4 border-b border-slate-100 pb-4">
-              <h3 className="font-bold text-slate-900 text-xl flex items-center gap-2">
+              <h3 className="font-bold text-[#0D2F24] text-xl flex items-center gap-2">
                 <UserCheck className="w-6 h-6 text-blue-600" /> Manage {selectedBatch.name}
               </h3>
               
@@ -326,7 +326,7 @@ function BatchManagement() {
                             {t.fullName?.charAt(0) || "T"}
                           </div>
                           <div>
-                            <p className="font-bold text-slate-900 text-sm leading-tight">{t.fullName}</p>
+                            <p className="font-bold text-[#0D2F24] text-sm leading-tight">{t.fullName}</p>
                             <p className="text-[10px] text-slate-500 font-medium">
                               {t.department || "Faculty"} • {t.subject || "Subject"}
                             </p>
@@ -370,7 +370,7 @@ function BatchManagement() {
                           {s.fullName?.charAt(0) || "S"}
                         </div>
                         <div>
-                          <p className="font-bold text-slate-900 text-sm leading-tight">{s.fullName}</p>
+                          <p className="font-bold text-[#0D2F24] text-sm leading-tight">{s.fullName}</p>
                           <p className="text-[10px] text-slate-500 font-medium font-mono">
                             {s.admissionNumber || "N/A"} • {s.email}
                           </p>
@@ -391,7 +391,7 @@ function BatchManagement() {
             <div className="pt-5 mt-4 border-t border-slate-100">
               <Button
                 onClick={() => setShowAssignModal(false)}
-                className="w-full py-2.5 bg-slate-800 hover:bg-slate-900 text-white"
+                className="w-full py-2.5 bg-slate-800 hover:bg-[#0D2F24] text-white"
               >
                 Done
               </Button>

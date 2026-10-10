@@ -354,8 +354,8 @@ function QuizBuilder() {
               </div>
 
               {!isEdit && (
-                <div className="border-t pt-4 space-y-3 bg-purple-50 -mx-5 px-5 pb-4 rounded-b-lg">
-                  <h4 className="font-bold text-sm text-purple-700">Generate Questions with AI (Optional)</h4>
+                <div className="border-t pt-4 space-y-3 bg-orange-50 -mx-5 px-5 pb-4 rounded-b-lg">
+                  <h4 className="font-bold text-sm text-orange-700">Generate Questions with AI (Optional)</h4>
                   <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-2">
                       <label className="block text-xs font-bold text-slate-600 mb-1">Upload Document (.pdf, .docx, .txt)</label>
@@ -379,11 +379,11 @@ function QuizBuilder() {
             <div className="space-y-4">
               <div className="flex justify-between items-center bg-slate-800 text-white p-4 rounded-xl">
                 <h3 className="font-bold">Questions ({questions.length})</h3>
-                <Button onClick={handleAddQuestion} size="sm" className="bg-purple-600 hover:bg-purple-500 border-none text-white" icon={Plus}>Add Question</Button>
+                <Button onClick={handleAddQuestion} size="sm" className="bg-orange-600 hover:bg-orange-500 border-none text-white" icon={Plus}>Add Question</Button>
               </div>
 
               {questions.map((q, idx) => (
-                <Card key={q._id} className="p-5 border-l-4 border-l-purple-500">
+                <Card key={q._id} className="p-5 border-l-4 border-l-orange-500">
                   <div className="flex justify-between mb-4">
                     <span className="font-bold text-slate-500">Q{idx + 1}</span>
                     <button onClick={() => handleDeleteQuestion(q._id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded">
@@ -396,7 +396,7 @@ function QuizBuilder() {
                       value={q.questionText}
                       onChange={(e) => handleLocalChange(q._id, { questionText: e.target.value })}
                       onBlur={() => handleUpdateQuestion(q._id, q)}
-                      className="w-full border rounded-lg p-3 text-sm font-medium focus:outline-purple-500"
+                      className="w-full border rounded-lg p-3 text-sm font-medium focus:outline-orange-500"
                       rows={2}
                     />
 
@@ -412,7 +412,7 @@ function QuizBuilder() {
                               handleLocalChange(q._id, updated);
                               handleUpdateQuestion(q._id, updated);
                             }}
-                            className="w-4 h-4 text-purple-600"
+                            className="w-4 h-4 text-orange-600"
                           />
                           <input
                             value={opt}

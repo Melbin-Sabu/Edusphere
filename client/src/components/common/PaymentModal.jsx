@@ -114,7 +114,7 @@ function PaymentModal({
     if (cleanNum.startsWith("4")) return { name: "VISA", color: "text-blue-400 bg-blue-500/10 border-blue-500/30" };
     if (/^(5[1-5]|2[2-7])/.test(cleanNum)) return { name: "Mastercard", color: "text-amber-400 bg-amber-500/10 border-amber-500/30" };
     if (/^6/.test(cleanNum)) return { name: "RuPay", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30" };
-    if (/^3[47]/.test(cleanNum)) return { name: "AMEX", color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/30" };
+    if (/^3[47]/.test(cleanNum)) return { name: "AMEX", color: "text-emerald-600 bg-emerald-700/10 border-emerald-700/30" };
     return { name: "Card", color: "text-slate-400 bg-slate-800 border-slate-700" };
   };
 
@@ -241,11 +241,11 @@ function PaymentModal({
   const cardBrand = getCardBrand();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#05110d]/85 backdrop-blur-md animate-fadeIn">
       <div className="relative w-full max-w-[480px] bg-[#0C1017] text-white border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl font-sans overflow-hidden max-h-[90vh] overflow-y-auto">
         {/* Background glow effects */}
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-orange-600/15 rounded-full blur-3xl pointer-events-none" />
 
         {/* Modal Top Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-5 relative z-10">
@@ -271,7 +271,7 @@ function PaymentModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="p-1.5 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-xl transition border border-slate-800"
+                className="p-1.5 text-slate-400 hover:text-white bg-[#0D2F24] hover:bg-slate-800 rounded-xl transition border border-slate-800"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -282,14 +282,14 @@ function PaymentModal({
         {!paymentCompleted ? (
           <>
             {/* Order Summary Header Card */}
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 mb-5 space-y-2 relative z-10">
+            <div className="bg-[#0D2F24]/90 border border-slate-800 rounded-2xl p-4 mb-5 space-y-2 relative z-10">
               <div className="flex justify-between items-center text-xs">
                 <span className="text-slate-400">Merchant Name:</span>
                 <span className="font-bold text-white">EduSphere ERP Systems</span>
               </div>
               <div className="flex justify-between items-center text-xs">
                 <span className="text-slate-400">Payer / Applicant:</span>
-                <span className="font-mono text-purple-300 font-semibold text-[11px] truncate max-w-[210px]">
+                <span className="font-mono text-orange-300 font-semibold text-[11px] truncate max-w-[210px]">
                   {displayEmail}
                 </span>
               </div>
@@ -313,7 +313,7 @@ function PaymentModal({
                   }}
                   className={`p-3 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1.5 transition ${paymentMethod === "card"
                       ? "bg-blue-600/20 border-blue-500 text-blue-300 shadow-lg shadow-blue-500/10"
-                      : "bg-slate-900/80 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                      : "bg-[#0D2F24]/80 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                     }`}
                 >
                   <CreditCard className={`w-4 h-4 ${paymentMethod === "card" ? "text-blue-400" : "text-slate-400"}`} />
@@ -327,11 +327,11 @@ function PaymentModal({
                     setErrorMsg("");
                   }}
                   className={`p-3 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1.5 transition ${paymentMethod === "upi"
-                      ? "bg-purple-600/20 border-purple-500 text-purple-300 shadow-lg shadow-purple-500/10"
-                      : "bg-slate-900/80 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                      ? "bg-orange-600/20 border-orange-500 text-orange-300 shadow-lg shadow-orange-500/10"
+                      : "bg-[#0D2F24]/80 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                     }`}
                 >
-                  <QrCode className={`w-4 h-4 ${paymentMethod === "upi" ? "text-purple-400" : "text-slate-400"}`} />
+                  <QrCode className={`w-4 h-4 ${paymentMethod === "upi" ? "text-orange-400" : "text-slate-400"}`} />
                   <span>UPI / QR</span>
                 </button>
 
@@ -343,7 +343,7 @@ function PaymentModal({
                   }}
                   className={`p-3 rounded-2xl border text-xs font-bold flex flex-col items-center gap-1.5 transition ${paymentMethod === "netbanking"
                       ? "bg-emerald-600/20 border-emerald-500 text-emerald-300 shadow-lg shadow-emerald-500/10"
-                      : "bg-slate-900/80 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                      : "bg-[#0D2F24]/80 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
                     }`}
                 >
                   <Building2
@@ -402,7 +402,7 @@ function PaymentModal({
                       value={cardNumber}
                       onChange={handleCardNumberChange}
                       placeholder="4111 1111 1111 1111"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono"
+                      className="w-full bg-[#0D2F24] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono"
                     />
                     <CreditCard className="w-4 h-4 text-slate-500 absolute right-3 top-3 pointer-events-none" />
                   </div>
@@ -417,7 +417,7 @@ function PaymentModal({
                       value={cardExpiry}
                       onChange={handleCardExpiryChange}
                       placeholder="MM/YY"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-center"
+                      className="w-full bg-[#0D2F24] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-center"
                     />
                   </div>
                   <div>
@@ -429,7 +429,7 @@ function PaymentModal({
                         value={cardCvv}
                         onChange={handleCardCvvChange}
                         placeholder="123"
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-center tracking-widest"
+                        className="w-full bg-[#0D2F24] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 font-mono text-center tracking-widest"
                       />
                       <Lock className="w-3.5 h-3.5 text-slate-500 absolute right-3 top-3 pointer-events-none" />
                     </div>
@@ -444,7 +444,7 @@ function PaymentModal({
                     value={cardName}
                     onChange={(e) => setCardName(e.target.value)}
                     placeholder="Full Name on Card"
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 font-sans"
+                    className="w-full bg-[#0D2F24] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 font-sans"
                   />
                 </div>
               </div>
@@ -453,14 +453,14 @@ function PaymentModal({
             {/* TAB CONTENT 2: UPI / QR CODE */}
             {paymentMethod === "upi" && (
               <div className="space-y-4 mb-5 text-center animate-fadeIn">
-                <div className="p-4 bg-slate-900/90 border border-slate-800 rounded-2xl space-y-3">
+                <div className="p-4 bg-[#0D2F24]/90 border border-slate-800 rounded-2xl space-y-3">
                   <p className="text-xs text-slate-300 font-semibold flex items-center justify-center gap-1.5">
-                    <QrCode className="w-4 h-4 text-purple-400" />
+                    <QrCode className="w-4 h-4 text-orange-400" />
                     Scan QR Code using any UPI App
                   </p>
 
                   {/* Generated Dynamic Payment QR Box */}
-                  <div className="relative w-48 h-48 mx-auto p-2 bg-white rounded-2xl shadow-xl flex items-center justify-center border-4 border-purple-500/30 group">
+                  <div className="relative w-48 h-48 mx-auto p-2 bg-white rounded-2xl shadow-xl flex items-center justify-center border-4 border-orange-500/30 group">
                     <img
                       src={qrApiUrl}
                       alt="Razorpay Payment UPI QR Code"
@@ -472,25 +472,25 @@ function PaymentModal({
                       }}
                     />
                     {/* Center Brand Badge */}
-                    <div className="absolute inset-0 m-auto w-10 h-10 bg-slate-950 text-purple-400 border border-purple-500/50 rounded-xl flex items-center justify-center font-black text-[10px] shadow-lg pointer-events-none">
+                    <div className="absolute inset-0 m-auto w-10 h-10 bg-[#05110d] text-orange-400 border border-orange-500/50 rounded-xl flex items-center justify-center font-black text-[10px] shadow-lg pointer-events-none">
                       RZP
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-purple-300 font-medium">
+                  <p className="text-[11px] text-orange-300 font-medium">
                     Accepted Apps: <strong className="text-white">Google Pay &bull; PhonePe &bull; Paytm &bull; BHIM</strong>
                   </p>
 
                   {/* Merchant UPI ID Copy Row */}
-                  <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs bg-slate-950 p-2.5 rounded-xl border border-slate-800/80">
+                  <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs bg-[#05110d] p-2.5 rounded-xl border border-slate-800/80">
                     <div className="text-left font-mono">
                       <span className="text-[10px] text-slate-400 block">Merchant UPI VPA ID:</span>
-                      <strong className="text-purple-300 text-xs">{merchantUpiId}</strong>
+                      <strong className="text-orange-300 text-xs">{merchantUpiId}</strong>
                     </div>
                     <button
                       type="button"
                       onClick={handleCopyUpi}
-                      className="px-2.5 py-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg text-[11px] font-bold flex items-center gap-1 transition"
+                      className="px-2.5 py-1 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 border border-orange-500/30 rounded-lg text-[11px] font-bold flex items-center gap-1 transition"
                     >
                       {copiedUpi ? (
                         <>
@@ -498,7 +498,7 @@ function PaymentModal({
                         </>
                       ) : (
                         <>
-                          <Copy className="w-3 h-3 text-purple-400" /> Copy VPA
+                          <Copy className="w-3 h-3 text-orange-400" /> Copy VPA
                         </>
                       )}
                     </button>
@@ -515,7 +515,7 @@ function PaymentModal({
                     value={upiIdInput}
                     onChange={(e) => setUpiIdInput(e.target.value)}
                     placeholder="e.g. yourname@okicici / mobile@paytm"
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-purple-500 font-mono"
+                    className="w-full bg-[#0D2F24] border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-orange-500 font-mono"
                   />
                 </div>
               </div>
@@ -540,7 +540,7 @@ function PaymentModal({
                       onClick={() => setSelectedBank(bank.id)}
                       className={`p-3 rounded-xl border text-xs font-bold text-left flex items-center justify-between transition ${selectedBank === bank.id
                           ? `bg-slate-800 border-emerald-500 text-white shadow-md`
-                          : `bg-slate-900/70 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200`
+                          : `bg-[#0D2F24]/70 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200`
                         }`}
                     >
                       <div className="flex items-center gap-2">
@@ -567,7 +567,7 @@ function PaymentModal({
               type="button"
               onClick={handleExecutePayment}
               disabled={isProcessing}
-              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold text-sm transition shadow-xl flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-emerald-800 to-orange-600 hover:from-blue-500 hover:to-orange-500 text-white font-extrabold text-sm transition shadow-xl flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
             >
               {isProcessing ? (
                 <>
@@ -602,7 +602,7 @@ function PaymentModal({
             </div>
 
             {/* Digital Receipt Card */}
-            <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl text-left text-xs font-mono space-y-2 shadow-inner">
+            <div className="p-4 bg-[#0D2F24] border border-slate-800 rounded-2xl text-left text-xs font-mono space-y-2 shadow-inner">
               <div className="flex justify-between items-center">
                 <span className="text-slate-400">Payment ID:</span>
                 <strong className="text-blue-400 text-xs">{paymentReceipt?.paymentId}</strong>
@@ -613,7 +613,7 @@ function PaymentModal({
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-400">Paid Via:</span>
-                <span className="text-purple-300 font-semibold">{paymentReceipt?.method}</span>
+                <span className="text-orange-300 font-semibold">{paymentReceipt?.method}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-slate-400">Date & Time:</span>

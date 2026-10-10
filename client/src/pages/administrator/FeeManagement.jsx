@@ -219,8 +219,8 @@ function FeeManagement() {
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all capitalize ${
               activeTab === tab
-                ? "bg-purple-600 text-white shadow-lg"
-                : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                ? "bg-orange-600 text-white shadow-lg"
+                : "text-slate-500 hover:bg-slate-100 hover:text-[#0D2F24]"
             }`}
           >
             {tab.replace("-", " ")}
@@ -235,30 +235,30 @@ function FeeManagement() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card padding="p-5">
               <div className="flex items-center justify-between mb-2">
-                <div className="p-2 rounded-xl bg-purple-50 text-purple-600"><IndianRupee className="w-5 h-5"/></div>
+                <div className="p-2 rounded-xl bg-orange-50 text-orange-600"><IndianRupee className="w-5 h-5"/></div>
               </div>
-              <h4 className="text-2xl font-extrabold text-slate-900">₹{(reports.summary.totalExpected || 0).toLocaleString('en-IN')}</h4>
+              <h4 className="text-2xl font-extrabold text-[#0D2F24]">₹{(reports.summary.totalExpected || 0).toLocaleString('en-IN')}</h4>
               <p className="text-xs font-bold text-slate-500">Total Expected</p>
             </Card>
             <Card padding="p-5">
               <div className="flex items-center justify-between mb-2">
                 <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600"><CheckCircle2 className="w-5 h-5"/></div>
               </div>
-              <h4 className="text-2xl font-extrabold text-slate-900">₹{(reports.summary.totalCollected || 0).toLocaleString('en-IN')}</h4>
+              <h4 className="text-2xl font-extrabold text-[#0D2F24]">₹{(reports.summary.totalCollected || 0).toLocaleString('en-IN')}</h4>
               <p className="text-xs font-bold text-slate-500">Total Collected</p>
             </Card>
             <Card padding="p-5">
               <div className="flex items-center justify-between mb-2">
                 <div className="p-2 rounded-xl bg-amber-50 text-amber-600"><Clock className="w-5 h-5"/></div>
               </div>
-              <h4 className="text-2xl font-extrabold text-slate-900">₹{(reports.summary.totalPending || 0).toLocaleString('en-IN')}</h4>
+              <h4 className="text-2xl font-extrabold text-[#0D2F24]">₹{(reports.summary.totalPending || 0).toLocaleString('en-IN')}</h4>
               <p className="text-xs font-bold text-slate-500">Total Pending</p>
             </Card>
             <Card padding="p-5">
               <div className="flex items-center justify-between mb-2">
                 <div className="p-2 rounded-xl bg-rose-50 text-rose-600"><AlertTriangle className="w-5 h-5"/></div>
               </div>
-              <h4 className="text-2xl font-extrabold text-slate-900">₹{(reports.overdue.totalOverdue || 0).toLocaleString('en-IN')}</h4>
+              <h4 className="text-2xl font-extrabold text-[#0D2F24]">₹{(reports.overdue.totalOverdue || 0).toLocaleString('en-IN')}</h4>
               <p className="text-xs font-bold text-slate-500">Overdue ({reports.overdue.count || 0} students)</p>
             </Card>
           </div>
@@ -282,7 +282,7 @@ function FeeManagement() {
                     <td className="py-3 px-4 text-emerald-600">₹{(p.amount || 0).toLocaleString('en-IN')}</td>
                     <td className="py-3 px-4">{p.paymentMethod}</td>
                     <td className="py-3 px-4">{new Date(p.paymentDate).toLocaleDateString()}</td>
-                    <td className="py-3 px-4 text-purple-600">{p.receiptNumber}</td>
+                    <td className="py-3 px-4 text-orange-600">{p.receiptNumber}</td>
                   </tr>
                 ))}
               </tbody>
@@ -317,7 +317,7 @@ function FeeManagement() {
                 <tr key={s._id}>
                   <td className="py-3 px-4 font-bold">{s.courseId} / {s.batchId}</td>
                   <td className="py-3 px-4">{s.academicYear}</td>
-                  <td className="py-3 px-4 text-purple-700">₹{(s.totalAmount || 0).toLocaleString('en-IN')}</td>
+                  <td className="py-3 px-4 text-orange-700">₹{(s.totalAmount || 0).toLocaleString('en-IN')}</td>
                   <td className="py-3 px-4">{new Date(s.dueDate).toLocaleDateString()}</td>
                   <td className="py-3 px-4">
                     <span className="px-2 py-1 rounded bg-emerald-100 text-emerald-800 text-[10px]">{s.status}</span>
@@ -378,7 +378,7 @@ function FeeManagement() {
                           setShowPaymentModal(true);
                         }} 
                         size="sm"
-                        className="bg-purple-100 text-purple-700 hover:bg-purple-200 shadow-none text-[10px] px-2 py-1"
+                        className="bg-orange-100 text-orange-700 hover:bg-orange-200 shadow-none text-[10px] px-2 py-1"
                       >
                         Record Payment
                       </Button>
@@ -408,7 +408,7 @@ function FeeManagement() {
             <tbody className="divide-y divide-slate-100 font-medium">
               {payments.map(p => (
                 <tr key={p._id}>
-                  <td className="py-3 px-4 text-purple-700 font-mono">{p.receiptNumber}</td>
+                  <td className="py-3 px-4 text-orange-700 font-mono">{p.receiptNumber}</td>
                   <td className="py-3 px-4">{p.studentId?.fullName} ({p.studentId?.admissionNumber})</td>
                   <td className="py-3 px-4 font-bold text-emerald-600">₹{(p.amount || 0).toLocaleString('en-IN')}</td>
                   <td className="py-3 px-4">{p.paymentMethod}</td>
@@ -416,7 +416,7 @@ function FeeManagement() {
                   <td className="py-3 px-4 text-center">
                     <button 
                       onClick={() => generateReceipt(p._id)}
-                      className="text-purple-600 hover:text-purple-800"
+                      className="text-orange-600 hover:text-orange-800"
                       title="Download Receipt"
                     >
                       <Download className="w-4 h-4" />
@@ -431,7 +431,7 @@ function FeeManagement() {
 
       {/* CREATE STRUCTURE MODAL */}
       {showStructureModal && (
-        <div className="fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[#05110d]/70 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold">New Fee Structure</h3>
@@ -495,7 +495,7 @@ function FeeManagement() {
               <div className="mt-4 border-t pt-4">
                 <div className="flex justify-between items-center mb-2">
                   <label className="block text-xs font-bold text-slate-700">Fee Components</label>
-                  <button type="button" onClick={handleAddStructureComponent} className="text-xs text-purple-600 font-bold">+ Add Item</button>
+                  <button type="button" onClick={handleAddStructureComponent} className="text-xs text-orange-600 font-bold">+ Add Item</button>
                 </div>
                 {feeForm.components.map((comp, idx) => (
                   <div key={idx} className="flex gap-2 mb-2 items-center">
@@ -516,13 +516,13 @@ function FeeManagement() {
 
       {/* RECORD PAYMENT MODAL */}
       {showPaymentModal && selectedStudentFee && (
-        <div className="fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[#05110d]/70 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl w-full max-w-sm p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold">Record Payment</h3>
               <button onClick={() => setShowPaymentModal(false)}><X className="w-5 h-5 text-slate-500"/></button>
             </div>
-            <div className="mb-4 p-3 bg-purple-50 rounded-xl text-xs space-y-1">
+            <div className="mb-4 p-3 bg-orange-50 rounded-xl text-xs space-y-1">
               <p>Student: <strong>{selectedStudentFee.studentId?.fullName}</strong></p>
               <p>Pending Amount: <strong className="text-rose-600">₹{(selectedStudentFee.pendingAmount || 0).toLocaleString('en-IN')}</strong></p>
             </div>

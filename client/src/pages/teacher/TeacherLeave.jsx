@@ -123,13 +123,13 @@ function TeacherLeave() {
       <Card className="overflow-hidden border-slate-200 shadow-lg">
         <div className="px-6 py-5 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
           <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-            <FileText className="w-4 h-4 text-indigo-600" /> Student Leave Requests
+            <FileText className="w-4 h-4 text-emerald-800" /> Student Leave Requests
           </h3>
         </div>
 
         {loading ? (
           <div className="p-12 text-center text-slate-500">
-            <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-8 h-8 border-4 border-emerald-700 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             Loading leave requests...
           </div>
         ) : leaves.length === 0 ? (
@@ -212,7 +212,7 @@ function TeacherLeave() {
 
       {/* Action Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D2F24]/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className={`px-6 py-5 border-b border-slate-100 flex items-center justify-between ${
               action === "APPROVED" ? "bg-emerald-50/50" : "bg-rose-50/50"

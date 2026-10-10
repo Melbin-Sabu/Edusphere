@@ -15,11 +15,11 @@ function AuthLayout({ title, subtitle, wide = false, children }) {
   ];
 
   return (
-    <div className="min-h-screen w-full flex bg-slate-950 text-slate-100 font-sans selection:bg-purple-500 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen w-full flex bg-[#05110d] text-slate-100 font-sans selection:bg-orange-500 selection:text-white overflow-x-hidden">
       {/* LEFT SIDE: Brand Showcase & Features */}
       <div className="hidden lg:flex lg:w-7/12 relative bg-mesh-purple p-8 xl:p-10 flex-col justify-between overflow-hidden border-r border-slate-800">
         {/* Subtle glowing orb backgrounds */}
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-orange-600/30 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Top Brand Header */}
@@ -29,13 +29,13 @@ function AuthLayout({ title, subtitle, wide = false, children }) {
 
         {/* Hero Title & Illustration Cards */}
         <div className="relative z-10 my-auto max-w-xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-semibold uppercase tracking-wider mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-300 text-xs font-semibold uppercase tracking-wider mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-orange-400 animate-pulse" />
             Enterprise ERP Platform
           </div>
 
           <h1 className="text-3xl xl:text-4xl font-extrabold text-white tracking-tight leading-tight mb-3">
-            AI-Powered Adaptive Coaching & <span className="bg-gradient-to-r from-purple-400 via-indigo-300 to-blue-400 bg-clip-text text-transparent">Rank Intelligence</span>
+            AI-Powered Adaptive Coaching & <span className="bg-gradient-to-r from-orange-400 via-indigo-300 to-blue-400 bg-clip-text text-transparent">Rank Intelligence</span>
           </h1>
 
           <p className="text-slate-300 text-xs xl:text-sm leading-relaxed mb-6">
@@ -49,10 +49,10 @@ function AuthLayout({ title, subtitle, wide = false, children }) {
               return (
                 <div
                   key={idx}
-                  className="group p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md hover:border-purple-500/40 hover:bg-slate-900/90 transition-all duration-300"
+                  className="group p-3.5 rounded-2xl bg-[#0D2F24]/60 border border-slate-800/80 backdrop-blur-md hover:border-orange-500/40 hover:bg-[#0D2F24]/90 transition-all duration-300"
                 >
                   <div className="flex items-center gap-2.5 mb-1">
-                    <div className="w-6 h-6 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                    <div className="w-6 h-6 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 group-hover:scale-110 transition-transform">
                       <IconComp className="w-3.5 h-3.5" />
                     </div>
                     <span className="font-bold text-xs text-white flex items-center gap-1.5">
@@ -77,7 +77,7 @@ function AuthLayout({ title, subtitle, wide = false, children }) {
       </div>
 
       {/* RIGHT SIDE: Modern Glassmorphism Card */}
-      <div className="w-full lg:w-5/12 flex flex-col justify-between p-6 sm:p-8 xl:p-10 bg-slate-900 relative overflow-y-auto max-h-screen">
+      <div className="w-full lg:w-5/12 flex flex-col justify-between p-6 sm:p-8 xl:p-10 bg-[#0D2F24] relative overflow-y-auto max-h-screen">
         {/* Top Navigation Bar with Dynamic Context Button */}
         <div className="flex justify-between items-center mb-6 z-20">
           <div className="lg:hidden flex items-center">
@@ -90,9 +90,9 @@ function AuthLayout({ title, subtitle, wide = false, children }) {
                 <span className="hidden sm:inline text-xs text-slate-400">Already Enrolled?</span>
                 <Link
                   to="/login"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-300 font-extrabold text-xs transition-all border border-slate-700 hover:border-purple-500/50 cursor-pointer shadow-md"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-orange-300 font-extrabold text-xs transition-all border border-slate-700 hover:border-orange-500/50 cursor-pointer shadow-md"
                 >
-                  <LogIn className="w-3.5 h-3.5 text-purple-400" />
+                  <LogIn className="w-3.5 h-3.5 text-orange-400" />
                   <span>Log In to Workspace &rarr;</span>
                 </Link>
               </>
@@ -101,7 +101,7 @@ function AuthLayout({ title, subtitle, wide = false, children }) {
                 <span className="hidden sm:inline text-xs text-slate-400">New Applicant?</span>
                 <Link
                   to="/apply"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-extrabold text-xs shadow-lg shadow-purple-600/30 transition-all transform hover:-translate-y-0.5 cursor-pointer border border-purple-400/30"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-emerald-800 hover:from-orange-500 hover:to-emerald-700 text-white font-extrabold text-xs shadow-lg shadow-orange-600/30 transition-all transform hover:-translate-y-0.5 cursor-pointer border border-orange-400/30"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
                   <span>Apply for Admission</span>
@@ -112,7 +112,7 @@ function AuthLayout({ title, subtitle, wide = false, children }) {
         </div>
 
         <div className={`my-auto w-full mx-auto ${wide ? "max-w-2xl" : "max-w-md"}`}>
-          <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-purple-950/20 backdrop-blur-xl relative">
+          <div className="bg-[#0D2F24]/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-orange-950/20 backdrop-blur-xl relative">
             {/* Header */}
             <div className="text-left mb-6">
               <h2 className="text-2xl font-extrabold text-white tracking-tight">{title}</h2>

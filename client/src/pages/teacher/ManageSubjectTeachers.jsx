@@ -39,7 +39,7 @@ export default function ManageSubjectTeachers() {
     <AdminLayout title="Manage Subject Teachers">
       <div className="max-w-5xl mx-auto py-6">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-slate-900">Manage Subject Teachers</h2>
+          <h2 className="text-2xl font-bold text-[#0D2F24]">Manage Subject Teachers</h2>
           <p className="text-sm text-slate-500">
             Assign other teachers to upload notes and manage materials for your assigned classes.
           </p>
@@ -54,7 +54,7 @@ export default function ManageSubjectTeachers() {
         ) : (
           <div className="py-16 text-center flex flex-col items-center bg-white rounded-2xl border border-slate-200">
             <ShieldAlert className="w-12 h-12 text-amber-400 mb-4" />
-            <h3 className="text-lg font-bold text-slate-900">Access Denied</h3>
+            <h3 className="text-lg font-bold text-[#0D2F24]">Access Denied</h3>
             <p className="text-sm text-slate-500 max-w-md mt-2">
               You are not designated as a Class Teacher for any batches. Only Class Teachers can assign Subject Teachers.
             </p>

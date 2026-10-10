@@ -230,8 +230,8 @@ function AdministratorDashboard() {
       value: studentCount || 0,
       change: "Enrolled Roster",
       icon: GraduationCap,
-      color: "from-purple-600 to-indigo-600",
-      bgLight: "bg-purple-50 text-purple-600 border-purple-200",
+      color: "from-orange-600 to-emerald-800",
+      bgLight: "bg-orange-50 text-orange-600 border-orange-200",
     },
     {
       title: "NEET Registered",
@@ -246,7 +246,7 @@ function AdministratorDashboard() {
       value: totalJee,
       change: `${jeeStudentsCount} Enrolled | ${jeeAppsCount} Applicants`,
       icon: Zap,
-      color: "from-blue-600 to-indigo-600",
+      color: "from-blue-600 to-emerald-800",
       bgLight: "bg-blue-50 text-blue-600 border-blue-200",
     },
     {
@@ -262,19 +262,19 @@ function AdministratorDashboard() {
       value: totalEvening,
       change: `${eveningStudentsCount} Enrolled | ${eveningAppsCount} Applicants`,
       icon: Moon,
-      color: "from-indigo-600 to-purple-800",
-      bgLight: "bg-indigo-50 text-indigo-600 border-indigo-200",
+      color: "from-emerald-800 to-orange-800",
+      bgLight: "bg-indigo-50 text-emerald-800 border-indigo-200",
     },
   ];
 
   return (
     <AdminLayout title="Administrator Control Hub">
       {/* WELCOME BANNER CARD */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 p-8 sm:p-10 text-white shadow-xl border border-purple-800/40">
-        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-96 h-96 rounded-full bg-purple-500/20 blur-3xl pointer-events-none"></div>
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-900 via-indigo-900 to-slate-900 p-8 sm:p-10 text-white shadow-xl border border-orange-800/40">
+        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-96 h-96 rounded-full bg-orange-500/20 blur-3xl pointer-events-none"></div>
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-400/30 text-purple-300 text-xs font-semibold mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/20 border border-orange-400/30 text-orange-300 text-xs font-semibold mb-3">
               <Sparkles className="w-3.5 h-3.5" /> Admission & Institution Governance Hub
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
@@ -302,7 +302,7 @@ function AdministratorDashboard() {
                     <IconComp className="w-4 h-4" />
                   </div>
                 </div>
-                <h4 className="text-2xl font-extrabold text-slate-900 tracking-tight">{stat.value}</h4>
+                <h4 className="text-2xl font-extrabold text-[#0D2F24] tracking-tight">{stat.value}</h4>
                 <p className="text-xs font-bold text-slate-700 mt-0.5 truncate">{stat.title}</p>
                 <p className="text-[10px] font-medium text-slate-400 mt-1.5 pt-1.5 border-t border-slate-100 truncate">
                   {stat.change}
@@ -317,7 +317,7 @@ function AdministratorDashboard() {
       <Card className="p-5">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-purple-600 shrink-0" />
+            <Filter className="w-4 h-4 text-orange-600 shrink-0" />
             <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Filter Records:</span>
           </div>
 
@@ -327,21 +327,21 @@ function AdministratorDashboard() {
               <span className="text-[10px] font-bold uppercase text-slate-400 px-2">Exam:</span>
               <button
                 onClick={() => setExamFilter("ALL")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${examFilter === "ALL" ? "bg-purple-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${examFilter === "ALL" ? "bg-orange-600 text-white shadow-xs" : "text-slate-600 hover:text-[#0D2F24]"
                   }`}
               >
                 All Exams
               </button>
               <button
                 onClick={() => setExamFilter("NEET")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${examFilter === "NEET" ? "bg-emerald-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${examFilter === "NEET" ? "bg-emerald-600 text-white shadow-xs" : "text-slate-600 hover:text-[#0D2F24]"
                   }`}
               >
                 <Stethoscope className="w-3.5 h-3.5" /> NEET Registered ({totalNeet})
               </button>
               <button
                 onClick={() => setExamFilter("JEE")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${examFilter === "JEE" ? "bg-blue-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${examFilter === "JEE" ? "bg-blue-600 text-white shadow-xs" : "text-slate-600 hover:text-[#0D2F24]"
                   }`}
               >
                 <Zap className="w-3.5 h-3.5" /> JEE Registered ({totalJee})
@@ -353,21 +353,21 @@ function AdministratorDashboard() {
               <span className="text-[10px] font-bold uppercase text-slate-400 px-2">Batch:</span>
               <button
                 onClick={() => setBatchFilter("ALL")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${batchFilter === "ALL" ? "bg-purple-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${batchFilter === "ALL" ? "bg-orange-600 text-white shadow-xs" : "text-slate-600 hover:text-[#0D2F24]"
                   }`}
               >
                 All Batches
               </button>
               <button
                 onClick={() => setBatchFilter("MORNING")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${batchFilter === "MORNING" ? "bg-amber-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${batchFilter === "MORNING" ? "bg-amber-600 text-white shadow-xs" : "text-slate-600 hover:text-[#0D2F24]"
                   }`}
               >
                 <Sun className="w-3.5 h-3.5" /> Morning Batch ({totalMorning})
               </button>
               <button
                 onClick={() => setBatchFilter("EVENING")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${batchFilter === "EVENING" ? "bg-indigo-600 text-white shadow-xs" : "text-slate-600 hover:text-slate-900"
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${batchFilter === "EVENING" ? "bg-emerald-800 text-white shadow-xs" : "text-slate-600 hover:text-[#0D2F24]"
                   }`}
               >
                 <Moon className="w-3.5 h-3.5" /> Evening Batch ({totalEvening})
@@ -381,7 +381,7 @@ function AdministratorDashboard() {
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
           <div>
-            <h4 className="text-lg font-bold text-slate-900">Admission Applications & Enrolled Roster</h4>
+            <h4 className="text-lg font-bold text-[#0D2F24]">Admission Applications & Enrolled Roster</h4>
             <p className="text-xs text-slate-500">
               Showing records filtered by <strong>Exam ({examFilter})</strong> and <strong>Batch ({batchFilter})</strong>.
             </p>
@@ -391,8 +391,8 @@ function AdministratorDashboard() {
             <button
               onClick={() => setActiveTab("applications")}
               className={`px-4 py-2 rounded-lg text-xs font-bold transition ${activeTab === "applications"
-                ? "bg-purple-600 text-white shadow"
-                : "text-slate-600 hover:text-slate-900"
+                ? "bg-orange-600 text-white shadow"
+                : "text-slate-600 hover:text-[#0D2F24]"
                 }`}
             >
               Admission Applications ({filteredApplications.length})
@@ -400,8 +400,8 @@ function AdministratorDashboard() {
             <button
               onClick={() => setActiveTab("students")}
               className={`px-4 py-2 rounded-lg text-xs font-bold transition ${activeTab === "students"
-                ? "bg-purple-600 text-white shadow"
-                : "text-slate-600 hover:text-slate-900"
+                ? "bg-orange-600 text-white shadow"
+                : "text-slate-600 hover:text-[#0D2F24]"
                 }`}
             >
               Enrolled Students ({filteredStudents.length})
@@ -428,9 +428,9 @@ function AdministratorDashboard() {
                 {filteredApplications.length > 0 ? (
                   filteredApplications.map((app) => (
                     <tr key={app._id} className="hover:bg-slate-50/80 transition">
-                      <td className="py-3 px-4 font-mono font-bold text-purple-700">{app.applicationId}</td>
+                      <td className="py-3 px-4 font-mono font-bold text-orange-700">{app.applicationId}</td>
                       <td className="py-3 px-4">
-                        <div className="font-bold text-slate-900">{app.fullName}</div>
+                        <div className="font-bold text-[#0D2F24]">{app.fullName}</div>
                         <div className="text-[11px] text-slate-400">{app.email}</div>
                       </td>
                       <td className="py-3 px-4">
@@ -439,7 +439,7 @@ function AdministratorDashboard() {
                             ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
                             : isJee(app.courseId)
                               ? "bg-blue-100 text-blue-800 border border-blue-200"
-                              : "bg-purple-100 text-purple-800 border border-purple-200"
+                              : "bg-orange-100 text-orange-800 border border-orange-200"
                             }`}
                         >
                           {isNeet(app.courseId) ? <Stethoscope className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
@@ -486,7 +486,7 @@ function AdministratorDashboard() {
                         <div className="flex items-center justify-center gap-1.5">
                           <button
                             onClick={() => setSelectedApp(app)}
-                            className="p-1.5 rounded-lg text-purple-600 hover:bg-purple-100 transition"
+                            className="p-1.5 rounded-lg text-orange-600 hover:bg-orange-100 transition"
                             title="View Full Application & Certificates"
                           >
                             <Eye className="w-4 h-4" />
@@ -556,17 +556,17 @@ function AdministratorDashboard() {
                   filteredStudents.map((st) => (
                     <tr key={st._id} className="hover:bg-slate-50/80 transition">
                       <td className="py-3 px-4">
-                        <div className="font-bold text-slate-900">{st.fullName}</div>
+                        <div className="font-bold text-[#0D2F24]">{st.fullName}</div>
                         <div className="text-[11px] text-slate-400">{st.email}</div>
                       </td>
-                      <td className="py-3 px-4 text-purple-600 font-mono font-bold">{st.admissionNumber}</td>
+                      <td className="py-3 px-4 text-orange-600 font-mono font-bold">{st.admissionNumber}</td>
                       <td className="py-3 px-4">
                         <span
                           className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isNeet(st.course)
                             ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
                             : isJee(st.course)
                               ? "bg-blue-100 text-blue-800 border border-blue-200"
-                              : "bg-purple-100 text-purple-800 border border-purple-200"
+                              : "bg-orange-100 text-orange-800 border border-orange-200"
                             }`}
                         >
                           {isNeet(st.course) ? <Stethoscope className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
@@ -594,7 +594,7 @@ function AdministratorDashboard() {
                       <td className="py-3 px-4 text-center">
                         <button
                           onClick={() => setSelectedStudent(st)}
-                          className="p-1.5 rounded-lg text-purple-600 hover:bg-purple-100 transition"
+                          className="p-1.5 rounded-lg text-orange-600 hover:bg-orange-100 transition"
                           title="View Full Student Profile"
                         >
                           <Eye className="w-4 h-4" />
@@ -617,14 +617,14 @@ function AdministratorDashboard() {
 
       {/* APPROVAL RESULT SUCCESS MODAL */}
       {approvalResult && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl text-slate-900 border border-slate-200">
+        <div className="fixed inset-0 bg-[#05110d]/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl text-[#0D2F24] border border-slate-200">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 text-2xl font-bold">
               ✓
             </div>
-            <h3 className="text-xl font-extrabold text-slate-900">Application Approved & Student Enrolled!</h3>
+            <h3 className="text-xl font-extrabold text-[#0D2F24]">Application Approved & Student Enrolled!</h3>
             <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-left text-xs space-y-2 font-mono">
-              <div><span className="text-slate-400">Admission Number:</span> <strong className="text-purple-700">{approvalResult.admissionNumber}</strong></div>
+              <div><span className="text-slate-400">Admission Number:</span> <strong className="text-orange-700">{approvalResult.admissionNumber}</strong></div>
               <div><span className="text-slate-400">Temporary Password:</span> <strong className="text-emerald-600">{approvalResult.tempPassword}</strong></div>
               <div><span className="text-slate-400">Email Sent:</span> <strong>{approvalResult.emailSent ? "Yes (Nodemailer Sent)" : "Logged (Resend Available)"}</strong></div>
             </div>
@@ -637,9 +637,9 @@ function AdministratorDashboard() {
 
       {/* REJECT REASON MODAL */}
       {rejectModalApp && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl text-slate-900 border border-slate-200">
-            <h3 className="text-lg font-extrabold text-slate-900">Reject Application</h3>
+        <div className="fixed inset-0 bg-[#05110d]/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl text-[#0D2F24] border border-slate-200">
+            <h3 className="text-lg font-extrabold text-[#0D2F24]">Reject Application</h3>
             <p className="text-xs text-slate-500">Applicant: <strong>{rejectModalApp.fullName}</strong> ({rejectModalApp.applicationId})</p>
 
             <div>
@@ -648,7 +648,7 @@ function AdministratorDashboard() {
                 value={rejectionReason}
                 onChange={(e) => setRejectionReason(e.target.value)}
                 placeholder="State reason for rejecting application..."
-                className="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-purple-600 focus:outline-none"
+                className="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-orange-600 focus:outline-none"
                 rows={3}
               />
             </div>
@@ -667,8 +667,8 @@ function AdministratorDashboard() {
 
       {/* APPLICANT DETAIL MODAL */}
       {selectedApp && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-slate-900 border border-slate-200 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-[#05110d]/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-[#0D2F24] border border-slate-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-lg font-extrabold">Applicant Details ({selectedApp.applicationId})</h3>
               <button onClick={() => setSelectedApp(null)} className="p-1 text-slate-400 hover:text-slate-700">
@@ -684,8 +684,8 @@ function AdministratorDashboard() {
                 <div><span className="text-slate-400">Gender:</span> <strong>{selectedApp.gender}</strong></div>
               </div>
 
-              <div className="p-3 bg-purple-50 rounded-xl space-y-1">
-                <div className="font-bold text-purple-900">Academic & Course Selection</div>
+              <div className="p-3 bg-orange-50 rounded-xl space-y-1">
+                <div className="font-bold text-orange-900">Academic & Course Selection</div>
                 <div>Course: <strong>{selectedApp.courseId}</strong> | Batch: <strong>{selectedApp.batchId}</strong></div>
                 <div>10th Percentage: <strong>{selectedApp.tenthPercentage}%</strong></div>
                 <div>12th Percentage: <strong>{selectedApp.twelfthPercentage}%</strong></div>
@@ -708,8 +708,8 @@ function AdministratorDashboard() {
 
       {/* STUDENT DETAIL MODAL */}
       {selectedStudent && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-slate-900 border border-slate-200 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-[#05110d]/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-[#0D2F24] border border-slate-200 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-lg font-extrabold">Enrolled Student Profile</h3>
               <button onClick={() => setSelectedStudent(null)} className="p-1 text-slate-400 hover:text-slate-700">
@@ -718,9 +718,9 @@ function AdministratorDashboard() {
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="p-3 bg-purple-50 rounded-xl space-y-1">
-                <div className="font-bold text-purple-900 text-sm">{selectedStudent.fullName}</div>
-                <div>Admission #: <strong className="font-mono text-purple-700">{selectedStudent.admissionNumber}</strong></div>
+              <div className="p-3 bg-orange-50 rounded-xl space-y-1">
+                <div className="font-bold text-orange-900 text-sm">{selectedStudent.fullName}</div>
+                <div>Admission #: <strong className="font-mono text-orange-700">{selectedStudent.admissionNumber}</strong></div>
                 <div>Email: <strong>{selectedStudent.email}</strong></div>
                 <div>Mobile: <strong>{selectedStudent.mobileNumber}</strong></div>
               </div>

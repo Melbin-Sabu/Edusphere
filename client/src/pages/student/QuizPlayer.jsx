@@ -169,11 +169,11 @@ function QuizPlayer() {
                   onClick={() => handleAnswerSelect(currentQuestion._id, opt)}
                   className={`w-full text-left p-4 rounded-xl border-2 transition-all font-medium text-sm md:text-base flex items-center gap-3 ${
                     currentAnswer === opt 
-                      ? 'border-indigo-600 bg-indigo-50 text-indigo-900 shadow-[0_0_0_2px_rgba(79,70,229,0.2)]' 
+                      ? 'border-emerald-800 bg-indigo-50 text-indigo-900 shadow-[0_0_0_2px_rgba(79,70,229,0.2)]' 
                       : 'border-slate-200 bg-white hover:border-indigo-300 text-slate-700'
                   }`}
                 >
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${currentAnswer === opt ? 'border-indigo-600 bg-indigo-600' : 'border-slate-300'}`}>
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${currentAnswer === opt ? 'border-emerald-800 bg-emerald-800' : 'border-slate-300'}`}>
                     {currentAnswer === opt && <div className="w-2 h-2 rounded-full bg-white"></div>}
                   </div>
                   {opt}
@@ -220,7 +220,7 @@ function QuizPlayer() {
                     key={q._id}
                     onClick={() => setCurrentQ(idx)}
                     className={`w-10 h-10 rounded-lg text-sm font-bold transition flex items-center justify-center ${
-                      currentQ === idx ? 'ring-2 ring-indigo-500 ring-offset-2' : ''
+                      currentQ === idx ? 'ring-2 ring-emerald-700 ring-offset-2' : ''
                     } ${
                       isAnswered ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                     }`}

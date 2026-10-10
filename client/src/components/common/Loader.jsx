@@ -6,11 +6,11 @@ function Loader({ fullScreen = false, text = "Loading EduSphere..." }) {
     <div className="flex flex-col items-center justify-center p-8 gap-4 select-none">
       <div className="relative">
         <EduSphereLogo size="lg" showText={false} />
-        <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 blur-lg opacity-30 animate-pulse"></div>
+        <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-orange-600 to-emerald-800 blur-lg opacity-30 animate-pulse"></div>
       </div>
       <div className="flex items-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-purple-600 animate-bounce"></div>
-        <div className="w-2 h-2 rounded-full bg-indigo-600 animate-bounce [animation-delay:0.2s]"></div>
+        <div className="w-2 h-2 rounded-full bg-orange-600 animate-bounce"></div>
+        <div className="w-2 h-2 rounded-full bg-emerald-800 animate-bounce [animation-delay:0.2s]"></div>
         <div className="w-2 h-2 rounded-full bg-blue-600 animate-bounce [animation-delay:0.4s]"></div>
       </div>
       <p className="text-xs font-semibold tracking-wider text-slate-500 uppercase">{text}</p>
@@ -19,7 +19,7 @@ function Loader({ fullScreen = false, text = "Loading EduSphere..." }) {
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center">
+      <div className="fixed inset-0 z-50 bg-[#05110d]/80 backdrop-blur-md flex items-center justify-center">
         {content}
       </div>
     );

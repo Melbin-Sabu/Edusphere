@@ -126,7 +126,7 @@ function StudentDashboard() {
           <Button
             type="button"
             onClick={() => setShowPaymentModal(true)}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-5 rounded-xl shrink-0 shadow-md flex items-center gap-2"
+            className="bg-gradient-to-r from-blue-600 to-emerald-800 hover:from-blue-500 hover:to-emerald-700 text-white font-bold text-xs py-2.5 px-5 rounded-xl shrink-0 shadow-md flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4 text-amber-300" />
             <span>Pay ₹500 via Razorpay</span>
@@ -179,7 +179,7 @@ function StudentDashboard() {
       />
 
       {/* WELCOME PROFILE BANNER */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-900 via-indigo-900 to-slate-900 p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
           <ProfilePicUpload
             currentImage={user.profilePic}
@@ -187,13 +187,13 @@ function StudentDashboard() {
             onUploadSuccess={handlePicSuccess}
           />
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-purple-500/20 border border-purple-400/30 text-purple-300 text-[11px] font-bold mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-orange-500/20 border border-orange-400/30 text-orange-300 text-[11px] font-bold mb-2">
               <Sparkles className="w-3 h-3" /> Enrolled & Active Student
             </div>
             <h2 className="text-2xl font-bold">Welcome, {user.name || "Student"}!</h2>
-            <p className="text-xs text-purple-200">
+            <p className="text-xs text-orange-200">
               EduSphere Student Portal &bull; Admission No:{" "}
-              <span className="font-mono font-bold text-purple-300">
+              <span className="font-mono font-bold text-orange-300">
                 {user.admissionNumber || application?.applicationId || "EDS20260001"}
               </span>
             </p>
@@ -206,8 +206,8 @@ function StudentDashboard() {
         {/* Right side badges */}
         <div className="flex flex-col md:items-end gap-2 shrink-0">
           {(user.course || application?.courseId) && (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold">
-              <span className="w-2 h-2 rounded-full bg-indigo-400" /> {user.course || application?.courseId}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-700/20 border border-emerald-600/30 text-indigo-300 text-xs font-bold">
+              <span className="w-2 h-2 rounded-full bg-emerald-600" /> {user.course || application?.courseId}
             </div>
           )}
           {(user.batch || application?.batchId) && (
@@ -222,7 +222,7 @@ function StudentDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card className="p-5">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Admission Number</span>
-          <p className="text-lg font-mono font-extrabold text-purple-600 mt-1">
+          <p className="text-lg font-mono font-extrabold text-orange-600 mt-1">
             {user.admissionNumber || application?.applicationId || "EDS20260001"}
           </p>
         </Card>
@@ -244,7 +244,7 @@ function StudentDashboard() {
 
         <Card className="p-5">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Program & Batch</span>
-          <p className="text-lg font-bold text-indigo-600 mt-1">
+          <p className="text-lg font-bold text-emerald-800 mt-1">
             {user.course || application?.courseId || "N/A"}
           </p>
           <p className="text-xs font-semibold text-slate-500 mt-0.5">
@@ -266,18 +266,18 @@ function StudentDashboard() {
 
       {/* PROFILE SUMMARY CARD */}
       <Card className="p-6">
-        <h4 className="text-base font-bold text-slate-900 mb-4">Student Profile Summary</h4>
+        <h4 className="text-base font-bold text-[#0D2F24] mb-4">Student Profile Summary</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium">
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
             <div className="flex items-center gap-2 text-slate-500">
-              <User className="w-4 h-4 text-purple-600" />
+              <User className="w-4 h-4 text-orange-600" />
               <span>Full Name:</span>
-              <strong className="text-slate-900 ml-auto">{user.name}</strong>
+              <strong className="text-[#0D2F24] ml-auto">{user.name}</strong>
             </div>
             <div className="flex items-center gap-2 text-slate-500">
-              <Mail className="w-4 h-4 text-purple-600" />
+              <Mail className="w-4 h-4 text-orange-600" />
               <span>Email:</span>
-              <strong className="text-slate-900 ml-auto">{user.email}</strong>
+              <strong className="text-[#0D2F24] ml-auto">{user.email}</strong>
             </div>
           </div>
 
@@ -290,9 +290,9 @@ function StudentDashboard() {
               </span>
             </div>
             <div className="flex items-center gap-2 text-slate-500">
-              <Clock className="w-4 h-4 text-purple-600" />
+              <Clock className="w-4 h-4 text-orange-600" />
               <span>Password Security:</span>
-              <strong className="text-slate-900 ml-auto">Original Password Set ✓</strong>
+              <strong className="text-[#0D2F24] ml-auto">Original Password Set ✓</strong>
             </div>
           </div>
         </div>
@@ -301,7 +301,7 @@ function StudentDashboard() {
         {myTeachers.length > 0 && (
           <div className="mt-6">
             <h5 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
-              <User className="w-4 h-4 text-indigo-600" /> My Assigned Class Teachers
+              <User className="w-4 h-4 text-emerald-800" /> My Assigned Class Teachers
             </h5>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {myTeachers.map((teacher) => (
@@ -315,7 +315,7 @@ function StudentDashboard() {
                   </div>
                   <div>
                     <p className="text-sm font-bold text-indigo-900">{teacher.fullName}</p>
-                    <p className="text-[10px] text-indigo-600/80 font-medium break-all">{teacher.email}</p>
+                    <p className="text-[10px] text-emerald-800/80 font-medium break-all">{teacher.email}</p>
                   </div>
                 </div>
               ))}
@@ -335,7 +335,7 @@ function StudentDashboard() {
       {viewingNote && (
         <div className="fixed inset-0 z-[60] bg-white flex flex-col md:flex-row h-screen">
           <div className="flex-1 h-full flex flex-col border-r border-slate-200">
-            <div className="bg-slate-900 text-white p-3 flex justify-between items-center shadow-md">
+            <div className="bg-[#0D2F24] text-white p-3 flex justify-between items-center shadow-md">
               <h3 className="font-bold text-sm truncate pr-4">Viewing: {viewingNote.title}</h3>
               <button
                 onClick={() => setViewingNote(null)}

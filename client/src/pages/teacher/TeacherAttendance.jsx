@@ -109,7 +109,7 @@ function TeacherAttendance() {
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
               max={new Date().toISOString().split('T')[0]}
-              className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-700 outline-none"
             />
           </div>
           <div>
@@ -117,7 +117,7 @@ function TeacherAttendance() {
             <select 
               value={selectedBatch}
               onChange={(e) => setSelectedBatch(e.target.value)}
-              className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-700 outline-none"
               disabled={batches.length === 0}
             >
               {batches.length === 0 ? (

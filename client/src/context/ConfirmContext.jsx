@@ -47,8 +47,8 @@ export const ConfirmProvider = ({ children }) => {
     <ConfirmContext.Provider value={confirm}>
       {children}
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-sm bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#05110d]/60 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-sm bg-white dark:bg-[#0D2F24] rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-4">
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${options.isDanger ? 'bg-red-100 text-red-600 dark:bg-red-500/20' : 'bg-amber-100 text-amber-600 dark:bg-amber-500/20'}`}>
@@ -64,7 +64,7 @@ export const ConfirmProvider = ({ children }) => {
                 {options.message}
               </p>
             </div>
-            <div className="px-6 py-4 bg-slate-50 dark:bg-slate-950/50 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
+            <div className="px-6 py-4 bg-slate-50 dark:bg-[#05110d]/50 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
               <button
                 onClick={handleCancel}
                 className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition"
@@ -76,7 +76,7 @@ export const ConfirmProvider = ({ children }) => {
                 className={`px-4 py-2 rounded-xl text-sm font-bold text-white transition shadow-lg ${
                   options.isDanger
                     ? 'bg-red-600 hover:bg-red-500 shadow-red-500/30'
-                    : 'bg-purple-600 hover:bg-purple-500 shadow-purple-500/30'
+                    : 'bg-orange-600 hover:bg-orange-500 shadow-orange-500/30'
                 }`}
               >
                 {options.confirmText}

@@ -121,7 +121,7 @@ function StudentLeave() {
       {/* Leave List */}
       <Card className="p-6 shadow-lg border-slate-200">
         <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-          <FileText className="w-5 h-5 text-indigo-600" /> My Leave Applications
+          <FileText className="w-5 h-5 text-emerald-800" /> My Leave Applications
         </h3>
 
         {loading ? (
@@ -171,7 +171,7 @@ function StudentLeave() {
 
       {/* Apply Leave Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D2F24]/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="px-6 py-5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
               <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">

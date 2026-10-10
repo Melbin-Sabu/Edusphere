@@ -99,7 +99,7 @@ function ApplicationPayment() {
             value={applicationIdInput}
             onChange={(e) => setApplicationIdInput(e.target.value)}
             placeholder="Enter Application ID or Email"
-            className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 font-mono"
+            className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 font-mono"
           />
           <Button type="submit" disabled={loading} size="sm">
             {loading ? "Searching..." : "Find App"}
@@ -115,13 +115,13 @@ function ApplicationPayment() {
       )}
 
       {application && (
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 space-y-4">
+        <div className="bg-[#0D2F24]/90 border border-slate-800 rounded-2xl p-6 space-y-4">
           <div className="pb-3 border-b border-slate-800 flex justify-between items-center">
             <div>
               <h3 className="font-bold text-white text-base">{application.fullName}</h3>
               <p className="text-xs text-slate-400 font-mono">{application.email}</p>
             </div>
-            <span className="font-mono text-xs font-bold text-purple-400 bg-purple-500/10 border border-purple-500/30 px-2.5 py-1 rounded-full">
+            <span className="font-mono text-xs font-bold text-orange-400 bg-orange-500/10 border border-orange-500/30 px-2.5 py-1 rounded-full">
               {application.applicationId}
             </span>
           </div>
@@ -158,10 +158,10 @@ function ApplicationPayment() {
               </div>
 
               {paymentReceipt && (
-                <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-left font-mono text-[11px] space-y-1">
+                <div className="p-3 bg-[#05110d]/80 rounded-xl border border-slate-800 text-left font-mono text-[11px] space-y-1">
                   <div><span className="text-slate-400">Payment ID:</span> <strong className="text-blue-400">{paymentReceipt.paymentId}</strong></div>
                   <div><span className="text-slate-400">Order ID:</span> <strong className="text-slate-300">{paymentReceipt.orderId}</strong></div>
-                  {paymentReceipt.method && <div><span className="text-slate-400">Method:</span> <strong className="text-purple-300">{paymentReceipt.method}</strong></div>}
+                  {paymentReceipt.method && <div><span className="text-slate-400">Method:</span> <strong className="text-orange-300">{paymentReceipt.method}</strong></div>}
                 </div>
               )}
 
@@ -185,7 +185,7 @@ function ApplicationPayment() {
               <Button
                 type="button"
                 onClick={() => setShowPaymentModal(true)}
-                className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 font-extrabold text-xs text-white flex items-center justify-center gap-2 shadow-lg"
+                className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-emerald-800 hover:from-blue-500 hover:to-emerald-700 font-extrabold text-xs text-white flex items-center justify-center gap-2 shadow-lg"
               >
                 <Sparkles className="w-4 h-4 text-amber-300" />
                 <span>Pay ₹500 Registration Fee via Razorpay</span>
@@ -206,7 +206,7 @@ function ApplicationPayment() {
       />
 
       <div className="pt-6 text-center text-xs flex justify-between items-center">
-        <Link to="/login" className="text-purple-400 hover:text-purple-300 font-semibold">
+        <Link to="/login" className="text-orange-400 hover:text-orange-300 font-semibold">
           Return to Login Page
         </Link>
         <Link to="/student/dashboard" className="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">

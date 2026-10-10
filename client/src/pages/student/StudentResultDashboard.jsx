@@ -54,7 +54,7 @@ function StudentResultDashboard() {
                 <h3 className="font-bold text-lg text-slate-800 truncate pr-2">{quiz.title}</h3>
                 <span className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Attempted</span>
               </div>
-              <p className="text-xs text-indigo-600 font-bold mb-4">{quiz.subject}</p>
+              <p className="text-xs text-emerald-800 font-bold mb-4">{quiz.subject}</p>
               
               <div className="text-xs text-slate-500 mb-4 flex-1 space-y-2">
                 <p>Attempts made: <strong className="text-slate-700">{quiz.attemptCount}</strong> / {quiz.attemptLimit}</p>

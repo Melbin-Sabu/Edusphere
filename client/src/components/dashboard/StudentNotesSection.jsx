@@ -76,8 +76,8 @@ export default function StudentNotesSection({ onAskAI, onViewNote }) {
     <Card className="p-6 mb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
-          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-purple-600" />
+          <h3 className="text-lg font-bold text-[#0D2F24] flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-orange-600" />
             My Courses & Study Materials
           </h3>
           <p className="text-xs text-slate-500 mt-1">
@@ -97,14 +97,14 @@ export default function StudentNotesSection({ onAskAI, onViewNote }) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {notes.map(note => (
-            <div key={note._id} className="border border-slate-200 rounded-xl p-4 hover:border-purple-300 transition hover:shadow-sm bg-white flex flex-col h-full group">
+            <div key={note._id} className="border border-slate-200 rounded-xl p-4 hover:border-orange-300 transition hover:shadow-sm bg-white flex flex-col h-full group">
               <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
-                    <FileText className="w-4 h-4 text-indigo-600" />
+                    <FileText className="w-4 h-4 text-emerald-800" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wide">
+                    <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wide">
                       {note.subjectId || "General"}
                     </span>
                     <p className="text-[9px] text-slate-400 font-medium truncate max-w-[120px]">
@@ -124,7 +124,7 @@ export default function StudentNotesSection({ onAskAI, onViewNote }) {
                 )}
               </div>
 
-              <h4 className="font-bold text-slate-900 mt-2 line-clamp-1" title={note.title}>{note.title}</h4>
+              <h4 className="font-bold text-[#0D2F24] mt-2 line-clamp-1" title={note.title}>{note.title}</h4>
               <p className="text-xs text-slate-500 line-clamp-2 mt-1 min-h-[32px]">{note.description || "No description provided."}</p>
 
               <div className="mt-4 pt-4 border-t border-slate-100 flex-grow flex flex-col justify-end">
@@ -136,7 +136,7 @@ export default function StudentNotesSection({ onAskAI, onViewNote }) {
                 <div className="flex gap-2">
                   <Button
                     onClick={() => handleOpenNote(note)}
-                    className="w-full py-2 bg-slate-900 hover:bg-slate-700 text-white flex items-center justify-center gap-2 transition-colors"
+                    className="w-full py-2 bg-[#0D2F24] hover:bg-slate-700 text-white flex items-center justify-center gap-2 transition-colors"
                   >
                     <ExternalLink className="w-4 h-4" /> Open
                   </Button>

@@ -40,8 +40,8 @@ function StudentAttendance() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="p-6 text-center border-t-4 border-t-indigo-500 flex flex-col items-center">
-          <CalendarCheck className="w-8 h-8 text-indigo-500 mb-2" />
+        <Card className="p-6 text-center border-t-4 border-t-emerald-700 flex flex-col items-center">
+          <CalendarCheck className="w-8 h-8 text-emerald-700 mb-2" />
           <p className="text-4xl font-black text-slate-800">{stats.percentage}%</p>
           <p className="text-xs font-bold uppercase text-slate-500 mt-1 tracking-wider">Overall Attendance</p>
         </Card>

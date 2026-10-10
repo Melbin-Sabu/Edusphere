@@ -142,7 +142,7 @@ function StudentFeeView() {
               <Card key={fee._id} padding="p-6">
                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">Academic Year: {fee.feeStructureId?.academicYear}</h3>
+                    <h3 className="text-lg font-bold text-[#0D2F24]">Academic Year: {fee.feeStructureId?.academicYear}</h3>
                     <p className="text-xs text-slate-500">Overall Due Date: {new Date(fee.dueDate).toLocaleDateString()}</p>
                   </div>
                   <div className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 ${
@@ -160,7 +160,7 @@ function StudentFeeView() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-center">
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Fee</p>
-                    <p className="text-xl font-extrabold text-slate-900">₹{fee.totalAmount}</p>
+                    <p className="text-xl font-extrabold text-[#0D2F24]">₹{fee.totalAmount}</p>
                   </div>
                   <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-100 text-center">
                     <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">Paid Amount</p>
@@ -179,7 +179,7 @@ function StudentFeeView() {
                       {fee.pendingAmount > 0 && (
                         <button 
                           onClick={() => initiatePayment('FULL', fee._id, fee.pendingAmount)}
-                          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold shadow-md transition flex items-center gap-2"
+                          className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-xs font-bold shadow-md transition flex items-center gap-2"
                         >
                           <CreditCard className="w-4 h-4" /> Pay Full (₹{fee.pendingAmount})
                         </button>
@@ -189,11 +189,11 @@ function StudentFeeView() {
                       {fee.installments.map(inst => (
                         <div key={inst._id} className="p-4 rounded-xl border border-slate-200 bg-white flex flex-col md:flex-row justify-between md:items-center gap-4 shadow-sm hover:shadow-md transition">
                           <div className="flex flex-col">
-                            <span className="text-sm font-bold text-slate-900">Installment {inst.installmentNumber}</span>
+                            <span className="text-sm font-bold text-[#0D2F24]">Installment {inst.installmentNumber}</span>
                             <span className="text-xs text-slate-500">Due: {new Date(inst.dueDate).toLocaleDateString()}</span>
                           </div>
                           <div className="flex flex-col text-right">
-                            <span className="text-sm font-extrabold text-slate-900">₹{inst.amount}</span>
+                            <span className="text-sm font-extrabold text-[#0D2F24]">₹{inst.amount}</span>
                             <span className={`text-[10px] font-bold tracking-wider uppercase ${
                               inst.status === 'PAID' ? 'text-emerald-600' :
                               inst.status === 'OVERDUE' ? 'text-rose-600' :
@@ -209,7 +209,7 @@ function StudentFeeView() {
                                 onClick={() => initiatePayment('INSTALLMENT', inst._id, inst.pendingAmount)}
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow-md transition flex items-center gap-2 ${
                                   isInstallmentPayable(inst, fee.installments)
-                                    ? "bg-purple-600 hover:bg-purple-700 text-white"
+                                    ? "bg-orange-600 hover:bg-orange-700 text-white"
                                     : "bg-slate-200 text-slate-400 cursor-not-allowed"
                                 }`}
                                 title={!isInstallmentPayable(inst, fee.installments) ? "Cannot pay yet. Ensure previous installments are paid and the due date has arrived." : ""}
@@ -229,12 +229,12 @@ function StudentFeeView() {
                   </div>
                 ) : (
                   fee.status !== "PAID" && (
-                    <div className="mt-4 p-4 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-between">
+                    <div className="mt-4 p-4 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-between">
                       <div>
-                        <h4 className="text-sm font-bold text-purple-900">Outstanding Dues</h4>
-                        <p className="text-xs text-purple-700 mt-1">Please pay your pending amount of ₹{fee.pendingAmount} before {new Date(fee.dueDate).toLocaleDateString()} to avoid penalties.</p>
+                        <h4 className="text-sm font-bold text-orange-900">Outstanding Dues</h4>
+                        <p className="text-xs text-orange-700 mt-1">Please pay your pending amount of ₹{fee.pendingAmount} before {new Date(fee.dueDate).toLocaleDateString()} to avoid penalties.</p>
                       </div>
-                      <button onClick={() => initiatePayment('FULL', fee._id, fee.pendingAmount)} className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold shadow-md transition flex items-center gap-2">
+                      <button onClick={() => initiatePayment('FULL', fee._id, fee.pendingAmount)} className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-xs font-bold shadow-md transition flex items-center gap-2">
                         <CreditCard className="w-4 h-4" /> Pay Now
                       </button>
                     </div>
@@ -260,7 +260,7 @@ function StudentFeeView() {
                 <tbody className="divide-y divide-slate-100 font-medium">
                   {payments.map(p => (
                     <tr key={p._id}>
-                      <td className="py-3 px-4 text-purple-700 font-mono">{p.receiptNumber}</td>
+                      <td className="py-3 px-4 text-orange-700 font-mono">{p.receiptNumber}</td>
                       <td className="py-3 px-4">{new Date(p.paymentDate).toLocaleDateString()}</td>
                       <td className="py-3 px-4 font-bold text-emerald-600">₹{p.amount}</td>
                       <td className="py-3 px-4">{p.paymentMethod}</td>

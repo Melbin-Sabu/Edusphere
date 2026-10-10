@@ -2,16 +2,16 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #6D28D9;
-  --primary-hover: #5B21B6;
-  --secondary: #8B5CF6;
-  --accent: #2563EB;
-  --success: #22C55E;
-  --warning: #F59E0B;
-  --danger: #EF4444;
-  --bg-main: #F8FAFC;
+  --primary: #D9531E;
+  --primary-hover: #C94921;
+  --secondary: #0D2F24;
+  --accent: #1D824C;
+  --success: #1D824C;
+  --warning: #E28721;
+  --danger: #E53E3E;
+  --bg-main: #FDFBF7;
   --card-bg: #FFFFFF;
-  --text-main: #0F172A;
+  --text-main: #0D2F24;
 }
 
 body {
@@ -29,28 +29,28 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #E8E2D2;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #A3B3AA;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #65776F;
 }
 
 /* Glassmorphism utility */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(253, 251, 247, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(232, 226, 210, 0.4);
 }
 
 .glass-card-dark {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(13, 47, 36, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -58,16 +58,16 @@ body {
 
 /* Gradient Mesh Background */
 .bg-mesh-purple {
-  background-color: #0f172a;
+  background-color: #05110d;
   background-image:
-    radial-gradient(at 0% 0%, rgba(109, 40, 217, 0.4) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(37, 99, 235, 0.4) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.3) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(15, 23, 42, 0.9) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(13, 47, 36, 0.8) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(29, 130, 76, 0.3) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(217, 83, 30, 0.2) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(5, 17, 13, 0.9) 0px, transparent 50%);
 }
 
 .bg-dot-pattern {
-  background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+  background-image: radial-gradient(#E8E2D2 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -90,5 +90,5 @@ body {
 
 /* Form floating focus glow */
 .input-focus-glow:focus-within {
-  box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.15);
+  box-shadow: 0 0 0 4px rgba(217, 83, 30, 0.15);
 }

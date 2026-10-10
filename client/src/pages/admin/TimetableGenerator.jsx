@@ -61,7 +61,7 @@ function TimetableGenerator() {
           else if (subject === "Chemistry") color = "bg-emerald-100 text-emerald-700 border-emerald-200";
           else if (subject === "Botany") color = "bg-teal-100 text-teal-700 border-teal-200";
           else if (subject === "Zoology") color = "bg-amber-100 text-amber-700 border-amber-200";
-          else if (subject === "Mathematics") color = "bg-purple-100 text-purple-700 border-purple-200";
+          else if (subject === "Mathematics") color = "bg-orange-100 text-orange-700 border-orange-200";
           else color = "bg-indigo-100 text-indigo-700 border-indigo-200"; // Additional Custom Subjects
 
           schedule[day].push({
@@ -85,8 +85,8 @@ function TimetableGenerator() {
   return (
     <AdminLayout title="Automated Timetable Generation">
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-          <Calendar className="w-6 h-6 text-indigo-600" /> Timetable Allocation
+        <h2 className="text-xl font-bold text-[#0D2F24] flex items-center gap-2">
+          <Calendar className="w-6 h-6 text-emerald-800" /> Timetable Allocation
         </h2>
         <p className="text-sm text-slate-500 mt-1">
           Automatically generate optimized weekly schedules for NEET and JEE batches.
@@ -97,7 +97,7 @@ function TimetableGenerator() {
         {/* CONFIGURATION PANEL */}
         <div className="lg:col-span-1 space-y-6">
           <Card className="p-6">
-            <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <h3 className="font-bold text-[#0D2F24] mb-4 flex items-center gap-2">
               <Settings className="w-5 h-5 text-slate-400" /> Allocation Settings
             </h3>
 
@@ -145,7 +145,7 @@ function TimetableGenerator() {
                   <button
                     onClick={() => setBatch("Evening")}
                     className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${batch === "Evening"
-                        ? "border-indigo-500 bg-indigo-50 text-indigo-700 shadow-sm"
+                        ? "border-emerald-700 bg-indigo-50 text-indigo-700 shadow-sm"
                         : "border-slate-200 bg-white text-slate-500 hover:border-slate-300"
                       }`}
                   >
@@ -163,7 +163,7 @@ function TimetableGenerator() {
                   placeholder="e.g. English, Mental Ability (comma separated)"
                   value={additionalSubjects}
                   onChange={(e) => setAdditionalSubjects(e.target.value)}
-                  className="w-full p-3 rounded-xl border border-slate-200 text-sm focus:border-indigo-500 focus:outline-none transition"
+                  className="w-full p-3 rounded-xl border border-slate-200 text-sm focus:border-emerald-700 focus:outline-none transition"
                 />
               </div>
 
@@ -176,7 +176,7 @@ function TimetableGenerator() {
               <Button
                 onClick={generateTimetable}
                 disabled={isGenerating}
-                className="w-full mt-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md text-sm"
+                className="w-full mt-4 py-3 bg-emerald-800 hover:bg-indigo-700 text-white shadow-md text-sm"
                 icon={isGenerating ? RefreshCw : Sparkles}
               >
                 {isGenerating ? "Generating..." : "Auto-Allocate Timetable"}
@@ -189,7 +189,7 @@ function TimetableGenerator() {
         <div className="lg:col-span-2">
           {isGenerating ? (
             <Card className="h-full min-h-[400px] flex flex-col items-center justify-center p-6 border-slate-200 border-dashed">
-              <RefreshCw className="w-12 h-12 text-indigo-400 animate-spin mb-4" />
+              <RefreshCw className="w-12 h-12 text-emerald-600 animate-spin mb-4" />
               <h3 className="text-lg font-bold text-slate-800">Generating Optimal Schedule...</h3>
               <p className="text-sm text-slate-500 mt-2 text-center max-w-sm">
                 Our algorithm is distributing subjects and tests to ensure a balanced academic workload for the {course} {batch} batch.
@@ -199,7 +199,7 @@ function TimetableGenerator() {
             <Card className="p-6 border-slate-200 shadow-sm h-full overflow-hidden flex flex-col">
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
                 <div>
-                  <h3 className="font-extrabold text-xl text-slate-900">
+                  <h3 className="font-extrabold text-xl text-[#0D2F24]">
                     {timetable.course} {timetable.batch} Timetable
                   </h3>
                   <p className="text-sm text-slate-500 mt-1 flex items-center gap-2">

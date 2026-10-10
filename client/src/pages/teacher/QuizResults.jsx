@@ -61,7 +61,7 @@ function QuizResults() {
                 {results.map((r) => (
                   <tr key={r._id} className="hover:bg-slate-50 transition">
                     <td className="py-3 px-4 font-bold">{r.studentId?.fullName}</td>
-                    <td className="py-3 px-4 text-purple-600">{r.studentId?.admissionNumber}</td>
+                    <td className="py-3 px-4 text-orange-600">{r.studentId?.admissionNumber}</td>
                     <td className="py-3 px-4 font-bold">{r.totalScore}</td>
                     <td className="py-3 px-4 font-bold text-emerald-600">{r.percentage !== undefined ? r.percentage.toFixed(1) : 0}%</td>
                     <td className="py-3 px-4 flex items-center gap-1 text-emerald-600"><CheckCircle2 className="w-4 h-4"/> {r.correctCount}</td>

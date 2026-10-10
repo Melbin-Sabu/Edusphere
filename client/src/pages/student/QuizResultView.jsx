@@ -44,7 +44,7 @@ function QuizResultView() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card className="p-6 md:col-span-4 bg-gradient-to-r from-indigo-900 to-purple-900 text-white flex flex-col md:flex-row items-center justify-between shadow-xl border-none">
+        <Card className="p-6 md:col-span-4 bg-gradient-to-r from-indigo-900 to-orange-900 text-white flex flex-col md:flex-row items-center justify-between shadow-xl border-none">
           <div>
             <h3 className="text-xl font-bold text-indigo-100 flex items-center gap-2"><Award className="w-6 h-6 text-yellow-400" /> Performance Summary</h3>
             <p className="text-sm text-indigo-200 mt-1">Submitted on: {new Date(result.submittedAt).toLocaleString()}</p>
@@ -74,8 +74,8 @@ function QuizResultView() {
           <p className="text-xs font-bold uppercase text-slate-500 tracking-wider">Unanswered</p>
         </Card>
 
-        <Card className="p-5 text-center flex flex-col items-center border-t-4 border-t-indigo-500">
-          <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-black mb-2">#</div>
+        <Card className="p-5 text-center flex flex-col items-center border-t-4 border-t-emerald-700">
+          <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-emerald-800 font-black mb-2">#</div>
           <p className="text-3xl font-black text-slate-800">{questions.length}</p>
           <p className="text-xs font-bold uppercase text-slate-500 tracking-wider">Total Qs</p>
         </Card>

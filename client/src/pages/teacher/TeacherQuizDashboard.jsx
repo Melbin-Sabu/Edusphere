@@ -80,7 +80,7 @@ function TeacherQuizDashboard() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {quizzes.map((quiz) => (
-            <Card key={quiz._id} className="p-5 flex flex-col h-full border hover:border-purple-300 transition">
+            <Card key={quiz._id} className="p-5 flex flex-col h-full border hover:border-orange-300 transition">
               <div className="flex justify-between items-start mb-3">
                 <h3 className="font-bold text-lg text-slate-800 truncate pr-2">{quiz.title}</h3>
                 <span className={`px-2 py-1 text-[10px] font-bold rounded-full uppercase ${
@@ -94,7 +94,7 @@ function TeacherQuizDashboard() {
               </div>
               
               <div className="text-xs text-slate-500 mb-4 flex-1 space-y-2">
-                <p><strong>Batch:</strong> <span className="text-purple-600 font-semibold">{quiz.batch}</span></p>
+                <p><strong>Batch:</strong> <span className="text-orange-600 font-semibold">{quiz.batch}</span></p>
                 <p><strong>Subject:</strong> {quiz.subject}</p>
                 <p className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {quiz.durationMinutes} mins</p>
                 <p className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {new Date(quiz.startDate).toLocaleDateString()} {quiz.startTime}</p>
@@ -115,7 +115,7 @@ function TeacherQuizDashboard() {
                   </>
                 ) : (
                   <Link to={`/teacher/quizzes/${quiz._id}/results`} className="w-full">
-                    <Button variant="outline" size="sm" className="w-full text-purple-700 border-purple-200 hover:bg-purple-50" icon={Eye}>
+                    <Button variant="outline" size="sm" className="w-full text-orange-700 border-orange-200 hover:bg-orange-50" icon={Eye}>
                       View Results
                     </Button>
                   </Link>

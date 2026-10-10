@@ -13,11 +13,11 @@ function Button({
   const baseStyles = "relative inline-flex items-center justify-center font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed select-none rounded-xl";
 
   const variants = {
-    primary: "bg-gradient-to-r from-purple-700 via-indigo-600 to-purple-600 text-white hover:opacity-95 hover:shadow-lg hover:shadow-purple-500/25 active:scale-[0.98] focus:ring-purple-600 border border-purple-500/20",
-    secondary: "bg-slate-900 text-white hover:bg-slate-800 hover:shadow-md active:scale-[0.98] focus:ring-slate-800",
-    outline: "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:border-purple-300 hover:text-purple-700 active:scale-[0.98] focus:ring-purple-500 shadow-xs",
+    primary: "bg-gradient-to-r from-orange-700 via-emerald-800 to-orange-600 text-white hover:opacity-95 hover:shadow-lg hover:shadow-orange-500/25 active:scale-[0.98] focus:ring-orange-600 border border-orange-500/20",
+    secondary: "bg-[#0D2F24] text-white hover:bg-slate-800 hover:shadow-md active:scale-[0.98] focus:ring-slate-800",
+    outline: "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:border-orange-300 hover:text-orange-700 active:scale-[0.98] focus:ring-orange-500 shadow-xs",
     danger: "bg-gradient-to-r from-red-600 to-rose-600 text-white hover:opacity-95 hover:shadow-md hover:shadow-red-500/20 active:scale-[0.98] focus:ring-red-500",
-    ghost: "bg-transparent text-slate-600 hover:bg-purple-50 hover:text-purple-700 active:scale-[0.98] focus:ring-purple-500",
+    ghost: "bg-transparent text-slate-600 hover:bg-orange-50 hover:text-orange-700 active:scale-[0.98] focus:ring-orange-500",
   };
 
   const sizes = {

@@ -153,22 +153,22 @@ function AdminLayout({ children, title }) {
   ];
 
   return (
-    <div className={`min-h-screen font-sans ${darkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"} flex overflow-hidden`}>
+    <div className={`min-h-screen font-sans ${darkMode ? "bg-[#05110d] text-[#FDFBF7]" : "bg-[#FDFBF7] text-[#0D2F24]"} flex overflow-hidden`}>
       {/* MOBILE OVERLAY */}
       {mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 lg:hidden"
+          className="fixed inset-0 bg-[#0D2F24]/60 backdrop-blur-sm z-40 lg:hidden"
         />
       )}
 
       {/* LEFT SIDEBAR */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 flex flex-col bg-slate-900 text-white transition-all duration-300 ease-in-out border-r border-slate-800 ${collapsed ? "w-20" : "w-72"
+        className={`fixed lg:static inset-y-0 left-0 z-50 flex flex-col bg-[#0D2F24] text-white transition-all duration-300 ease-in-out border-r border-white/5 ${collapsed ? "w-20" : "w-72"
           } ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         {/* LOGO AREA */}
-        <div className="h-20 px-5 flex items-center justify-between border-b border-slate-800/80">
+        <div className="h-20 px-5 flex items-center justify-between border-b border-white/5">
           <Link to={getDashboardHomePath()} className="flex items-center">
             {collapsed ? (
               <EduSphereLogo size="sm" showText={false} light={true} />
@@ -180,7 +180,7 @@ function AdminLayout({ children, title }) {
           {/* Desktop Collapse Toggle */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition"
+            className="hidden lg:flex p-1.5 rounded-lg bg-white/5 text-white/50 hover:text-white hover:bg-white/10 transition"
             title={collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           >
             {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -197,7 +197,7 @@ function AdminLayout({ children, title }) {
 
         {/* NAVIGATION LINKS */}
         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-          <div className={`px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-slate-500 ${collapsed ? "hidden" : "block"}`}>
+          <div className={`px-3 mb-2 text-[10px] font-bold uppercase tracking-wider text-[#A3B3AA] ${collapsed ? "hidden" : "block"}`}>
             {user.role ? `${user.role} Menu` : "Main Menu"}
           </div>
 
@@ -218,18 +218,18 @@ function AdminLayout({ children, title }) {
                   }
                 }}
                 className={`group relative flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
-                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-900/30"
-                  : "text-slate-400 hover:bg-slate-800/70 hover:text-slate-200"
+                  ? "bg-gradient-to-r from-[#D9531E] to-[#C94921] text-white shadow-lg shadow-[#D9531E]/20"
+                  : "text-[#8B9E95] hover:bg-white/5 hover:text-white"
                   } ${collapsed ? "justify-center px-0" : ""}`}
                 title={collapsed ? item.name : undefined}
               >
-                <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-white" : "text-slate-400 group-hover:text-purple-300"}`} />
+                <Icon className={`w-5 h-5 shrink-0 ${isActive ? "text-white" : "text-[#8B9E95] group-hover:text-[#E25C31]"}`} />
 
                 {!collapsed && (
                   <span className="truncate flex-1 flex items-center justify-between">
                     {item.name}
                     {item.badge && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/20 border border-purple-400/30 text-purple-300">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/10 border border-white/20 text-[#FDFBF7]">
                         {item.badge}
                       </span>
                     )}
@@ -246,10 +246,10 @@ function AdminLayout({ children, title }) {
         </div>
 
         {/* FOOTER USER / LOGOUT AREA */}
-        <div className="p-4 border-t border-slate-800/80 bg-slate-950/40">
+        <div className="p-4 border-t border-white/5 bg-black/10">
           <button
             onClick={handleLogout}
-            className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-950/40 hover:text-rose-300 transition ${collapsed ? "justify-center" : ""
+            className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold text-red-400 hover:bg-red-500/10 hover:text-red-300 transition ${collapsed ? "justify-center" : ""
               }`}
             title="Logout"
           >
@@ -262,34 +262,34 @@ function AdminLayout({ children, title }) {
       {/* MAIN CONTENT CONTAINER */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* TOP NAVBAR */}
-        <header className={`h-20 px-6 sm:px-8 border-b ${darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200/80 text-slate-900"} flex items-center justify-between sticky top-0 z-30 shadow-xs`}>
+        <header className={`h-20 px-6 sm:px-8 border-b ${darkMode ? "bg-[#0D2F24] border-white/5 text-white" : "bg-[#FDFBF7] border-[#E8E2D2] text-[#0D2F24]"} flex items-center justify-between sticky top-0 z-30 shadow-xs`}>
           {/* Left: Mobile Menu Toggle & Title */}
           <div className="flex items-center gap-4">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl"
+              className={`lg:hidden p-2 rounded-xl transition ${darkMode ? "text-[#A3B3AA] hover:text-white hover:bg-white/5" : "text-[#8B9E95] hover:text-[#0D2F24] hover:bg-white"}`}
             >
               <Menu className="w-6 h-6" />
             </button>
 
             <div>
-              <h1 className="text-xl font-bold tracking-tight">{title}</h1>
-              <p className="text-xs text-slate-400 hidden sm:block">EduSphere Platform Workspace</p>
+              <h1 className="text-xl font-extrabold tracking-tight">{title}</h1>
+              <p className={`text-xs font-semibold ${darkMode ? "text-[#A3B3AA]" : "text-[#65776F]"} hidden sm:block`}>EduSphere Platform Workspace</p>
             </div>
           </div>
 
           {/* Center: Search Bar */}
           <div className="hidden md:flex items-center relative w-72 lg:w-96">
-            <Search className="w-4 h-4 absolute left-3.5 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3.5 text-[#8B9E95]" />
             <input
               type="text"
               placeholder="Search courses, announcements, records (Ctrl + K)..."
-              className={`w-full pl-10 pr-12 py-2 rounded-xl text-xs font-medium border ${darkMode
-                ? "bg-slate-800 border-slate-700 text-white placeholder-slate-400 focus:border-purple-500"
-                : "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-purple-600 focus:bg-white"
-                } outline-none transition`}
+              className={`w-full pl-10 pr-12 py-2.5 rounded-xl text-xs font-semibold border ${darkMode
+                ? "bg-[#05110d] border-white/10 text-white placeholder-[#8B9E95] focus:border-[#D9531E]"
+                : "bg-white border-[#E8E2D2] text-[#0D2F24] placeholder-[#A3B3AA] focus:border-[#D9531E] focus:ring-1 focus:ring-[#D9531E]"
+                } outline-none transition shadow-sm`}
             />
-            <span className="absolute right-3 text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+            <span className={`absolute right-3 text-[10px] font-bold px-1.5 py-0.5 rounded ${darkMode ? "bg-white/10 text-[#A3B3AA]" : "bg-[#FDFBF7] border border-[#E8E2D2] text-[#65776F]"}`}>
               ⌘K
             </span>
           </div>
@@ -299,9 +299,9 @@ function AdminLayout({ children, title }) {
             {/* Dark Mode Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className={`p-2.5 rounded-xl border transition ${darkMode
-                ? "bg-slate-800 border-slate-700 text-amber-400 hover:bg-slate-700"
-                : "bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200"
+              className={`p-2.5 rounded-xl border transition shadow-sm ${darkMode
+                ? "bg-[#05110d] border-white/10 text-amber-400 hover:bg-white/5"
+                : "bg-white border-[#E8E2D2] text-[#65776F] hover:bg-[#FDFBF7] hover:text-[#D9531E]"
                 }`}
               title="Toggle Dark / Light Theme"
             >
@@ -315,27 +315,27 @@ function AdminLayout({ children, title }) {
                   setShowNotifications(!showNotifications);
                   setShowProfileMenu(false);
                 }}
-                className={`relative p-2.5 rounded-xl border transition ${darkMode
-                  ? "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
-                  : "bg-slate-100 border-slate-200 text-slate-600 hover:bg-slate-200"
+                className={`relative p-2.5 rounded-xl border transition shadow-sm ${darkMode
+                  ? "bg-[#05110d] border-white/10 text-[#A3B3AA] hover:bg-white/5"
+                  : "bg-white border-[#E8E2D2] text-[#65776F] hover:bg-[#FDFBF7] hover:text-[#D9531E]"
                   }`}
               >
                 <Bell className="w-4 h-4" />
-                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-purple-600 ring-2 ring-white"></span>
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#D9531E] ring-2 ring-white"></span>
               </button>
 
               {showNotifications && (
-                <div className={`absolute right-0 mt-3 w-80 rounded-2xl border shadow-xl p-4 z-50 ${darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+                <div className={`absolute right-0 mt-3 w-80 rounded-2xl border shadow-2xl p-4 z-50 ${darkMode ? "bg-[#0D2F24] border-white/10 text-white shadow-black/50" : "bg-white border-[#E8E2D2] text-[#0D2F24] shadow-black/10"
                   }`}>
-                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200/50">
+                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-200/20">
                     <h4 className="font-bold text-xs uppercase tracking-wider">Notifications</h4>
-                    <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">2 New</span>
+                    <span className="text-[10px] font-bold text-white bg-[#D9531E] px-2 py-0.5 rounded-full">2 New</span>
                   </div>
                   <div className="space-y-2">
                     {notificationsList.map((n) => (
-                      <div key={n.id} className="p-2.5 rounded-xl bg-slate-50 hover:bg-purple-50/50 transition cursor-pointer text-xs">
-                        <p className="font-semibold text-slate-800">{n.text}</p>
-                        <span className="text-[10px] text-slate-400">{n.time}</span>
+                      <div key={n.id} className={`p-2.5 rounded-xl transition cursor-pointer text-xs ${darkMode ? "bg-[#05110d] hover:bg-white/5" : "bg-[#FDFBF7] hover:bg-[#F2EDDF]"}`}>
+                        <p className={`font-semibold ${darkMode ? "text-white" : "text-[#0D2F24]"}`}>{n.text}</p>
+                        <span className={`text-[10px] ${darkMode ? "text-[#A3B3AA]" : "text-[#65776F]"}`}>{n.time}</span>
                       </div>
                     ))}
                   </div>
@@ -350,9 +350,9 @@ function AdminLayout({ children, title }) {
                   setShowProfileMenu(!showProfileMenu);
                   setShowNotifications(false);
                 }}
-                className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className={`flex items-center gap-3 p-1.5 rounded-xl transition ${darkMode ? "hover:bg-white/5" : "hover:bg-white border border-transparent hover:border-[#E8E2D2]"}`}
               >
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center font-extrabold text-sm shadow-md shadow-purple-500/20 overflow-hidden">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#D9531E] to-[#C94921] text-white flex items-center justify-center font-extrabold text-sm shadow-md overflow-hidden">
                   {user.profilePic ? (
                     <img
                       src={user.profilePic.startsWith("http") ? user.profilePic : `${MEDIA_URL}${user.profilePic}`}
@@ -365,30 +365,30 @@ function AdminLayout({ children, title }) {
                 </div>
                 <div className="text-left hidden sm:block">
                   <p className="text-xs font-bold leading-tight">{user.name || "User"}</p>
-                  <p className="text-[10px] font-medium text-purple-600 dark:text-purple-400">{user.role || "Student"}</p>
+                  <p className={`text-[10px] font-bold ${darkMode ? "text-[#E25C31]" : "text-[#D9531E]"}`}>{user.role || "Student"}</p>
                 </div>
-                <ChevronDown className="w-4 h-4 text-slate-400 hidden sm:block" />
+                <ChevronDown className={`w-4 h-4 hidden sm:block ${darkMode ? "text-[#8B9E95]" : "text-[#A3B3AA]"}`} />
               </button>
 
               {showProfileMenu && (
-                <div className={`absolute right-0 mt-3 w-56 rounded-2xl border shadow-xl p-2 z-50 ${darkMode ? "bg-slate-900 border-slate-800 text-white" : "bg-white border-slate-200 text-slate-900"
+                <div className={`absolute right-0 mt-3 w-56 rounded-2xl border shadow-2xl p-2 z-50 ${darkMode ? "bg-[#0D2F24] border-white/10 text-white shadow-black/50" : "bg-white border-[#E8E2D2] text-[#0D2F24] shadow-black/10"
                   }`}>
-                  <div className="px-3 py-2 border-b border-slate-200/50 mb-1">
+                  <div className="px-3 py-2 border-b border-gray-200/20 mb-1">
                     <p className="text-xs font-bold">{user.name}</p>
-                    <p className="text-[11px] text-slate-400 truncate">{user.email}</p>
+                    <p className={`text-[11px] truncate font-semibold ${darkMode ? "text-[#A3B3AA]" : "text-[#65776F]"}`}>{user.email}</p>
                   </div>
 
                   <Link
                     to="/change-password"
                     onClick={() => setShowProfileMenu(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-purple-50 hover:text-purple-700 rounded-xl transition"
+                    className={`flex items-center gap-2 px-3 py-2.5 text-xs font-bold rounded-xl transition ${darkMode ? "text-white hover:bg-white/5" : "text-[#0D2F24] hover:bg-[#FDFBF7] hover:text-[#D9531E]"}`}
                   >
                     <Key className="w-4 h-4" /> Change Password
                   </Link>
 
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-rose-600 rounded-xl hover:bg-rose-50 transition"
+                    className={`w-full flex items-center gap-2 px-3 py-2.5 text-xs font-bold rounded-xl transition ${darkMode ? "text-red-400 hover:bg-red-500/10 hover:text-red-300" : "text-red-500 hover:bg-red-50"}`}
                   >
                     <LogOut className="w-4 h-4" />
                     Sign Out
@@ -400,7 +400,7 @@ function AdminLayout({ children, title }) {
         </header>
 
         {/* DYNAMIC MAIN PAGE CONTENT */}
-        <main className={`flex-1 overflow-y-auto p-6 sm:p-8 ${darkMode ? "bg-slate-950" : "bg-slate-50"}`}>
+        <main className={`flex-1 overflow-y-auto p-6 sm:p-8 ${darkMode ? "bg-[#05110d]" : "bg-[#F9F6F0]"}`}>
           <div className="max-w-7xl mx-auto space-y-8">
             {children}
           </div>

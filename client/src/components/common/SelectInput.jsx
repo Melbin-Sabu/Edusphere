@@ -34,10 +34,10 @@ function SelectInput({
           } ${
             error
               ? "border-red-500/80 bg-red-500/10 focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-red-200"
-              : "border-slate-700/80 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 hover:border-slate-600"
+              : "border-slate-700/80 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 hover:border-slate-600"
           }`}
         >
-          <option value="" className="bg-slate-900 text-slate-400">
+          <option value="" className="bg-[#0D2F24] text-slate-400">
             {placeholder || `Select ${label || "Option"}`}
           </option>
 
@@ -45,7 +45,7 @@ function SelectInput({
             const value = typeof item === "object" ? item.value : item;
             const labelText = typeof item === "object" ? item.label : item;
             return (
-              <option key={value} value={value} className="bg-slate-900 text-white">
+              <option key={value} value={value} className="bg-[#0D2F24] text-white">
                 {labelText}
               </option>
             );

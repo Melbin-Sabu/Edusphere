@@ -84,7 +84,7 @@ function ProfilePicUpload({ currentImage, name = "User", onUploadSuccess, classN
     <div className={`flex flex-col items-center gap-2 ${className}`}>
       <div
         onClick={() => !uploading && fileInputRef.current?.click()}
-        className="relative group cursor-pointer w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md bg-purple-100 hover:shadow-lg transition duration-200"
+        className="relative group cursor-pointer w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md bg-orange-100 hover:shadow-lg transition duration-200"
       >
         {displayImage ? (
           <img
@@ -93,26 +93,26 @@ function ProfilePicUpload({ currentImage, name = "User", onUploadSuccess, classN
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center font-bold text-2xl text-purple-700 bg-purple-100">
-            {name ? name.charAt(0).toUpperCase() : <User className="w-10 h-10 text-purple-400" />}
+          <div className="w-full h-full flex items-center justify-center font-bold text-2xl text-orange-700 bg-orange-100">
+            {name ? name.charAt(0).toUpperCase() : <User className="w-10 h-10 text-orange-400" />}
           </div>
         )}
 
         {/* Hover / Loading Overlay */}
-        <div className="absolute inset-0 bg-slate-900/60 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div className="absolute inset-0 bg-[#0D2F24]/60 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           {uploading ? (
-            <Loader2 className="w-6 h-6 animate-spin text-purple-300" />
+            <Loader2 className="w-6 h-6 animate-spin text-orange-300" />
           ) : (
             <>
-              <Camera className="w-5 h-5 mb-0.5 text-purple-200" />
+              <Camera className="w-5 h-5 mb-0.5 text-orange-200" />
               <span className="text-[10px] font-bold tracking-wide">Change</span>
             </>
           )}
         </div>
 
         {uploading && (
-          <div className="absolute inset-0 bg-slate-900/70 flex items-center justify-center text-white">
-            <Loader2 className="w-6 h-6 animate-spin text-purple-300" />
+          <div className="absolute inset-0 bg-[#0D2F24]/70 flex items-center justify-center text-white">
+            <Loader2 className="w-6 h-6 animate-spin text-orange-300" />
           </div>
         )}
       </div>

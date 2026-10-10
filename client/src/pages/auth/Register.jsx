@@ -149,8 +149,8 @@ function Register() {
       )}
 
       {currentStep === 5 ? (
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center space-y-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-500/10 text-indigo-400 text-2xl font-bold mb-2">
+        <div className="bg-[#0D2F24]/90 border border-slate-800 rounded-2xl p-6 text-center space-y-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-700/10 text-emerald-600 text-2xl font-bold mb-2">
             <Lock />
           </div>
 
@@ -158,7 +158,7 @@ function Register() {
             <h3 className="text-xl font-bold text-white">Verify Your Email</h3>
             <p className="text-sm text-slate-400 mt-1">
               We have sent a 6-digit OTP (Temporary Password) to <br/>
-              <span className="font-mono text-indigo-400 font-semibold">{registeredEmail}</span>
+              <span className="font-mono text-emerald-600 font-semibold">{registeredEmail}</span>
             </p>
           </div>
 
@@ -203,7 +203,7 @@ function Register() {
                         isCompleted
                           ? "bg-gradient-to-r from-emerald-600 to-teal-600 border-emerald-500 text-white shadow-lg shadow-emerald-500/20"
                           : isActive
-                          ? "bg-gradient-to-r from-purple-600 to-indigo-600 border-purple-400 text-white shadow-lg shadow-purple-500/40 scale-110"
+                          ? "bg-gradient-to-r from-orange-600 to-emerald-800 border-orange-400 text-white shadow-lg shadow-orange-500/40 scale-110"
                           : "bg-slate-800/90 border-slate-700/80 text-slate-400 hover:border-slate-600"
                       }`}
                     >
@@ -211,7 +211,7 @@ function Register() {
                     </div>
                     <span
                       className={`text-[11px] font-bold mt-2 tracking-wide ${
-                        isActive ? "text-purple-300 font-extrabold" : isCompleted ? "text-emerald-400 font-semibold" : "text-slate-400 font-medium"
+                        isActive ? "text-orange-300 font-extrabold" : isCompleted ? "text-emerald-400 font-semibold" : "text-slate-400 font-medium"
                       }`}
                     >
                       {st.title}
@@ -227,7 +227,7 @@ function Register() {
             {currentStep === 1 && (
               <div className="space-y-4 animate-fadeIn">
                 <div className="pb-2 border-b border-slate-800 flex justify-between items-center">
-                  <h3 className="text-sm font-bold text-purple-300 uppercase tracking-wider">
+                  <h3 className="text-sm font-bold text-orange-300 uppercase tracking-wider">
                     Step 1 of 4: Personal Details
                   </h3>
                 </div>
@@ -282,7 +282,7 @@ function Register() {
             {currentStep === 2 && (
               <div className="space-y-4 animate-fadeIn">
                 <div className="pb-2 border-b border-slate-800 flex justify-between items-center">
-                  <h3 className="text-sm font-bold text-purple-300 uppercase tracking-wider">
+                  <h3 className="text-sm font-bold text-orange-300 uppercase tracking-wider">
                     Step 2 of 4: Academic Details
                   </h3>
                 </div>
@@ -325,7 +325,7 @@ function Register() {
             {currentStep === 3 && (
               <div className="space-y-4 animate-fadeIn">
                 <div className="pb-2 border-b border-slate-800 flex justify-between items-center">
-                  <h3 className="text-sm font-bold text-purple-300 uppercase tracking-wider">
+                  <h3 className="text-sm font-bold text-orange-300 uppercase tracking-wider">
                     Step 3 of 4: Parent & Guardian Details
                   </h3>
                 </div>
@@ -367,7 +367,7 @@ function Register() {
             {currentStep === 4 && (
               <div className="space-y-4 animate-fadeIn">
                 <div className="pb-2 border-b border-slate-800 flex justify-between items-center">
-                  <h3 className="text-sm font-bold text-purple-300 uppercase tracking-wider">
+                  <h3 className="text-sm font-bold text-orange-300 uppercase tracking-wider">
                     Step 4 of 4: Document Uploads
                   </h3>
                 </div>
@@ -411,7 +411,7 @@ function Register() {
                       validateAndNext(["parentName", "relationship", "parentEmail", "parentMobile"]);
                     }
                   }}
-                  className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition shadow-lg shadow-purple-600/30 flex items-center gap-1.5 cursor-pointer"
+                  className="px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold transition shadow-lg shadow-orange-600/30 flex items-center gap-1.5 cursor-pointer"
                 >
                   Next Step <ArrowRight className="w-4 h-4" />
                 </button>
@@ -425,7 +425,7 @@ function Register() {
             <div className="text-center pt-2">
               <span className="text-xs text-slate-400">
                 Already enrolled?{" "}
-                <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-medium">
+                <Link to="/login" className="text-emerald-600 hover:text-indigo-300 font-medium">
                   Log In
                 </Link>
               </span>

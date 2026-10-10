@@ -34,13 +34,13 @@ function FileUpload({
             error
               ? "border-red-400 bg-red-50/20"
               : selectedFileName
-              ? "border-purple-500 bg-purple-50/30"
-              : "border-slate-300 bg-slate-50/50 hover:bg-purple-50/20 hover:border-purple-400"
+              ? "border-orange-500 bg-orange-50/30"
+              : "border-slate-300 bg-slate-50/50 hover:bg-orange-50/20 hover:border-orange-400"
           }`}
         >
           <div className="flex items-center gap-3 text-slate-600">
             {selectedFileName ? (
-              <FileCheck className="w-6 h-6 text-purple-600" />
+              <FileCheck className="w-6 h-6 text-orange-600" />
             ) : (
               <UploadCloud className="w-6 h-6 text-slate-400" />
             )}

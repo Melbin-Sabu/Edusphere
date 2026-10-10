@@ -46,7 +46,7 @@ function StudentQuizList() {
           {quizzes.map((quiz) => (
             <Card key={quiz._id} className="p-5 flex flex-col h-full border hover:border-indigo-300 transition">
               <h3 className="font-bold text-lg text-slate-800 truncate pr-2 mb-2">{quiz.title}</h3>
-              <p className="text-xs text-indigo-600 font-bold mb-4">{quiz.subject}</p>
+              <p className="text-xs text-emerald-800 font-bold mb-4">{quiz.subject}</p>
               
               <div className="text-xs text-slate-500 mb-4 flex-1 space-y-2">
                 <p className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {quiz.durationMinutes} mins | {quiz.totalQuestions} Questions</p>
@@ -62,16 +62,16 @@ function StudentQuizList() {
                   </Link>
                 ) : quiz.attemptCount >= quiz.attemptLimit ? (
                   <Link to={`/student/quizzes/${quiz._id}/result`}>
-                    <Button variant="outline" className="w-full text-indigo-600 border-indigo-200 hover:bg-indigo-50" icon={CheckCircle}>View Result</Button>
+                    <Button variant="outline" className="w-full text-emerald-800 border-indigo-200 hover:bg-indigo-50" icon={CheckCircle}>View Result</Button>
                   </Link>
                 ) : (
                   <>
                     <Link to={`/student/quizzes/${quiz._id}/play`}>
-                      <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" icon={PlayCircle}>Start Quiz</Button>
+                      <Button className="w-full bg-emerald-800 hover:bg-indigo-700 text-white" icon={PlayCircle}>Start Quiz</Button>
                     </Link>
                     {quiz.attemptCount > 0 && (
                       <Link to={`/student/quizzes/${quiz._id}/result`}>
-                        <Button variant="outline" className="w-full text-indigo-600 border-indigo-200 hover:bg-indigo-50 mt-2" icon={CheckCircle}>View Last Result</Button>
+                        <Button variant="outline" className="w-full text-emerald-800 border-indigo-200 hover:bg-indigo-50 mt-2" icon={CheckCircle}>View Last Result</Button>
                       </Link>
                     )}
                   </>

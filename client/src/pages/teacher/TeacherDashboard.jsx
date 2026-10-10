@@ -98,7 +98,7 @@ function TeacherDashboard() {
   return (
     <AdminLayout title="Faculty Portal Console">
       {/* WELCOME HERO BANNER */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-900 via-indigo-900 to-slate-900 p-8 text-white shadow-xl mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
           <ProfilePicUpload
             currentImage={user.profilePic}
@@ -117,14 +117,14 @@ function TeacherDashboard() {
                   </div>
                 ))}
                 {subjectBatches.map(batch => (
-                  <div key={`st-${batch}`} className="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/50 px-4 py-1.5 rounded-lg text-xs font-bold text-indigo-200">
+                  <div key={`st-${batch}`} className="inline-flex items-center gap-2 bg-emerald-700/20 border border-emerald-600/50 px-4 py-1.5 rounded-lg text-xs font-bold text-indigo-200">
                     <BookOpen className="w-4 h-4" />
                     <span className="tracking-wide uppercase">Subject Teacher • {batch}</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-purple-200 mt-1">EduSphere Teacher ERP Workspace</p>
+              <p className="text-xs text-orange-200 mt-1">EduSphere Teacher ERP Workspace</p>
             )}
             <p className="text-xs text-slate-300 max-w-xl mt-3">
               Manage your registered student batches, verify academic profiles, and monitor attendance & evaluation metrics.
@@ -135,37 +135,37 @@ function TeacherDashboard() {
 
       {/* STATS CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-        <Card className="p-6 border-slate-200 hover:border-purple-300 transition">
+        <Card className="p-6 border-slate-200 hover:border-orange-300 transition">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
               Total Enrolled Students
             </span>
-            <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center">
               <GraduationCap className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-3xl font-black text-slate-900">{students.length}</p>
+          <p className="text-3xl font-black text-[#0D2F24]">{students.length}</p>
           <p className="text-xs text-emerald-600 font-semibold mt-2 flex items-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5" /> Verified & Active Roster
           </p>
         </Card>
 
-        <Card className="p-6 border-slate-200 hover:border-purple-300 transition">
+        <Card className="p-6 border-slate-200 hover:border-orange-300 transition">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
               My Classes
             </span>
-            <div className="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-indigo-100 text-emerald-800 flex items-center justify-center">
               <Layers className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-3xl font-black text-slate-900">{assignedBatches.length + subjectBatches.length} {assignedBatches.length + subjectBatches.length === 1 ? 'Batch' : 'Batches'}</p>
+          <p className="text-3xl font-black text-[#0D2F24]">{assignedBatches.length + subjectBatches.length} {assignedBatches.length + subjectBatches.length === 1 ? 'Batch' : 'Batches'}</p>
           <p className="text-xs text-slate-500 mt-2 truncate">
             {assignedBatches.length + subjectBatches.length > 0 ? [...assignedBatches, ...subjectBatches].join(", ") : "No batches assigned"}
           </p>
         </Card>
 
-        <Card className="p-6 border-slate-200 hover:border-purple-300 transition">
+        <Card className="p-6 border-slate-200 hover:border-orange-300 transition">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
               Teaching Scope
@@ -174,7 +174,7 @@ function TeacherDashboard() {
               <Award className="w-5 h-5" />
             </div>
           </div>
-          <p className="text-xl font-bold text-slate-900">Faculty Professor</p>
+          <p className="text-xl font-bold text-[#0D2F24]">Faculty Professor</p>
           <p className="text-xs text-slate-500 mt-2">Class Roster & Academic Monitoring</p>
         </Card>
       </div>
@@ -189,8 +189,8 @@ function TeacherDashboard() {
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-purple-600" />
+            <h3 className="text-base font-bold text-[#0D2F24] flex items-center gap-2">
+              <GraduationCap className="w-5 h-5 text-orange-600" />
               Assigned Student Roster
             </h3>
             <p className="text-xs text-slate-500">
@@ -206,7 +206,7 @@ function TeacherDashboard() {
                 placeholder="Search roster..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-purple-600 transition"
+                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-orange-600 transition"
               />
             </div>
 
@@ -241,14 +241,14 @@ function TeacherDashboard() {
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
                 {filteredStudents.slice(0, 8).map((st) => (
-                  <tr key={st._id} className="hover:bg-purple-50/30 transition">
-                    <td className="py-3.5 px-4 font-bold text-slate-900 flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs">
+                  <tr key={st._id} className="hover:bg-orange-50/30 transition">
+                    <td className="py-3.5 px-4 font-bold text-[#0D2F24] flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-xs">
                         {st.fullName?.charAt(0)}
                       </div>
                       <span>{st.fullName}</span>
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-purple-700 font-bold">
+                    <td className="py-3.5 px-4 font-mono text-orange-700 font-bold">
                       {st.admissionNumber || "N/A"}
                     </td>
                     <td className="py-3.5 px-4 font-mono text-slate-600">{st.email}</td>
@@ -257,7 +257,7 @@ function TeacherDashboard() {
                     <td className="py-3.5 px-4 text-center">
                       <button
                         onClick={() => setSelectedStudent(st)}
-                        className="p-1.5 rounded-lg text-purple-600 hover:bg-purple-100 transition"
+                        className="p-1.5 rounded-lg text-orange-600 hover:bg-orange-100 transition"
                         title="View Full Profile"
                       >
                         <Eye className="w-4 h-4" />
@@ -273,7 +273,7 @@ function TeacherDashboard() {
 
       {/* VIEW STUDENT PROFILE MODAL */}
       {selectedStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-lg bg-white rounded-2xl p-6 shadow-2xl border border-slate-100">
             <button
               onClick={() => setSelectedStudent(null)}
@@ -283,7 +283,7 @@ function TeacherDashboard() {
             </button>
 
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center font-extrabold text-lg overflow-hidden shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center font-extrabold text-lg overflow-hidden shrink-0">
                 {(selectedStudent.user?.profilePic || selectedStudent.profilePic) ? (
                   <img
                     src={(selectedStudent.user?.profilePic || selectedStudent.profilePic).startsWith("http") ? (selectedStudent.user?.profilePic || selectedStudent.profilePic) : `${MEDIA_URL}${selectedStudent.user?.profilePic || selectedStudent.profilePic}`}
@@ -295,8 +295,8 @@ function TeacherDashboard() {
                 )}
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-lg">{selectedStudent.fullName}</h3>
-                <p className="text-xs font-mono text-purple-600 font-bold">
+                <h3 className="font-bold text-[#0D2F24] text-lg">{selectedStudent.fullName}</h3>
+                <p className="text-xs font-mono text-orange-600 font-bold">
                   {selectedStudent.admissionNumber}
                 </p>
               </div>
@@ -337,7 +337,7 @@ function TeacherDashboard() {
 
             <Button
               onClick={() => setSelectedStudent(null)}
-              className="w-full mt-6 py-2.5 bg-purple-600 hover:bg-purple-700"
+              className="w-full mt-6 py-2.5 bg-orange-600 hover:bg-orange-700"
             >
               Close Profile
             </Button>

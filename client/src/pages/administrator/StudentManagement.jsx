@@ -316,7 +316,7 @@ function StudentManagement() {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-purple-600 focus:bg-white transition"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-orange-600 focus:bg-white transition"
               />
             </div>
 
@@ -326,7 +326,7 @@ function StudentManagement() {
                 setCourseFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full sm:w-44 py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-purple-600 cursor-pointer"
+              className="w-full sm:w-44 py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-orange-600 cursor-pointer"
             >
               <option value="">All Exams (NEET & JEE)</option>
               <option value="NEET">🩺 NEET Registered</option>
@@ -339,7 +339,7 @@ function StudentManagement() {
                 setBatchFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full sm:w-44 py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-purple-600 cursor-pointer"
+              className="w-full sm:w-44 py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:border-orange-600 cursor-pointer"
             >
               <option value="">All Batches</option>
               <option value="Morning Batch">🌅 Morning Batch</option>
@@ -377,10 +377,10 @@ function StudentManagement() {
             <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
               {paginatedStudents.length > 0 ? (
                 paginatedStudents.map((st) => (
-                  <tr key={st._id || st.admissionNumber} className="hover:bg-purple-50/30 transition">
+                  <tr key={st._id || st.admissionNumber} className="hover:bg-orange-50/30 transition">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm overflow-hidden shrink-0">
+                        <div className="w-9 h-9 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-sm overflow-hidden shrink-0">
                           {(st.user?.profilePic || st.profilePic) ? (
                             <img
                               src={(st.user?.profilePic || st.profilePic).startsWith("http") ? (st.user?.profilePic || st.profilePic) : `${MEDIA_URL}${st.user?.profilePic || st.profilePic}`}
@@ -392,14 +392,14 @@ function StudentManagement() {
                           )}
                         </div>
                         <div>
-                          <p className="font-bold text-slate-900 text-sm">{st.fullName}</p>
+                          <p className="font-bold text-[#0D2F24] text-sm">{st.fullName}</p>
                           <p className="text-[11px] text-slate-400">{st.email}</p>
                         </div>
                       </div>
                     </td>
 
                     <td className="py-4 px-6">
-                      <span className="font-mono font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-200">
+                      <span className="font-mono font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-lg border border-orange-200">
                         {st.admissionNumber || "PENDING"}
                       </span>
                     </td>
@@ -411,7 +411,7 @@ function StudentManagement() {
                               ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
                               : isJee(st.course)
                                 ? "bg-blue-100 text-blue-800 border border-blue-200"
-                                : "bg-purple-100 text-purple-800 border border-purple-200"
+                                : "bg-orange-100 text-orange-800 border border-orange-200"
                             }`}
                         >
                           {isNeet(st.course) ? <Stethoscope className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
@@ -446,7 +446,7 @@ function StudentManagement() {
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => setViewStudent(st)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-purple-600 hover:bg-purple-50 transition"
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-orange-600 hover:bg-orange-50 transition"
                           title="View Details"
                         >
                           <Eye className="w-4 h-4" />
@@ -477,7 +477,7 @@ function StudentManagement() {
         {/* PAGINATION FOOTER */}
         <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs">
           <p className="text-slate-500">
-            Showing <strong className="text-slate-900">{paginatedStudents.length}</strong> of <strong className="text-slate-900">{filteredStudents.length}</strong> students
+            Showing <strong className="text-[#0D2F24]">{paginatedStudents.length}</strong> of <strong className="text-[#0D2F24]">{filteredStudents.length}</strong> students
           </p>
 
           <div className="flex items-center gap-2">
@@ -506,13 +506,13 @@ function StudentManagement() {
 
       {/* 5-STEP MULTI-STEP WIZARD MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="fixed inset-0 bg-[#05110d]/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative my-8">
             {/* Header */}
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
               <div>
-                <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                  <UserPlus className="w-5 h-5 text-purple-600" /> Register New Student
+                <h3 className="text-xl font-bold text-[#0D2F24] flex items-center gap-2">
+                  <UserPlus className="w-5 h-5 text-orange-600" /> Register New Student
                 </h3>
                 <p className="text-xs text-slate-500">Fill in details for admission & account setup</p>
               </div>
@@ -538,13 +538,13 @@ function StudentManagement() {
                         className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${isDone
                           ? "bg-emerald-600 text-white"
                           : isCurrent
-                            ? "bg-purple-600 text-white ring-4 ring-purple-100"
+                            ? "bg-orange-600 text-white ring-4 ring-orange-100"
                             : "bg-slate-100 text-slate-400 border border-slate-200"
                           }`}
                       >
                         {isDone ? <Check className="w-4 h-4" /> : step.num}
                       </div>
-                      <span className={`text-[11px] font-semibold mt-1.5 hidden sm:block ${isCurrent ? "text-purple-600 font-bold" : "text-slate-400"}`}>
+                      <span className={`text-[11px] font-semibold mt-1.5 hidden sm:block ${isCurrent ? "text-orange-600 font-bold" : "text-slate-400"}`}>
                         {step.name}
                       </span>
                     </div>
@@ -558,7 +558,7 @@ function StudentManagement() {
               {/* STEP 1: Personal Details */}
               {currentStep === 1 && (
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-purple-600 mb-2">Step 1: Personal Information</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-orange-600 mb-2">Step 1: Personal Information</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input label="Full Name" placeholder="e.g. Rahul Sharma" register={register("fullName")} error={errors.fullName} icon={User} />
                     <Input label="Email Address" placeholder="rahul@example.com" register={register("email")} error={errors.email} icon={Mail} />
@@ -573,7 +573,7 @@ function StudentManagement() {
               {/* STEP 2: Academic Details */}
               {currentStep === 2 && (
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-purple-600 mb-2">Step 2: Academic Record & Batch Allocation</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-orange-600 mb-2">Step 2: Academic Record & Batch Allocation</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <SelectInput
                       label="Assigned Course Exam"
@@ -600,7 +600,7 @@ function StudentManagement() {
               {/* STEP 3: Parent Details */}
               {currentStep === 3 && (
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-purple-600 mb-2">Step 3: Parent / Guardian Details</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-orange-600 mb-2">Step 3: Parent / Guardian Details</h4>
                   <Input label="Parent / Guardian Name" placeholder="e.g. Suresh Sharma" register={register("parentName")} error={errors.parentName} icon={User} />
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input label="Parent Email" placeholder="parent@example.com" register={register("parentEmail")} error={errors.parentEmail} icon={Mail} />
@@ -613,7 +613,7 @@ function StudentManagement() {
               {/* STEP 4: Document Uploads */}
               {currentStep === 4 && (
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-purple-600 mb-2">Step 4: Upload Verification Certificates</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-orange-600 mb-2">Step 4: Upload Verification Certificates</h4>
                   <FileUpload label="10th Marksheet Certificate" register={register("tenthCertificate")} error={errors.tenthCertificate} />
                   <FileUpload label="12th Marksheet Certificate" register={register("twelfthCertificate")} error={errors.twelfthCertificate} />
                 </div>
@@ -622,7 +622,7 @@ function StudentManagement() {
               {/* STEP 5: Account Preview */}
               {currentStep === 5 && (
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-purple-600 mb-2">Step 5: Review Student Profile</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-orange-600 mb-2">Step 5: Review Student Profile</h4>
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-2">
                     <p><strong>Name:</strong> {getValues("fullName")}</p>
                     <p><strong>Email:</strong> {getValues("email")}</p>
@@ -630,7 +630,7 @@ function StudentManagement() {
                     <p><strong>Course:</strong> {getValues("course")}</p>
                     <p><strong>Parent:</strong> {getValues("parentName")} ({getValues("relationship")})</p>
                   </div>
-                  <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 text-xs text-purple-900">
+                  <div className="p-3 bg-orange-50 rounded-xl border border-orange-200 text-xs text-orange-900">
                     ✓ Generating admission number and temporary password automatically upon registration.
                   </div>
                 </div>
@@ -661,13 +661,13 @@ function StudentManagement() {
 
       {/* SUCCESS MODAL WITH COPY CREDENTIALS BUTTON */}
       {successData && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[#05110d]/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center relative border border-slate-200">
             <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
-            <h3 className="text-xl font-bold text-slate-900">Registration Successful!</h3>
+            <h3 className="text-xl font-bold text-[#0D2F24]">Registration Successful!</h3>
             <p className="text-xs text-slate-500 mt-1 mb-6">
               Account created for <span className="font-semibold text-slate-800">{successData.studentName}</span>
             </p>
@@ -675,7 +675,7 @@ function StudentManagement() {
             <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left text-xs font-mono space-y-2.5 mb-4">
               <div className="flex justify-between items-center">
                 <span className="text-slate-400 font-sans">Admission #:</span>
-                <strong className="text-purple-600 font-bold">{successData.admissionNumber}</strong>
+                <strong className="text-orange-600 font-bold">{successData.admissionNumber}</strong>
               </div>
               <div className="flex justify-between items-center pt-2 border-t border-slate-200/80">
                 <span className="text-slate-400 font-sans">Username:</span>
@@ -684,13 +684,13 @@ function StudentManagement() {
             </div>
 
             {/* Email Dispatch Notice Banner */}
-            <div className="bg-purple-50 border border-purple-200 rounded-2xl p-3.5 text-left text-xs text-purple-900 mb-6 flex items-start gap-2.5">
-              <Mail className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+            <div className="bg-orange-50 border border-orange-200 rounded-2xl p-3.5 text-left text-xs text-orange-900 mb-6 flex items-start gap-2.5">
+              <Mail className="w-4 h-4 text-orange-600 shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold text-purple-950 text-xs">Temporary Password Sent to Email</p>
-                <p className="text-[11px] text-purple-800 leading-relaxed mt-0.5">
+                <p className="font-bold text-orange-950 text-xs">Temporary Password Sent to Email</p>
+                <p className="text-[11px] text-orange-800 leading-relaxed mt-0.5">
                   The temporary login password and account activation instructions have been sent directly to:{" "}
-                  <strong className="font-mono text-purple-950 break-all">{successData.email}</strong>.
+                  <strong className="font-mono text-orange-950 break-all">{successData.email}</strong>.
                 </p>
                 <p className="text-[10px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg p-2 mt-2 font-medium">
                   💡 <strong>Tip:</strong> If not found in your main Inbox, please check your <strong>Spam / Junk</strong> folder or <strong>Promotions</strong> tab.
@@ -724,15 +724,15 @@ function StudentManagement() {
 
       {/* VIEW STUDENT DETAILS MODAL */}
       {viewStudent && (
-        <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[#05110d]/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl border border-slate-200 relative max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
               <div>
-                <h3 className="text-lg font-bold text-slate-900">Student Registration Profile</h3>
+                <h3 className="text-lg font-bold text-[#0D2F24]">Student Registration Profile</h3>
                 {viewStudent.createdAt && (
                   <p className="text-[11px] text-slate-400 font-medium mt-0.5 flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-purple-600" />
+                    <Calendar className="w-3 h-3 text-orange-600" />
                     Registered: {new Date(viewStudent.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })} at {new Date(viewStudent.createdAt).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 )}
@@ -743,8 +743,8 @@ function StudentManagement() {
             </div>
 
             {/* Profile Avatar & Hero Banner */}
-            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-slate-50 rounded-2xl border border-purple-100 mb-5">
-              <div className="w-16 h-16 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-extrabold text-2xl shadow-inner overflow-hidden shrink-0">
+            <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-orange-50 via-indigo-50 to-slate-50 rounded-2xl border border-orange-100 mb-5">
+              <div className="w-16 h-16 rounded-2xl bg-orange-100 text-orange-800 flex items-center justify-center font-extrabold text-2xl shadow-inner overflow-hidden shrink-0">
                 {(viewStudent.user?.profilePic || viewStudent.profilePic) ? (
                   <img
                     src={(viewStudent.user?.profilePic || viewStudent.profilePic).startsWith("http") ? (viewStudent.user?.profilePic || viewStudent.profilePic) : `${MEDIA_URL}${viewStudent.user?.profilePic || viewStudent.profilePic}`}
@@ -756,12 +756,12 @@ function StudentManagement() {
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <h4 className="font-extrabold text-slate-900 text-lg leading-tight truncate">{viewStudent.fullName}</h4>
-                <p className="text-xs font-mono font-bold text-purple-700 mt-0.5">
+                <h4 className="font-extrabold text-[#0D2F24] text-lg leading-tight truncate">{viewStudent.fullName}</h4>
+                <p className="text-xs font-mono font-bold text-orange-700 mt-0.5">
                   Admission No: {viewStudent.admissionNumber || "N/A"}
                 </p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                  <span className="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-orange-100 text-orange-800 border border-orange-200">
                     {viewStudent.course}
                   </span>
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold text-[10px] border border-emerald-200">
@@ -774,17 +774,17 @@ function StudentManagement() {
             <div className="space-y-4 text-xs">
               {/* Academic Performance & Credentials Grid */}
               <div>
-                <h5 className="text-[11px] font-bold uppercase tracking-wider text-purple-700 mb-2 flex items-center gap-1.5">
-                  <GraduationCap className="w-3.5 h-3.5 text-purple-600" /> Academic Scores & Course Details
+                <h5 className="text-[11px] font-bold uppercase tracking-wider text-orange-700 mb-2 flex items-center gap-1.5">
+                  <GraduationCap className="w-3.5 h-3.5 text-orange-600" /> Academic Scores & Course Details
                 </h5>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-slate-700">
                   <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                     <span className="text-[10px] font-bold text-slate-400 block uppercase">10th Score</span>
-                    <span className="font-extrabold text-purple-700 text-sm">{viewStudent.tenthPercentage}%</span>
+                    <span className="font-extrabold text-orange-700 text-sm">{viewStudent.tenthPercentage}%</span>
                   </div>
                   <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                     <span className="text-[10px] font-bold text-slate-400 block uppercase">12th Score</span>
-                    <span className="font-extrabold text-purple-700 text-sm">{viewStudent.twelfthPercentage}%</span>
+                    <span className="font-extrabold text-orange-700 text-sm">{viewStudent.twelfthPercentage}%</span>
                   </div>
                   <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                     <span className="text-[10px] font-bold text-slate-400 block uppercase">Batch</span>
@@ -833,8 +833,8 @@ function StudentManagement() {
 
               {/* UPLOADED 10TH AND 12TH MARK LIST CERTIFICATES */}
               <div>
-                <h5 className="text-[11px] font-bold uppercase tracking-wider text-purple-700 mb-2 flex items-center gap-1.5">
-                  <FileCheck className="w-3.5 h-3.5 text-purple-600" /> Uploaded Mark Lists & Certificates
+                <h5 className="text-[11px] font-bold uppercase tracking-wider text-orange-700 mb-2 flex items-center gap-1.5">
+                  <FileCheck className="w-3.5 h-3.5 text-orange-600" /> Uploaded Mark Lists & Certificates
                 </h5>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -858,8 +858,8 @@ function StudentManagement() {
                         <div className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 flex flex-col justify-between">
                           <div>
                             <div className="flex items-center justify-between mb-1.5">
-                              <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                                <FileText className="w-4 h-4 text-purple-600" /> 10th Mark List
+                              <span className="text-xs font-bold text-[#0D2F24] flex items-center gap-1.5">
+                                <FileText className="w-4 h-4 text-orange-600" /> 10th Mark List
                               </span>
                               {cert10 ? (
                                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
@@ -881,7 +881,7 @@ function StudentManagement() {
                               <button
                                 type="button"
                                 onClick={() => handleViewCert(cert10)}
-                                className="flex-1 py-1.5 px-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+                                className="flex-1 py-1.5 px-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
                               >
                                 <ExternalLink className="w-3 h-3" /> View 10th Certificate
                               </button>
@@ -893,8 +893,8 @@ function StudentManagement() {
                         <div className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 flex flex-col justify-between">
                           <div>
                             <div className="flex items-center justify-between mb-1.5">
-                              <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                                <FileText className="w-4 h-4 text-purple-600" /> 12th Mark List
+                              <span className="text-xs font-bold text-[#0D2F24] flex items-center gap-1.5">
+                                <FileText className="w-4 h-4 text-orange-600" /> 12th Mark List
                               </span>
                               {cert12 ? (
                                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
@@ -916,7 +916,7 @@ function StudentManagement() {
                               <button
                                 type="button"
                                 onClick={() => handleViewCert(cert12)}
-                                className="flex-1 py-1.5 px-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+                                className="flex-1 py-1.5 px-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
                               >
                                 <ExternalLink className="w-3 h-3" /> View 12th Certificate
                               </button>

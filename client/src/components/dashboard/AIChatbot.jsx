@@ -104,7 +104,7 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
       {!isOpen && !inline && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 p-4 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 transition-colors z-50 flex items-center justify-center"
+          className="fixed bottom-6 right-6 p-4 bg-orange-600 text-white rounded-full shadow-lg hover:bg-orange-700 transition-colors z-50 flex items-center justify-center"
         >
           <FaRobot size={24} />
         </button>
@@ -114,12 +114,12 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
       {(isOpen || inline) && (
         <div className={inline ? "w-full h-full bg-white flex flex-col" : "fixed bottom-6 right-6 w-80 md:w-96 bg-white rounded-lg shadow-2xl flex flex-col z-50 overflow-hidden border border-gray-200"} style={inline ? {} : { height: "500px" }}>
           {/* Header */}
-          <div className="bg-purple-600 text-white p-4 flex justify-between items-center shrink-0">
+          <div className="bg-orange-600 text-white p-4 flex justify-between items-center shrink-0">
             <div className="flex items-center space-x-2">
               <FaRobot size={20} />
               <div>
                 <h3 className="font-bold">AI Academic Assistant</h3>
-                <p className="text-xs text-purple-200">NEET & JEE Support</p>
+                <p className="text-xs text-orange-200">NEET & JEE Support</p>
               </div>
             </div>
             {!inline && (
@@ -162,7 +162,7 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
                     key={idx} 
                     className={`max-w-[85%] rounded-2xl p-3 text-sm whitespace-pre-wrap ${
                       msg.role === 'user' 
-                        ? 'bg-purple-600 text-white self-end rounded-br-sm' 
+                        ? 'bg-orange-600 text-white self-end rounded-br-sm' 
                         : 'bg-white border border-gray-200 text-gray-800 self-start rounded-bl-sm shadow-sm'
                     }`}
                   >
@@ -191,12 +191,12 @@ const AIChatbot = ({ documentContext, onCloseContext, inline = false }) => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder={documentContext ? "Ask about this document..." : "Ask a NEET/JEE question..."}
-                className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
               />
               <button
                 type="submit"
                 disabled={!message.trim() || loading}
-                className="absolute right-1 top-1 bottom-1 p-2 bg-purple-100 text-purple-600 rounded-full hover:bg-purple-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="absolute right-1 top-1 bottom-1 p-2 bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <FaPaperPlane size={14} />
               </button>

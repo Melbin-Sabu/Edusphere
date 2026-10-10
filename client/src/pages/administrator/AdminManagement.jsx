@@ -110,8 +110,8 @@ function AdminManagement() {
       <Card className="p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-purple-600" />
+            <h3 className="text-base font-bold text-[#0D2F24] flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-orange-600" />
               Administrator Accounts
             </h3>
             <p className="text-xs text-slate-500">
@@ -149,15 +149,15 @@ function AdminManagement() {
             {admins.map((a) => (
               <Card
                 key={a._id || a.id}
-                className="p-5 border-slate-200 hover:border-purple-300 transition shadow-sm hover:shadow-md"
+                className="p-5 border-slate-200 hover:border-orange-300 transition shadow-sm hover:shadow-md"
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm">
+                  <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-sm">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-slate-900 text-sm truncate">{a.name}</h4>
-                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700">
+                    <h4 className="font-bold text-[#0D2F24] text-sm truncate">{a.name}</h4>
+                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 text-orange-700">
                       {a.role}
                     </span>
                   </div>
@@ -191,7 +191,7 @@ function AdminManagement() {
 
       {/* CREATE ADMIN MODAL */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-slate-100">
             <button
               onClick={() => setShowModal(false)}
@@ -201,11 +201,11 @@ function AdminManagement() {
             </button>
 
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold">
                 <UserPlus className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-base">Add New Administrator</h3>
+                <h3 className="font-bold text-[#0D2F24] text-base">Add New Administrator</h3>
                 <p className="text-xs text-slate-500">Send an onboarding invitation email with temp password</p>
               </div>
             </div>
@@ -230,7 +230,7 @@ function AdminManagement() {
                     placeholder="e.g. System Admin User"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-purple-600 focus:bg-white transition"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-orange-600 focus:bg-white transition"
                   />
                 </div>
               </div>
@@ -247,7 +247,7 @@ function AdminManagement() {
                     placeholder="e.g. admin.user@edusphere.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-purple-600 focus:bg-white transition"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-orange-600 focus:bg-white transition"
                   />
                 </div>
               </div>
@@ -259,7 +259,7 @@ function AdminManagement() {
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-purple-600 transition cursor-pointer"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-orange-600 transition cursor-pointer"
                 >
                   <option value="Admin">Admin (Standard Administrative Access)</option>
                   <option value="Administrator">Administrator (Super Admin Access)</option>
@@ -299,13 +299,13 @@ function AdminManagement() {
 
       {/* SUCCESS CONFIRMATION MODAL */}
       {successData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-emerald-100 text-center">
             <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 font-bold">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
-            <h3 className="font-bold text-slate-900 text-lg mb-1">
+            <h3 className="font-bold text-[#0D2F24] text-lg mb-1">
               Admin Account Created!
             </h3>
             <p className="text-xs text-slate-500 mb-5">
@@ -322,8 +322,8 @@ function AdminManagement() {
                 </span>
               </div>
               <div className="pt-2 border-t border-slate-200 text-xs text-slate-600 leading-relaxed">
-                <p className="flex items-center gap-2 text-purple-700 font-semibold mb-1">
-                  <Mail className="w-4 h-4 text-purple-600" /> Temporary Password Sent to Email
+                <p className="flex items-center gap-2 text-orange-700 font-semibold mb-1">
+                  <Mail className="w-4 h-4 text-orange-600" /> Temporary Password Sent to Email
                 </p>
                 <p className="text-slate-500">
                   The temporary password and login credentials have been sent directly to <strong>{successData.email}</strong>. The user must update their password upon first login.

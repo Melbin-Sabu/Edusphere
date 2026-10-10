@@ -210,7 +210,7 @@ function ForgotPassword() {
 
             <Link
               to="/login"
-              className="text-purple-400 hover:text-purple-300 font-semibold transition-colors"
+              className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
             >
               Back to Login
             </Link>

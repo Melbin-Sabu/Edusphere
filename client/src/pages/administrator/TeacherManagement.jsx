@@ -296,7 +296,7 @@ function TeacherManagement() {
           <button
             onClick={() => setActiveTab("All")}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 ${activeTab === "All"
-              ? "bg-purple-600 text-white shadow-md shadow-purple-200"
+              ? "bg-orange-600 text-white shadow-md shadow-orange-200"
               : "bg-slate-100 text-slate-600 hover:bg-slate-200"
               }`}
           >
@@ -313,11 +313,11 @@ function TeacherManagement() {
           <button
             onClick={() => setActiveTab("JEE")}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 ${activeTab === "JEE"
-              ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
+              ? "bg-emerald-800 text-white shadow-md shadow-indigo-200"
               : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200/60"
               }`}
           >
-            <GraduationCap className="w-4 h-4 text-indigo-500" />
+            <GraduationCap className="w-4 h-4 text-emerald-700" />
             <span>JEE Faculty</span>
             <span
               className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${activeTab === "JEE" ? "bg-white/20 text-white" : "bg-indigo-100 text-indigo-800"
@@ -356,7 +356,7 @@ function TeacherManagement() {
                 placeholder="Search name, email, employee ID..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-purple-600 transition"
+                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-orange-600 transition"
               />
             </div>
 
@@ -364,7 +364,7 @@ function TeacherManagement() {
             <select
               value={departmentFilter}
               onChange={(e) => setDepartmentFilter(e.target.value)}
-              className="w-full sm:w-56 py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-purple-600 text-slate-700"
+              className="w-full sm:w-56 py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-orange-600 text-slate-700"
             >
               {departments.map((dept) => (
                 <option key={dept} value={dept}>
@@ -378,7 +378,7 @@ function TeacherManagement() {
             variant="primary"
             size="md"
             icon={UserPlus}
-            className="bg-purple-600 hover:bg-purple-700 text-white shrink-0"
+            className="bg-orange-600 hover:bg-orange-700 text-white shrink-0"
             onClick={() => {
               setErrorMessage("");
               reset();
@@ -392,7 +392,7 @@ function TeacherManagement() {
         {/* TEACHER LIST / GRID */}
         {loading ? (
           <div className="py-16 text-center text-xs text-slate-400 flex flex-col items-center gap-2">
-            <div className="w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-8 h-8 border-2 border-orange-600 border-t-transparent rounded-full animate-spin"></div>
             <span>Fetching faculty directory...</span>
           </div>
         ) : filtered.length === 0 ? (
@@ -408,13 +408,13 @@ function TeacherManagement() {
             {filtered.map((t) => (
               <Card
                 key={t._id || t.id}
-                className="p-5 border-slate-200 hover:border-purple-300 transition shadow-sm hover:shadow-md flex flex-col justify-between"
+                className="p-5 border-slate-200 hover:border-orange-300 transition shadow-sm hover:shadow-md flex flex-col justify-between"
               >
                 <div>
                   {/* Header Badge & Name */}
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-base shadow-inner shrink-0 overflow-hidden">
+                      <div className="w-11 h-11 rounded-2xl bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-base shadow-inner shrink-0 overflow-hidden">
                         {t.profilePic ? (
                           <img
                             src={t.profilePic.startsWith("http") ? t.profilePic : `${MEDIA_URL}${t.profilePic}`}
@@ -426,21 +426,21 @@ function TeacherManagement() {
                         )}
                       </div>
                       <div className="min-w-0">
-                        <h4 className="font-bold text-slate-900 text-sm truncate">
+                        <h4 className="font-bold text-[#0D2F24] text-sm truncate">
                           {t.name || t.fullName}
                         </h4>
                         <div className="mt-1">
                           {(t.department || "").toUpperCase() === "JEE" ? (
                             <span className="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-md">
-                              <GraduationCap className="w-3 h-3 text-indigo-600" /> JEE • {t.subject || "Physics"}
+                              <GraduationCap className="w-3 h-3 text-emerald-800" /> JEE • {t.subject || "Physics"}
                             </span>
                           ) : (t.department || "").toUpperCase() === "NEET" ? (
                             <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
                               <Sparkles className="w-3 h-3 text-emerald-600" /> NEET • {t.subject || "Physics"}
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-md">
-                              <Building className="w-3 h-3 text-purple-600" /> {t.department || "Faculty"}
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-orange-700 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-md">
+                              <Building className="w-3 h-3 text-orange-600" /> {t.department || "Faculty"}
                             </span>
                           )}
                         </div>
@@ -515,7 +515,7 @@ function TeacherManagement() {
                     </button>
                     <button
                       onClick={() => setViewTeacher(t)}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-purple-700 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-xl transition cursor-pointer"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-orange-700 hover:text-orange-900 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-xl transition cursor-pointer"
                       title="View Full Profile"
                     >
                       <Eye className="w-3.5 h-3.5" /> View Profile
@@ -538,7 +538,7 @@ function TeacherManagement() {
 
       {/* REGISTER TEACHER MODAL WITH FULL FIELD VALIDATION */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn overflow-y-auto">
           <div className="relative w-full max-w-lg bg-white rounded-2xl p-6 shadow-2xl border border-slate-100 my-8">
             <button
               onClick={() => setShowModal(false)}
@@ -548,11 +548,11 @@ function TeacherManagement() {
             </button>
 
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-11 h-11 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold">
+              <div className="w-11 h-11 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold">
                 <GraduationCap className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-base">Add New Faculty / Teacher</h3>
+                <h3 className="font-bold text-[#0D2F24] text-base">Add New Faculty / Teacher</h3>
                 <p className="text-xs text-slate-500">
                   Enter faculty details to provision account for JEE or NEET
                 </p>
@@ -577,7 +577,7 @@ function TeacherManagement() {
                     type="text"
                     placeholder="e.g. Dr. Ananya Sen"
                     {...register("name")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.name ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.name ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   />
                   {errors.name && (
@@ -596,7 +596,7 @@ function TeacherManagement() {
                     type="email"
                     placeholder="e.g. ananya.sen@edusphere.com"
                     {...register("email")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.email ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.email ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   />
                   {errors.email && (
@@ -617,7 +617,7 @@ function TeacherManagement() {
                     type="text"
                     placeholder="e.g. 9876543210"
                     {...register("mobileNumber")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.mobileNumber ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.mobileNumber ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   />
                   {errors.mobileNumber && (
@@ -634,7 +634,7 @@ function TeacherManagement() {
                   </label>
                   <select
                     {...register("department")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.department ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.department ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   >
                     <option value="JEE">JEE Faculty</option>
@@ -654,7 +654,7 @@ function TeacherManagement() {
                   </label>
                   <select
                     {...register("subject")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.subject ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.subject ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   >
                     {availableSubjects.map((sub) => (
@@ -679,7 +679,7 @@ function TeacherManagement() {
                   </label>
                   <select
                     {...register("designation")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.designation ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.designation ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   >
                     <option value="Senior Lecturer">Senior Lecturer</option>
@@ -701,7 +701,7 @@ function TeacherManagement() {
                     type="text"
                     placeholder="e.g. Ph.D. in CS, M.Tech"
                     {...register("qualification")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.qualification ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.qualification ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   />
                   {errors.qualification && (
@@ -722,7 +722,7 @@ function TeacherManagement() {
                     type="text"
                     placeholder="e.g. 5 Years"
                     {...register("experience")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.experience ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.experience ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   />
                   {errors.experience && (
@@ -739,7 +739,7 @@ function TeacherManagement() {
                   </label>
                   <select
                     {...register("gender")}
-                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.gender ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                    className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.gender ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                       } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                   >
                     <option value="Male">Male</option>
@@ -763,7 +763,7 @@ function TeacherManagement() {
                   rows="2"
                   placeholder="e.g. Flat 4B, Emerald Heights, City Center"
                   {...register("address")}
-                  className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.address ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-purple-600"
+                  className={`w-full px-3.5 py-2.5 bg-slate-50 border ${errors.address ? "border-red-400 focus:border-red-500" : "border-slate-200 focus:border-orange-600"
                     } rounded-xl text-xs font-medium focus:outline-none focus:bg-white transition`}
                 ></textarea>
                 {errors.address && (
@@ -773,11 +773,11 @@ function TeacherManagement() {
                 )}
               </div>
 
-              <div className="bg-purple-50 border border-purple-200 rounded-xl p-3 text-[11px] text-purple-900 space-y-1">
-                <p className="font-bold flex items-center gap-1.5 text-purple-800">
-                  <Sparkles className="w-3.5 h-3.5 text-purple-600" /> Onboarding Credentials
+              <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 text-[11px] text-orange-900 space-y-1">
+                <p className="font-bold flex items-center gap-1.5 text-orange-800">
+                  <Sparkles className="w-3.5 h-3.5 text-orange-600" /> Onboarding Credentials
                 </p>
-                <p className="text-purple-700/90 leading-relaxed">
+                <p className="text-orange-700/90 leading-relaxed">
                   An automated email with temporary login credentials will be dispatched to the entered email address.
                 </p>
               </div>
@@ -793,7 +793,7 @@ function TeacherManagement() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 py-2.5 bg-purple-600 hover:bg-purple-700 border-purple-600 text-white"
+                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 border-orange-600 text-white"
                   icon={UserPlus}
                 >
                   {isSubmitting ? "Registering..." : "Register Faculty"}
@@ -806,7 +806,7 @@ function TeacherManagement() {
 
       {/* VIEW FULL TEACHER PROFILE MODAL */}
       {viewTeacher && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-lg bg-white rounded-2xl p-6 shadow-2xl border border-slate-100">
             <button
               onClick={() => setViewTeacher(null)}
@@ -816,7 +816,7 @@ function TeacherManagement() {
             </button>
 
             <div className="flex items-center gap-4 pb-4 border-b border-slate-100 mb-5">
-              <div className="w-14 h-14 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-xl shadow-inner overflow-hidden shrink-0">
+              <div className="w-14 h-14 rounded-2xl bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-xl shadow-inner overflow-hidden shrink-0">
                 {viewTeacher.profilePic ? (
                   <img
                     src={viewTeacher.profilePic.startsWith("http") ? viewTeacher.profilePic : `${MEDIA_URL}${viewTeacher.profilePic}`}
@@ -828,11 +828,11 @@ function TeacherManagement() {
                 )}
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-lg">
+                <h3 className="font-bold text-[#0D2F24] text-lg">
                   {viewTeacher.name || viewTeacher.fullName}
                 </h3>
-                <p className="text-xs text-purple-700 font-semibold flex items-center gap-1 mt-0.5">
-                  <Building className="w-3.5 h-3.5 text-purple-600" /> {viewTeacher.department || "Faculty"} &bull; {viewTeacher.subject || "Subject"} &bull; {viewTeacher.designation || "Teacher"}
+                <p className="text-xs text-orange-700 font-semibold flex items-center gap-1 mt-0.5">
+                  <Building className="w-3.5 h-3.5 text-orange-600" /> {viewTeacher.department || "Faculty"} &bull; {viewTeacher.subject || "Subject"} &bull; {viewTeacher.designation || "Teacher"}
                 </p>
               </div>
             </div>
@@ -909,7 +909,7 @@ function TeacherManagement() {
 
               <Button
                 onClick={() => setViewTeacher(null)}
-                className="w-full sm:w-auto py-2.5 px-5 bg-slate-800 hover:bg-slate-900 text-white"
+                className="w-full sm:w-auto py-2.5 px-5 bg-slate-800 hover:bg-[#0D2F24] text-white"
               >
                 Close
               </Button>
@@ -920,13 +920,13 @@ function TeacherManagement() {
 
       {/* SUCCESS CONFIRMATION MODAL WITH DISPLAYED TEMPORARY PASSWORD */}
       {successData && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-purple-100 text-center">
-            <div className="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 font-bold">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
+          <div className="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-orange-100 text-center">
+            <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 font-bold">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
-            <h3 className="font-bold text-slate-900 text-lg mb-1">
+            <h3 className="font-bold text-[#0D2F24] text-lg mb-1">
               Faculty Account Created Successfully!
             </h3>
             <p className="text-xs text-slate-500 mb-5">
@@ -937,7 +937,7 @@ function TeacherManagement() {
               <div className="flex justify-between items-center">
                 <div>
                   <span className="text-[10px] font-semibold text-slate-400 block uppercase">Employee ID</span>
-                  <span className="text-xs font-mono font-bold text-purple-700">{successData.employeeId}</span>
+                  <span className="text-xs font-mono font-bold text-orange-700">{successData.employeeId}</span>
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] font-semibold text-slate-400 block uppercase">Department</span>
@@ -954,19 +954,19 @@ function TeacherManagement() {
                 </span>
               </div>
 
-              <div className="pt-2 border-t border-slate-200 text-xs text-slate-600 leading-relaxed bg-purple-50/70 p-3.5 rounded-xl border border-purple-100 mt-2">
-                <p className="flex items-center gap-2 text-purple-800 font-bold mb-1 text-xs">
-                  <Mail className="w-4 h-4 text-purple-600" /> Login Credentials Dispatched
+              <div className="pt-2 border-t border-slate-200 text-xs text-slate-600 leading-relaxed bg-orange-50/70 p-3.5 rounded-xl border border-orange-100 mt-2">
+                <p className="flex items-center gap-2 text-orange-800 font-bold mb-1 text-xs">
+                  <Mail className="w-4 h-4 text-orange-600" /> Login Credentials Dispatched
                 </p>
                 <p className="text-slate-600 text-[11px] leading-normal">
-                  The account password and login instructions have been sent directly to the registered email address: <strong className="text-purple-900 font-mono block mt-0.5">{successData.email}</strong>
+                  The account password and login instructions have been sent directly to the registered email address: <strong className="text-orange-900 font-mono block mt-0.5">{successData.email}</strong>
                 </p>
               </div>
             </div>
 
             <Button
               onClick={() => setSuccessData(null)}
-              className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white"
+              className="w-full py-2.5 bg-orange-600 hover:bg-orange-700 text-white"
             >
               Done & Return to Directory
             </Button>
@@ -976,7 +976,7 @@ function TeacherManagement() {
 
       {/* ALLOCATION MODAL */}
       {showAllocationModal && allocationTeacher && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0D2F24]/60 backdrop-blur-sm animate-fadeIn">
           <div className="relative w-full max-w-sm bg-white rounded-2xl p-6 shadow-2xl border border-slate-100">
             <button
               onClick={() => setShowAllocationModal(false)}
@@ -985,7 +985,7 @@ function TeacherManagement() {
               <X className="w-5 h-5" />
             </button>
             <div className="mb-5">
-              <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2">
+              <h3 className="font-bold text-[#0D2F24] text-lg flex items-center gap-2">
                 <Layers className="w-5 h-5 text-blue-600" /> Allocate Batches
               </h3>
               <p className="text-xs text-slate-500 mt-1">Select batches for {allocationTeacher.name || allocationTeacher.fullName}</p>
@@ -997,7 +997,7 @@ function TeacherManagement() {
                   <input
                     type="radio"
                     name="batchAllocation"
-                    className="w-4 h-4 text-purple-600 border-slate-300 focus:ring-purple-500"
+                    className="w-4 h-4 text-orange-600 border-slate-300 focus:ring-orange-500"
                     checked={selectedBatches.includes(batchName)}
                     onChange={(e) => {
                       if (e.target.checked) {
