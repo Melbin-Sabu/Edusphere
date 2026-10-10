@@ -61,6 +61,7 @@ function AdminLayout({ children, title }) {
         { name: "My Dashboard", path: "/student/dashboard", icon: LayoutDashboard },
         { name: "My Quizzes", path: "/student/quizzes", icon: BookOpen },
         { name: "Attendance Record", path: "/student/attendance", icon: CalendarCheck },
+        { name: "Leave Applications", path: "/student/leaves", icon: FileText },
         { name: "Exams & Results", path: "/student/results", icon: FileText },
         { name: "Fee Payments", path: "/student/fees", icon: Receipt },
         { name: "Change Password", path: "/change-password", icon: Key },
@@ -74,6 +75,7 @@ function AdminLayout({ children, title }) {
         { name: "Quiz Management", path: "/teacher/quizzes", icon: FileText },
         { name: "My Batches", path: "/teacher/batches", icon: Layers, isPlaceholder: true },
         { name: "Mark Attendance", path: "/teacher/attendance", icon: CalendarCheck },
+        { name: "Leave Approvals", path: "/teacher/leaves", icon: FileText },
         { name: "Student Directory", path: "/administrator/students", icon: GraduationCap },
       ];
     }

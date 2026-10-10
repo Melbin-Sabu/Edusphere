@@ -18,6 +18,7 @@ const feeRoutes = require("./routes/feeRoutes");
 const quizRoutes = require("./routes/quizRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const reportRoutes = require("./routes/reportRoutes");
+const leaveRoutes = require("./routes/leaveRoutes");
 
 const app = express();
 
@@ -67,6 +68,7 @@ app.use("/api/fees", feeRoutes);
 app.use("/api/quizzes", quizRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/leaves", leaveRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

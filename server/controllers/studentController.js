@@ -1,5 +1,6 @@
 const Student = require("../models/Student");
 const User = require("../models/User");
+const Teacher = require("../models/Teacher");
 const bcrypt = require("bcryptjs");
 const { sendStudentRegistrationEmail } = require("../services/emailService");
 const { validateDeepEmail } = require("../utils/deepEmailValidator");
@@ -543,11 +544,36 @@ const payRegistrationFee = async (req, res) => {
   }
 };
 
+// =======================
+// Get My Teachers (Student)
+// =======================
+const getMyTeachers = async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.user._id });
+    if (!student) {
+      return res.status(404).json({ message: "Student record not found" });
+    }
+
+    // Find all teachers whose assignedBatches includes the student's batch
+    const teachers = await Teacher.find({ assignedBatches: student.batch }).select("fullName email department designation profilePic mobileNumber");
+
+    res.status(200).json({
+      success: true,
+      teachers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   registerStudent,
   directStudentRegister,
   payRegistrationFee,
   getStudents,
   deleteStudent,
+  getMyTeachers,
 };
-

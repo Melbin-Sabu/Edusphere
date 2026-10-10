@@ -34,6 +34,7 @@ function StudentDashboard() {
   const [activeDocumentContext, setActiveDocumentContext] = useState(null);
   const [viewingNote, setViewingNote] = useState(null);
   const [pendingFeesTotal, setPendingFeesTotal] = useState(0);
+  const [myTeachers, setMyTeachers] = useState([]);
 
   const handlePicSuccess = (url) => {
     updateUser({ profilePic: url });
@@ -70,7 +71,19 @@ function StudentDashboard() {
   useEffect(() => {
     fetchStudentApplication();
     fetchStudentFees();
+    fetchMyTeachers();
   }, [user.email]);
+
+  const fetchMyTeachers = async () => {
+    try {
+      const res = await api.get("/students/my-teachers");
+      if (res.data && res.data.teachers) {
+        setMyTeachers(res.data.teachers);
+      }
+    } catch (err) {
+      console.log("Error fetching my teachers:", err.message);
+    }
+  };
 
   const handlePaymentSuccess = (receiptData) => {
     if (application) {
@@ -283,6 +296,32 @@ function StudentDashboard() {
             </div>
           </div>
         </div>
+
+        {/* Assigned Teachers Section */}
+        {myTeachers.length > 0 && (
+          <div className="mt-6">
+            <h5 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+              <User className="w-4 h-4 text-indigo-600" /> My Assigned Class Teachers
+            </h5>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {myTeachers.map((teacher) => (
+                <div key={teacher._id} className="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100 flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-indigo-200 text-indigo-700 flex items-center justify-center font-bold text-sm overflow-hidden shrink-0">
+                    {teacher.profilePic ? (
+                      <img src={`http://${window.location.hostname}:5000${teacher.profilePic}`} alt={teacher.fullName} className="w-full h-full object-cover" />
+                    ) : (
+                      teacher.fullName.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-indigo-900">{teacher.fullName}</p>
+                    <p className="text-[10px] text-indigo-600/80 font-medium break-all">{teacher.email}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </Card>
       {/* FLOATING CHATBOT */}
       {!viewingNote && (

@@ -10,6 +10,7 @@ const {
   payRegistrationFee,
   getStudents,
   deleteStudent,
+  getMyTeachers,
 } = require("../controllers/studentController");
 const { protect, authorizeRoles } = require("../middleware/authMiddleware");
 
@@ -92,6 +93,14 @@ router.delete(
   protect,
   authorizeRoles("Administrator"),
   deleteStudent
+);
+
+// Get My Teachers Route (Student only)
+router.get(
+  "/my-teachers",
+  protect,
+  authorizeRoles("STUDENT"),
+  getMyTeachers
 );
 
 module.exports = router;

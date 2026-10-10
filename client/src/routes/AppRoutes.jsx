@@ -23,6 +23,7 @@ import TeacherQuizDashboard from "../pages/teacher/TeacherQuizDashboard";
 import QuizBuilder from "../pages/teacher/QuizBuilder";
 import QuizResults from "../pages/teacher/QuizResults";
 import TeacherAttendance from "../pages/teacher/TeacherAttendance";
+import TeacherLeave from "../pages/teacher/TeacherLeave";
 
 import StudentDashboard from "../pages/student/StudentDashboard";
 import StudentFeeView from "../pages/student/StudentFeeView";
@@ -31,6 +32,7 @@ import QuizPlayer from "../pages/student/QuizPlayer";
 import QuizResultView from "../pages/student/QuizResultView";
 import StudentResultDashboard from "../pages/student/StudentResultDashboard";
 import StudentAttendance from "../pages/student/StudentAttendance";
+import StudentLeave from "../pages/student/StudentLeave";
 
 import { ProtectedRoute, PublicOnlyRoute } from "./ProtectedRoute";
 
@@ -222,6 +224,14 @@ function AppRoutes() {
           }
         />
         <Route
+          path="/teacher/leaves"
+          element={
+            <ProtectedRoute allowedRoles={["TEACHER"]}>
+              <TeacherLeave />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/student/dashboard"
           element={
             <ProtectedRoute allowedRoles={["STUDENT"]}>
@@ -282,6 +292,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["STUDENT"]}>
               <StudentAttendance />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/student/leaves"
+          element={
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
+              <StudentLeave />
             </ProtectedRoute>
           }
         />
