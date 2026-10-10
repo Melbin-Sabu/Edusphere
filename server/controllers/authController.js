@@ -18,6 +18,13 @@ const registerUser = async (req, res) => {
       });
     }
 
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters long and contain at least one letter, one number, and one special character",
+      });
+    }
+
     // Check if user already exists
     const existingUser = await User.findOne({ email: email.toLowerCase() });
 
@@ -150,9 +157,10 @@ const changePassword = async (req, res) => {
       });
     }
 
-    if (newPassword.length < 6) {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
       return res.status(400).json({
-        message: "New password must be at least 6 characters long",
+        message: "New password must be at least 8 characters long and contain at least one letter, one number, and one special character",
       });
     }
 
@@ -277,9 +285,10 @@ const resetPassword = async (req, res) => {
       });
     }
 
-    if (newPassword.length < 6) {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
       return res.status(400).json({
-        message: "New password must be at least 6 characters long",
+        message: "New password must be at least 8 characters long and contain at least one letter, one number, and one special character",
       });
     }
 

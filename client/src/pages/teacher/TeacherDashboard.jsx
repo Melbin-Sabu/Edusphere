@@ -286,7 +286,7 @@ function TeacherDashboard() {
               <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center font-extrabold text-lg overflow-hidden shrink-0">
                 {(selectedStudent.user?.profilePic || selectedStudent.profilePic) ? (
                   <img
-                    src={(selectedStudent.user?.profilePic || selectedStudent.profilePic).startsWith("http") ? (selectedStudent.user?.profilePic || selectedStudent.profilePic) : `http://${typeof window !== "undefined" ? window.location.hostname : "localhost"}:5000${selectedStudent.user?.profilePic || selectedStudent.profilePic}`}
+                    src={(selectedStudent.user?.profilePic || selectedStudent.profilePic).startsWith("http") ? (selectedStudent.user?.profilePic || selectedStudent.profilePic) : `${MEDIA_URL}${selectedStudent.user?.profilePic || selectedStudent.profilePic}`}
                     alt={selectedStudent.fullName}
                     className="w-full h-full object-cover"
                   />

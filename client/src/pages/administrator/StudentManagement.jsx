@@ -8,7 +8,7 @@ import Input from "../../components/common/Input";
 import SelectInput from "../../components/common/SelectInput";
 import TextArea from "../../components/common/TextArea";
 import FileUpload from "../../components/common/FileUpload";
-import api from "../../api/api";
+import api, { MEDIA_URL } from "../../api/api";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -383,7 +383,7 @@ function StudentManagement() {
                         <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-sm overflow-hidden shrink-0">
                           {(st.user?.profilePic || st.profilePic) ? (
                             <img
-                              src={(st.user?.profilePic || st.profilePic).startsWith("http") ? (st.user?.profilePic || st.profilePic) : `http://${typeof window !== "undefined" ? window.location.hostname : "localhost"}:5000${st.user?.profilePic || st.profilePic}`}
+                              src={(st.user?.profilePic || st.profilePic).startsWith("http") ? (st.user?.profilePic || st.profilePic) : `${MEDIA_URL}${st.user?.profilePic || st.profilePic}`}
                               alt={st.fullName}
                               className="w-full h-full object-cover"
                             />
@@ -747,7 +747,7 @@ function StudentManagement() {
               <div className="w-16 h-16 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-extrabold text-2xl shadow-inner overflow-hidden shrink-0">
                 {(viewStudent.user?.profilePic || viewStudent.profilePic) ? (
                   <img
-                    src={(viewStudent.user?.profilePic || viewStudent.profilePic).startsWith("http") ? (viewStudent.user?.profilePic || viewStudent.profilePic) : `http://${typeof window !== "undefined" ? window.location.hostname : "localhost"}:5000${viewStudent.user?.profilePic || viewStudent.profilePic}`}
+                    src={(viewStudent.user?.profilePic || viewStudent.profilePic).startsWith("http") ? (viewStudent.user?.profilePic || viewStudent.profilePic) : `${MEDIA_URL}${viewStudent.user?.profilePic || viewStudent.profilePic}`}
                     alt={viewStudent.fullName}
                     className="w-full h-full object-cover"
                   />
@@ -848,7 +848,7 @@ function StudentManagement() {
                       const cleanPath = String(pathStr).replace(/\\/g, "/");
                       const filename = cleanPath.split("/").pop();
                       const host = typeof window !== "undefined" ? window.location.hostname : "localhost";
-                      const url = pathStr.startsWith("http") ? pathStr : `http://${host}:5000/uploads/${filename}`;
+                      const url = pathStr.startsWith("http") ? pathStr : `${MEDIA_URL}${pathStr}`;
                       window.open(url, "_blank");
                     };
 

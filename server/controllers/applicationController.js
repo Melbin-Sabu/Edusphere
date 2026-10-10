@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const { evaluateEligibility } = require("../services/eligibilityService");
 const { processMockPayment } = require("../services/paymentService");
 const { sendStudentRegistrationEmail } = require("../services/emailService");
+const { validateDeepEmail } = require("../utils/deepEmailValidator");
 
 /**
  * Generate Next Application ID (APP20260001)
@@ -107,14 +108,73 @@ const submitApplication = async (req, res) => {
     const tenthNum = Number(tenthPercentage);
     const twelfthNum = Number(twelfthPercentage);
 
-    if (tenthNum < 0 || tenthNum > 100 || twelfthNum < 0 || twelfthNum > 100) {
+    if (tenthNum < 35 || tenthNum > 100 || twelfthNum < 35 || twelfthNum > 100) {
       return res.status(400).json({
-        message: "Percentages must be between 0 and 100.",
+        message: "Percentages must be between 35 and 100.",
       });
     }
 
     const cleanEmail = email.toLowerCase().trim();
     const cleanMobile = mobile.trim();
+    const cleanParentEmail = parentEmail.toLowerCase().trim();
+
+    // 1. Deep Email Validation
+    const studentEmailVal = validateDeepEmail(cleanEmail);
+    if (!studentEmailVal.isValid) {
+      return res.status(400).json({
+        message: `Student Email Validation Error: ${studentEmailVal.error}`,
+      });
+    }
+
+    const parentEmailVal = validateDeepEmail(cleanParentEmail);
+    if (!parentEmailVal.isValid) {
+      return res.status(400).json({
+        message: `Parent Email Validation Error: ${parentEmailVal.error}`,
+      });
+    }
+
+    if (cleanEmail === cleanParentEmail) {
+      return res.status(400).json({
+        message: "Parent email address cannot be identical to student email address",
+      });
+    }
+
+    // 2. Mobile Number Format
+    const indianMobileRegex = /^[6-9]\d{9}$/;
+    if (!indianMobileRegex.test(cleanMobile)) {
+      return res.status(400).json({
+        message: "Invalid Student Mobile Number. Must be a valid 10-digit Indian number.",
+      });
+    }
+
+    if (!indianMobileRegex.test(parentMobile.trim())) {
+      return res.status(400).json({
+        message: "Invalid Parent Mobile Number. Must be a valid 10-digit Indian number.",
+      });
+    }
+
+    if (cleanMobile === parentMobile.trim()) {
+      return res.status(400).json({
+        message: "Parent mobile number cannot be identical to student mobile number.",
+      });
+    }
+
+    // 3. DOB Validation (at least 17 years old)
+    const parsedDob = new Date(dateOfBirth);
+    if (isNaN(parsedDob.getTime())) {
+      return res.status(400).json({ message: "Invalid Date of Birth format." });
+    }
+    const today = new Date();
+    let age = today.getFullYear() - parsedDob.getFullYear();
+    const m = today.getMonth() - parsedDob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < parsedDob.getDate())) {
+      age--;
+    }
+    if (age < 17) {
+      return res.status(400).json({
+        message: `Applicant must be at least 17 years old. Calculated age: ${age}.`,
+      });
+    }
 
     // Prevent duplicate active applications (allow resubmission if previously REJECTED)
     const existingActiveApp = await Application.findOne({

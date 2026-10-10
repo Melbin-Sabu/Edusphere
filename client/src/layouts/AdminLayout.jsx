@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { MEDIA_URL } from "../api/api";
 import EduSphereLogo from "../components/common/EduSphereLogo";
 import {
   LayoutDashboard,
@@ -354,7 +355,7 @@ function AdminLayout({ children, title }) {
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center font-extrabold text-sm shadow-md shadow-purple-500/20 overflow-hidden">
                   {user.profilePic ? (
                     <img
-                      src={user.profilePic.startsWith("http") ? user.profilePic : `http://${typeof window !== "undefined" ? window.location.hostname : "localhost"}:5000${user.profilePic}`}
+                      src={user.profilePic.startsWith("http") ? user.profilePic : `${MEDIA_URL}${user.profilePic}`}
                       alt={user.name || "User"}
                       className="w-full h-full object-cover"
                     />

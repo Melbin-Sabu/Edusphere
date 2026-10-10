@@ -88,7 +88,7 @@ const getWelcomeHtmlTemplate = ({ studentName, email, admissionNumber, tempPassw
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center">
-                    <a href="http://localhost:5173/login" style="background: linear-gradient(135deg, #6D28D9 0%, #2563EB 100%); color: #ffffff; padding: 14px 32px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 14px;">Launch EduSphere Portal &rarr;</a>
+                    <a href="/login" style="background: linear-gradient(135deg, #6D28D9 0%, #2563EB 100%); color: #ffffff; padding: 14px 32px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 14px;">Launch EduSphere Portal &rarr;</a>
                   </td>
                 </tr>
               </table>
@@ -139,7 +139,7 @@ Admission Number: ${admissionNumber}
 Email: ${email}
 Temporary Password: ${tempPassword}
 
-Login URL: http://localhost:5173/login
+Login URL: /login
 
 For security, you must change your password after your first login.
 
@@ -211,7 +211,7 @@ const getForgotPasswordHtmlTemplate = ({ userName, email, tempPassword }) => {
       </div>
 
       <div class="btn-container">
-        <a href="http://localhost:5173/login" class="btn">Log In & Update Password &rarr;</a>
+        <a href="/login" class="btn">Log In & Update Password &rarr;</a>
       </div>
     </div>
 
@@ -244,7 +244,7 @@ const sendForgotPasswordEmail = async ({ userName, email, tempPassword }) => {
 Your password reset request has been processed.
 
 Temporary Password: ${tempPassword}
-Login URL: http://localhost:5173/login
+Login URL: /login
 
 Please log in and update your password immediately.
 
@@ -329,7 +329,7 @@ const getStaffWelcomeHtmlTemplate = ({ name, email, role, tempPassword }) => {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center">
-                    <a href="http://localhost:5173/login" style="background: linear-gradient(135deg, #4338CA 0%, #2563EB 100%); color: #ffffff; padding: 14px 32px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 14px;">Log In to Staff Portal &rarr;</a>
+                    <a href="/login" style="background: linear-gradient(135deg, #4338CA 0%, #2563EB 100%); color: #ffffff; padding: 14px 32px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-block; font-size: 14px;">Log In to Staff Portal &rarr;</a>
                   </td>
                 </tr>
               </table>
@@ -375,7 +375,7 @@ Role: ${role}
 Email: ${email}
 Temporary Password: ${tempPassword}
 
-Login URL: http://localhost:5173/login
+Login URL: /login
 
 For security reasons, you must change your temporary password upon your first login.
 
@@ -402,8 +402,8 @@ const sendPaymentRequestEmail = async ({ applicantName, email, applicationId, ad
 
     const transporter = createTransporter();
 
-    const paymentLink = `http://localhost:5173/apply/payment?appId=${applicationId}`;
-    const loginLink = `http://localhost:5173/login`;
+    const paymentLink = `/apply/payment?appId=${applicationId}`;
+    const loginLink = `/login`;
 
     const mailOptions = {
       from: `"EduSphere Admissions" <${process.env.EMAIL_USER}>`,

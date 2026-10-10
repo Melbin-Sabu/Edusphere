@@ -7,7 +7,7 @@ import ProfilePicUpload from "../../components/common/ProfilePicUpload";
 import StudentNotesSection from "../../components/dashboard/StudentNotesSection";
 import AIChatbot from "../../components/dashboard/AIChatbot";
 import PaymentModal from "../../components/common/PaymentModal";
-import api from "../../api/api";
+import api, { MEDIA_URL } from "../../api/api";
 import {
   GraduationCap,
   Award,
@@ -308,7 +308,7 @@ function StudentDashboard() {
                 <div key={teacher._id} className="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100 flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full bg-indigo-200 text-indigo-700 flex items-center justify-center font-bold text-sm overflow-hidden shrink-0">
                     {teacher.profilePic ? (
-                      <img src={`http://${window.location.hostname}:5000${teacher.profilePic}`} alt={teacher.fullName} className="w-full h-full object-cover" />
+                      <img src={`${MEDIA_URL}${teacher.profilePic}`} alt={teacher.fullName} className="w-full h-full object-cover" />
                     ) : (
                       teacher.fullName.charAt(0).toUpperCase()
                     )}
@@ -347,7 +347,7 @@ function StudentDashboard() {
             </div>
             <div className="flex-1 bg-slate-100">
               <iframe
-                src={viewingNote.fileUrl.startsWith("http") ? viewingNote.fileUrl : `http://${window.location.hostname}:5000${viewingNote.fileUrl}`}
+                src={viewingNote.fileUrl.startsWith("http") ? viewingNote.fileUrl : `${MEDIA_URL}${viewingNote.fileUrl}`}
                 className="w-full h-full border-none"
                 title={viewingNote.title}
               />

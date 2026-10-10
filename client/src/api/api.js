@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// Export BASE_URL so other files can use it for constructing absolute URLs (like images)
 export const BASE_URL = import.meta.env.VITE_API_URL || (typeof window !== "undefined" ? `http://${window.location.hostname}:5000/api` : "http://localhost:5000/api");
+export const MEDIA_URL = BASE_URL.replace('/api', '');
 
 const api = axios.create({
   baseURL: BASE_URL,

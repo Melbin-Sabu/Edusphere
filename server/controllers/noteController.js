@@ -80,7 +80,13 @@ const uploadNote = async (req, res) => {
       }
       fileRef = filePath; // Store Supabase path
     } else {
-      return res.status(500).json({ message: "Supabase cloud storage is not configured." });
+      // Fallback to local disk
+      const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+      const ext = path.extname(req.file.originalname);
+      const fileName = `note-${uniqueSuffix}${ext}`;
+      const uploadPath = path.join(__dirname, "../uploads/notes", fileName);
+      fs.writeFileSync(uploadPath, req.file.buffer);
+      fileRef = `/uploads/notes/${fileName}`;
     }
 
     const note = new Note({

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Camera, User, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import api from "../../api/api";
+import api, { MEDIA_URL } from "../../api/api";
 
 function ProfilePicUpload({ currentImage, name = "User", onUploadSuccess, className = "" }) {
   const [uploading, setUploading] = useState(false);
@@ -11,8 +11,7 @@ function ProfilePicUpload({ currentImage, name = "User", onUploadSuccess, classN
   const getFullImageUrl = (path) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const hostname = typeof window !== "undefined" ? window.location.hostname : "localhost";
-    return `http://${hostname}:5000${path}`;
+    return `${MEDIA_URL}${path}`;
   };
 
   const handleFileChange = async (e) => {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
-import api from "../../api/api";
+import api, { MEDIA_URL } from "../../api/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { teacherRegistrationSchema } from "../../validation/teacherRegistrationSchema";
@@ -417,7 +417,7 @@ function TeacherManagement() {
                       <div className="w-11 h-11 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-base shadow-inner shrink-0 overflow-hidden">
                         {t.profilePic ? (
                           <img
-                            src={t.profilePic.startsWith("http") ? t.profilePic : `http://${typeof window !== "undefined" ? window.location.hostname : "localhost"}:5000${t.profilePic}`}
+                            src={t.profilePic.startsWith("http") ? t.profilePic : `${MEDIA_URL}${t.profilePic}`}
                             alt={t.name || t.fullName}
                             className="w-full h-full object-cover"
                           />
@@ -819,7 +819,7 @@ function TeacherManagement() {
               <div className="w-14 h-14 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-xl shadow-inner overflow-hidden shrink-0">
                 {viewTeacher.profilePic ? (
                   <img
-                    src={viewTeacher.profilePic.startsWith("http") ? viewTeacher.profilePic : `http://${typeof window !== "undefined" ? window.location.hostname : "localhost"}:5000${viewTeacher.profilePic}`}
+                    src={viewTeacher.profilePic.startsWith("http") ? viewTeacher.profilePic : `${MEDIA_URL}${viewTeacher.profilePic}`}
                     alt={viewTeacher.name || viewTeacher.fullName}
                     className="w-full h-full object-cover"
                   />

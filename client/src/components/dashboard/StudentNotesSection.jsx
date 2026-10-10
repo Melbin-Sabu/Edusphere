@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import React, { useState, useEffect } from "react";
 import Card from "../common/Card";
 import Button from "../common/Button";
-import api from "../../api/api";
+import api, { MEDIA_URL } from "../../api/api";
 import { BookOpen, FileText, CheckCircle2, Clock, ExternalLink } from "lucide-react";
 import { FaRobot } from "react-icons/fa";
 
@@ -62,7 +62,7 @@ export default function StudentNotesSection({ onAskAI, onViewNote }) {
         onViewNote(note);
       } else {
         // Fallback if onViewNote is not provided
-        const fileUrl = note.fileUrl.startsWith("http") ? note.fileUrl : `http://${window.location.hostname}:5000${note.fileUrl}`;
+        const fileUrl = note.fileUrl.startsWith("http") ? note.fileUrl : `${MEDIA_URL}${note.fileUrl}`;
         window.open(fileUrl, "_blank");
       }
 
