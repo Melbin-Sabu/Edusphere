@@ -86,7 +86,7 @@ function AdminLayout({ children, title }) {
         { name: "Attendance Records", path: "/administrator/attendance", icon: CalendarCheck, isPlaceholder: true },
         { name: "Timetable Allocation", path: "/admin/timetable", icon: CalendarCheck },
         { name: "Fee Management", path: "/admin/fees", icon: Receipt },
-        { name: "Reports & Analytics", path: "/administrator/reports", icon: BarChart3, isPlaceholder: true },
+        { name: "Reports & Analytics", path: "/administrator/reports", icon: BarChart3 },
         { name: "Change Password", path: "/change-password", icon: Key },
       ];
     }
@@ -102,7 +102,7 @@ function AdminLayout({ children, title }) {
       { name: "Attendance", path: "/administrator/attendance", icon: CalendarCheck, isPlaceholder: true },
       { name: "Fees", path: "/administrator/fees", icon: Receipt },
       { name: "Exams & Marks", path: "/administrator/exams", icon: FileText, isPlaceholder: true },
-      { name: "Reports", path: "/administrator/reports", icon: BarChart3, isPlaceholder: true },
+      { name: "Reports & Analytics", path: "/administrator/reports", icon: BarChart3 },
       { name: "Settings", path: "/administrator/settings", icon: Settings, isPlaceholder: true },
     ];
   };

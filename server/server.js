@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
@@ -17,6 +17,7 @@ const aiRoutes = require("./routes/aiRoutes");
 const feeRoutes = require("./routes/feeRoutes");
 const quizRoutes = require("./routes/quizRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 const app = express();
 
@@ -65,6 +66,7 @@ app.use("/api/ai", aiRoutes);
 app.use("/api/fees", feeRoutes);
 app.use("/api/quizzes", quizRoutes);
 app.use("/api/attendance", attendanceRoutes);
+app.use("/api/reports", reportRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

@@ -127,6 +127,7 @@ const loginUser = async (req, res) => {
         role: user.role,
         isFirstLogin: firstLoginFlag,
         status: user.status,
+        profilePic: user.profilePic || "",
       },
     });
   } catch (error) {
@@ -188,6 +189,7 @@ const changePassword = async (req, res) => {
         role: user.role,
         isFirstLogin: false,
         status: user.status,
+        profilePic: user.profilePic || "",
       },
     });
   } catch (error) {
@@ -328,6 +330,7 @@ const resetPassword = async (req, res) => {
         role: user.role,
         isFirstLogin: false,
         status: user.status,
+        profilePic: user.profilePic || "",
       },
     });
   } catch (error) {
@@ -402,6 +405,7 @@ const googleLogin = async (req, res) => {
         role: user.role,
         isFirstLogin: user.isFirstLogin || false,
         status: user.status,
+        profilePic: user.profilePic || "",
       },
     });
   } catch (error) {
@@ -646,6 +650,7 @@ const getCurrentUser = async (req, res) => {
         role: user.role,
         isFirstLogin: firstLoginFlag,
         status: user.status,
+        profilePic: user.profilePic || "",
       },
     });
   } catch (error) {

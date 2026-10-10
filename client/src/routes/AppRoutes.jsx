@@ -15,6 +15,7 @@ import BatchManagement from "../pages/administrator/BatchManagement";
 import FeeManagement from "../pages/administrator/FeeManagement";
 
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminReports from "../pages/admin/AdminReports";
 import TimetableGenerator from "../pages/admin/TimetableGenerator";
 import TeacherDashboard from "../pages/teacher/TeacherDashboard";
 import ManageSubjectTeachers from "../pages/teacher/ManageSubjectTeachers";
@@ -127,6 +128,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["ADMINISTRATOR"]}>
               <FeeManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/administrator/reports"
+          element={
+            <ProtectedRoute allowedRoles={["ADMINISTRATOR", "ADMIN"]}>
+              <AdminReports />
             </ProtectedRoute>
           }
         />

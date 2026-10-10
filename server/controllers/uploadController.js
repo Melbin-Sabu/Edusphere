@@ -28,10 +28,10 @@ const uploadProfilePic = async (req, res) => {
       );
 
       // 2. Update Student document if exists
-      await Student.findOneAndUpdate({ user_id: userId }, { profilePic: relativeUrl });
+      await Student.findOneAndUpdate({ user: userId }, { profilePic: relativeUrl });
 
       // 3. Update Teacher document if exists
-      await Teacher.findOneAndUpdate({ user_id: userId }, { profilePic: relativeUrl });
+      await Teacher.findOneAndUpdate({ user: userId }, { profilePic: relativeUrl });
 
       return res.status(200).json({
         message: "Profile picture uploaded successfully!",
