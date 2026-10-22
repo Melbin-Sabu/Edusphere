@@ -122,7 +122,6 @@ function StudentManagement() {
   };
 
   const prevStep = () => {
-  const confirm = useConfirm();
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
@@ -232,7 +231,6 @@ function StudentManagement() {
 
   // Export to Excel
   const exportToExcel = () => {
-  const confirm = useConfirm();
     const exportData = filteredStudents.map((s) => ({
       "Admission No": s.admissionNumber || "N/A",
       "Full Name": s.fullName || "N/A",
@@ -252,7 +250,6 @@ function StudentManagement() {
 
   // Export to PDF
   const exportToPDF = () => {
-  const confirm = useConfirm();
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.setTextColor(109, 40, 217);
@@ -283,7 +280,6 @@ function StudentManagement() {
   };
 
   const copyCredentials = () => {
-  const confirm = useConfirm();
     if (!successData) return;
     const text = `EduSphere Account Credentials:\nEmail: ${successData.email}\nAdmission No: ${successData.admissionNumber}`;
     navigator.clipboard.writeText(text);
@@ -843,7 +839,6 @@ function StudentManagement() {
                     const cert12 = viewStudent.twelfthCertificate || viewStudent.applicationId?.twelfthCertificate;
 
                     const handleViewCert = (pathStr) => {
-  const confirm = useConfirm();
                       if (!pathStr) return;
                       const cleanPath = String(pathStr).replace(/\\/g, "/");
                       const filename = cleanPath.split("/").pop();

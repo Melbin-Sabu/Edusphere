@@ -40,7 +40,9 @@ function FeeManagement() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedStudentFee, setSelectedStudentFee] = useState(null);
 
-  const [feeForm, setFeeForm] = useState({
+  const todayStr = new Date().toISOString().split("T")[0];
+
+  const initialFeeForm = {
     courseId: "",
     batchId: "",
     scope: "COURSE",
@@ -50,14 +52,26 @@ function FeeManagement() {
     installmentCount: 1,
     installmentIntervalMonths: 1,
     firstInstallmentDate: "",
-    components: [{ name: "Tuition Fee", amount: 0 }]
-  });
+    components: [{ name: "Tuition Fee", amount: "" }]
+  };
+
+  const [feeForm, setFeeForm] = useState(initialFeeForm);
 
   const [paymentForm, setPaymentForm] = useState({
     amount: 0,
     paymentMethod: "ONLINE",
     transactionId: ""
   });
+
+  const getFinalInstallmentDate = () => {
+    if (!feeForm.firstInstallmentDate) return null;
+    const count = Number(feeForm.installmentCount) || 1;
+    const interval = Number(feeForm.installmentIntervalMonths) || 1;
+    if (count <= 1) return feeForm.firstInstallmentDate;
+    const d = new Date(feeForm.firstInstallmentDate);
+    d.setMonth(d.getMonth() + (count - 1) * interval);
+    return isNaN(d.getTime()) ? null : d.toISOString().split("T")[0];
+  };
 
   useEffect(() => {
     loadData(activeTab);
@@ -87,32 +101,165 @@ function FeeManagement() {
   };
 
   const handleAddStructureComponent = () => {
-  const confirm = useConfirm();
-    setFeeForm({
-      ...feeForm,
-      components: [...feeForm.components, { name: "", amount: 0 }]
-    });
+    setFeeForm((prev) => ({
+      ...prev,
+      components: [...prev.components, { name: "", amount: "" }]
+    }));
   };
 
   const handleRemoveStructureComponent = (idx) => {
-  const confirm = useConfirm();
-    const newComponents = feeForm.components.filter((_, i) => i !== idx);
-    setFeeForm({ ...feeForm, components: newComponents });
+    if (feeForm.components.length <= 1) {
+      toast.error("At least one fee component is required.");
+      return;
+    }
+    setFeeForm((prev) => ({
+      ...prev,
+      components: prev.components.filter((_, i) => i !== idx)
+    }));
   };
 
   const handleComponentChange = (idx, field, value) => {
-  const confirm = useConfirm();
     const newComponents = [...feeForm.components];
-    newComponents[idx][field] = field === "amount" ? Number(value) : value;
-    setFeeForm({ ...feeForm, components: newComponents });
+    if (field === "amount") {
+      // Allow only digits (0-9)
+      const sanitized = value.replace(/[^0-9]/g, "");
+      newComponents[idx][field] = sanitized;
+    } else {
+      newComponents[idx][field] = value;
+    }
+    setFeeForm((prev) => ({ ...prev, components: newComponents }));
   };
 
   const submitFeeStructure = async (e) => {
     e.preventDefault();
+
+    // 1. Validate Course ID
+    if (!feeForm.courseId || !feeForm.courseId.trim()) {
+      toast.error("Please enter a Course ID (e.g. NEET, JEE).");
+      return;
+    }
+
+    // 2. Validate Scope / Batch
+    if (feeForm.scope === "BATCH" && (!feeForm.batchId || !feeForm.batchId.trim())) {
+      toast.error("Batch ID is required when fee structure applies to a specific batch.");
+      return;
+    }
+
+    // 3. Validate Academic Year format
+    const trimmedYear = feeForm.academicYear.trim();
+    if (!trimmedYear) {
+      toast.error("Please enter an Academic Year.");
+      return;
+    }
+    const yearRegex = /^\d{4}-\d{2,4}$/;
+    if (!yearRegex.test(trimmedYear)) {
+      toast.error("Academic Year format should be YYYY-YYYY or YYYY-YY (e.g. 2026-2027 or 2026-27).");
+      return;
+    }
+
+    // 4. Validate Dates
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (!feeForm.dueDate) {
+      toast.error("Please select an Overall Due Date.");
+      return;
+    }
+
+    const overallDue = new Date(feeForm.dueDate);
+    overallDue.setHours(0, 0, 0, 0);
+
+    if (overallDue < today) {
+      toast.error("Overall Due Date cannot be in the past.");
+      return;
+    }
+
+    // 5. Validate Installments
+    if (feeForm.installmentEnabled) {
+      const count = Number(feeForm.installmentCount);
+      const interval = Number(feeForm.installmentIntervalMonths);
+
+      if (!count || count < 1) {
+        toast.error("Installment count must be at least 1.");
+        return;
+      }
+      if (!interval || interval < 1) {
+        toast.error("Installment interval must be at least 1 month.");
+        return;
+      }
+      if (!feeForm.firstInstallmentDate) {
+        toast.error("Please choose the First Installment Date.");
+        return;
+      }
+
+      const firstDate = new Date(feeForm.firstInstallmentDate);
+      firstDate.setHours(0, 0, 0, 0);
+
+      if (firstDate < today) {
+        toast.error("First Installment Date cannot be in the past.");
+        return;
+      }
+
+      if (firstDate > overallDue) {
+        toast.error("First Installment Date cannot be after the Overall Due Date.");
+        return;
+      }
+
+      const finalDate = new Date(firstDate);
+      if (count > 1) {
+        finalDate.setMonth(finalDate.getMonth() + (count - 1) * interval);
+      }
+      if (finalDate > overallDue) {
+        const finalDateStr = finalDate.toISOString().split("T")[0];
+        toast.error(
+          `Final installment (#${count}) falls on ${finalDateStr}, which is after the Overall Due Date (${feeForm.dueDate}). Please adjust the Overall Due Date or use the 'Set Due Date' button.`
+        );
+        return;
+      }
+    }
+
+    // 6. Validate Components
+    if (!feeForm.components || feeForm.components.length === 0) {
+      toast.error("Please add at least one fee component.");
+      return;
+    }
+
+    for (let i = 0; i < feeForm.components.length; i++) {
+      const comp = feeForm.components[i];
+      if (!comp.name || !comp.name.trim()) {
+        toast.error(`Please provide a name for component #${i + 1}.`);
+        return;
+      }
+      const numAmt = Number(comp.amount);
+      if (!comp.amount || isNaN(numAmt) || numAmt <= 0) {
+        toast.error(`Please enter a valid amount greater than ₹0 for "${comp.name}".`);
+        return;
+      }
+    }
+
+    const totalAmount = feeForm.components.reduce((sum, c) => sum + Number(c.amount), 0);
+    if (totalAmount <= 0) {
+      toast.error("Total fee amount must be greater than ₹0.");
+      return;
+    }
+
+    const payload = {
+      ...feeForm,
+      courseId: feeForm.courseId.trim().toUpperCase(),
+      batchId: feeForm.scope === "BATCH" ? feeForm.batchId.trim().toUpperCase() : undefined,
+      academicYear: trimmedYear,
+      components: feeForm.components.map((c) => ({
+        name: c.name.trim(),
+        amount: Number(c.amount)
+      })),
+      totalAmount
+    };
+
     try {
-      await api.post("/fees/structures", feeForm);
+      await api.post("/fees/structures", payload);
       toast.success("Fee Structure Created Successfully!");
       setShowStructureModal(false);
+      setFeeForm(initialFeeForm);
       loadData("structures");
     } catch (err) {
       toast.error(err.response?.data?.message || "Error creating fee structure");
@@ -464,7 +611,7 @@ function FeeManagement() {
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1">Overall Due Date</label>
-                  <input type="date" required value={feeForm.dueDate} onChange={e => setFeeForm({...feeForm, dueDate: e.target.value})} className="w-full p-2 border rounded-xl text-sm" />
+                  <input type="date" min={todayStr} required value={feeForm.dueDate} onChange={e => setFeeForm({...feeForm, dueDate: e.target.value})} className="w-full p-2 border rounded-xl text-sm" />
                 </div>
               </div>
               
@@ -475,19 +622,74 @@ function FeeManagement() {
                 </label>
                 
                 {feeForm.installmentEnabled && (
-                  <div className="mt-4 grid grid-cols-3 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Count</label>
-                      <input type="number" min="1" required={feeForm.installmentEnabled} value={feeForm.installmentCount} onChange={e => setFeeForm({...feeForm, installmentCount: Number(e.target.value)})} className="w-full p-2 border rounded-xl text-sm" />
+                  <div className="mt-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                    <div className="grid grid-cols-3 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Count</label>
+                        <input 
+                          type="number" 
+                          min="1" 
+                          required={feeForm.installmentEnabled} 
+                          value={feeForm.installmentCount} 
+                          onChange={e => {
+                            const val = e.target.value;
+                            setFeeForm({
+                              ...feeForm, 
+                              installmentCount: val === "" ? "" : Math.max(1, parseInt(val, 10) || 1)
+                            });
+                          }} 
+                          className="w-full p-2 border rounded-xl text-sm" 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Interval (Months)</label>
+                        <input 
+                          type="number" 
+                          min="1" 
+                          required={feeForm.installmentEnabled} 
+                          value={feeForm.installmentIntervalMonths} 
+                          onChange={e => {
+                            const val = e.target.value;
+                            setFeeForm({
+                              ...feeForm, 
+                              installmentIntervalMonths: val === "" ? "" : Math.max(1, parseInt(val, 10) || 1)
+                            });
+                          }} 
+                          className="w-full p-2 border rounded-xl text-sm" 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">First Date</label>
+                        <input type="date" min={todayStr} max={feeForm.dueDate || undefined} required={feeForm.installmentEnabled} value={feeForm.firstInstallmentDate} onChange={e => setFeeForm({...feeForm, firstInstallmentDate: e.target.value})} className="w-full p-2 border rounded-xl text-sm" />
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Interval (Months)</label>
-                      <input type="number" min="1" required={feeForm.installmentEnabled} value={feeForm.installmentIntervalMonths} onChange={e => setFeeForm({...feeForm, installmentIntervalMonths: Number(e.target.value)})} className="w-full p-2 border rounded-xl text-sm" />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">First Date</label>
-                      <input type="date" required={feeForm.installmentEnabled} value={feeForm.firstInstallmentDate} onChange={e => setFeeForm({...feeForm, firstInstallmentDate: e.target.value})} className="w-full p-2 border rounded-xl text-sm" />
-                    </div>
+
+                    {(() => {
+                      const finalDateStr = getFinalInstallmentDate();
+                      if (!finalDateStr || !feeForm.dueDate) return null;
+                      const isOverdue = new Date(finalDateStr) > new Date(feeForm.dueDate);
+                      return (
+                        <div className={`mt-2.5 p-2.5 rounded-xl text-xs font-medium flex flex-wrap items-center justify-between gap-2 ${isOverdue ? 'bg-amber-50 text-amber-900 border border-amber-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}`}>
+                          <div className="flex items-center gap-1.5">
+                            <span>{isOverdue ? '⚠️' : '✓'}</span>
+                            <span>
+                              {isOverdue 
+                                ? `Final installment (#${feeForm.installmentCount || 1}) falls on ${finalDateStr}, which is after Overall Due Date (${feeForm.dueDate}).`
+                                : `Final installment (#${feeForm.installmentCount || 1}) will be due on ${finalDateStr}.`}
+                            </span>
+                          </div>
+                          {isOverdue && (
+                            <button
+                              type="button"
+                              onClick={() => setFeeForm(prev => ({ ...prev, dueDate: finalDateStr }))}
+                              className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-[10px] transition cursor-pointer shadow-xs"
+                            >
+                              Set Due Date to {finalDateStr}
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
               </div>
@@ -495,17 +697,46 @@ function FeeManagement() {
               <div className="mt-4 border-t pt-4">
                 <div className="flex justify-between items-center mb-2">
                   <label className="block text-xs font-bold text-slate-700">Fee Components</label>
-                  <button type="button" onClick={handleAddStructureComponent} className="text-xs text-orange-600 font-bold">+ Add Item</button>
+                  <button type="button" onClick={handleAddStructureComponent} className="text-xs text-orange-600 hover:text-orange-700 font-bold flex items-center gap-1 cursor-pointer transition">
+                    + Add Item
+                  </button>
                 </div>
                 {feeForm.components.map((comp, idx) => (
                   <div key={idx} className="flex gap-2 mb-2 items-center">
-                    <input type="text" placeholder="Name" required value={comp.name} onChange={(e) => handleComponentChange(idx, "name", e.target.value)} className="flex-1 p-2 border rounded-xl text-sm" />
-                    <input type="number" placeholder="Amount" min="0" required value={comp.amount} onChange={(e) => handleComponentChange(idx, "amount", e.target.value)} className="w-32 p-2 border rounded-xl text-sm" />
-                    {idx > 0 && <button type="button" onClick={() => handleRemoveStructureComponent(idx)} className="text-rose-500"><X className="w-4 h-4"/></button>}
+                    <input 
+                      type="text" 
+                      placeholder="Component Name (e.g. Tuition Fee)" 
+                      required 
+                      value={comp.name} 
+                      onChange={(e) => handleComponentChange(idx, "name", e.target.value)} 
+                      className="flex-1 p-2 border rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-orange-500" 
+                    />
+                    <div className="relative w-36">
+                      <span className="absolute left-3 top-2.5 text-slate-400 text-xs font-bold">₹</span>
+                      <input 
+                        type="text" 
+                        inputMode="numeric"
+                        placeholder="0" 
+                        required 
+                        value={comp.amount} 
+                        onChange={(e) => handleComponentChange(idx, "amount", e.target.value)} 
+                        className="w-full pl-7 pr-2 py-2 border rounded-xl text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-orange-500" 
+                      />
+                    </div>
+                    {feeForm.components.length > 1 && (
+                      <button type="button" onClick={() => handleRemoveStructureComponent(idx)} className="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition" title="Remove Component">
+                        <X className="w-4 h-4"/>
+                      </button>
+                    )}
                   </div>
                 ))}
-                <div className="text-right text-sm font-bold text-slate-800 mt-2">
-                  Total: ₹{feeForm.components.reduce((sum, c) => sum + (Number(c.amount) || 0), 0)}
+                <div className="flex justify-between items-center mt-3 pt-2 border-t border-dashed">
+                  <span className="text-xs text-slate-500 font-medium">
+                    {feeForm.components.length} component{feeForm.components.length > 1 ? "s" : ""}
+                  </span>
+                  <div className="text-sm font-bold text-slate-800">
+                    Total: <span className="text-orange-600 font-bold text-base">₹{(feeForm.components.reduce((sum, c) => sum + (Number(c.amount) || 0), 0)).toLocaleString('en-IN')}</span>
+                  </div>
                 </div>
               </div>
               <Button type="submit" className="w-full mt-4">Create Structure & Assign to Students</Button>

@@ -149,7 +149,6 @@ function TeacherManagement() {
   }, []);
 
   const copyToClipboard = (text) => {
-  const confirm = useConfirm();
     if (!text) return;
     navigator.clipboard.writeText(text);
     setCopied(true);
