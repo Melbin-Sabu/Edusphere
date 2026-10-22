@@ -104,7 +104,6 @@ function AdminLayout({ children, title }) {
       { name: "Timetable Allocation", path: "/administrator/timetable", icon: CalendarCheck },
       { name: "Attendance", path: "/administrator/attendance", icon: CalendarCheck, isPlaceholder: true },
       { name: "Fees", path: "/administrator/fees", icon: Receipt },
-      { name: "Exams & Marks", path: "/administrator/exams", icon: FileText, isPlaceholder: true },
       { name: "Reports & Analytics", path: "/administrator/reports", icon: BarChart3 },
       { name: "Settings", path: "/administrator/settings", icon: Settings, isPlaceholder: true },
     ];

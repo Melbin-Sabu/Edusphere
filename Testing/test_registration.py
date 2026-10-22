@@ -67,4 +67,6 @@ class TestRegistration():
     self.driver.find_element(By.NAME, "password").send_keys("Edu@123")
     self.driver.find_element(By.NAME, "email").click()
     self.driver.find_element(By.NAME, "email").send_keys("dericjoseph")
-  
+
+if __name__ == "__main__":
+    pytest.main(["test_registration.py", "-v", "-s"])
