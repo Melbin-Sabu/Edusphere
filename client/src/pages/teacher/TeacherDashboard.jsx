@@ -58,6 +58,11 @@ function TeacherDashboard() {
           if (me) {
             myBatches = me.assignedBatches || [];
             mySubjectBatches = me.subjectBatches || [];
+            if (me.subject && !user.subject) {
+              const updated = { ...user, subject: me.subject };
+              localStorage.setItem("user", JSON.stringify(updated));
+              setUser(updated);
+            }
           }
         }
         setAssignedBatches(myBatches);
@@ -184,6 +189,26 @@ function TeacherDashboard() {
         assignedBatches={[...assignedBatches, ...subjectBatches]} 
         uploadableBatches={subjectBatches}
       />
+
+      {/* ACADEMIC TIMETABLE BANNER */}
+      <div className="mb-8 bg-gradient-to-r from-[#0D2F24] via-emerald-950 to-[#124434] rounded-2xl p-6 text-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-emerald-800/40">
+        <div className="space-y-1.5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-500/30">
+            <Calendar className="w-3.5 h-3.5" /> Class Schedule & Allotted Hours
+          </div>
+          <h3 className="text-xl font-black text-white">Academic Timetable Available</h3>
+          <p className="text-xs text-emerald-100/80 max-w-xl">
+            View your weekly class schedule with your allotted <span className="font-bold text-white underline decoration-emerald-400">{user.subject || "teaching"}</span> hours prominently highlighted. Check assigned periods for NEET & JEE batches.
+          </p>
+        </div>
+        <Link
+          to="/teacher/timetable"
+          className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-black px-5 py-3 rounded-xl text-sm transition-all shadow-md shrink-0 hover:scale-[1.02]"
+        >
+          <span>View Weekly Timetable</span>
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
 
       {/* STUDENT ROSTER TABLE */}
       <Card className="p-6">

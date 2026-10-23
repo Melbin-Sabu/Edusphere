@@ -18,6 +18,7 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminReports from "../pages/admin/AdminReports";
 import TimetableGenerator from "../pages/admin/TimetableGenerator";
 import TeacherDashboard from "../pages/teacher/TeacherDashboard";
+import TeacherTimetable from "../pages/teacher/TeacherTimetable";
 import ManageSubjectTeachers from "../pages/teacher/ManageSubjectTeachers";
 import TeacherQuizDashboard from "../pages/teacher/TeacherQuizDashboard";
 import QuizBuilder from "../pages/teacher/QuizBuilder";
@@ -228,6 +229,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["TEACHER"]}>
               <TeacherLeave />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teacher/timetable"
+          element={
+            <ProtectedRoute allowedRoles={["TEACHER", "ADMINISTRATOR", "ADMIN"]}>
+              <TeacherTimetable />
             </ProtectedRoute>
           }
         />

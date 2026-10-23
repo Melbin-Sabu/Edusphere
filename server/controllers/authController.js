@@ -123,6 +123,13 @@ const loginUser = async (req, res) => {
     const isAdministrator = (user.role || "").toUpperCase() === "ADMINISTRATOR";
     const firstLoginFlag = isAdministrator ? false : Boolean(user.isFirstLogin);
 
+    let teacherInfo = null;
+    if ((user.role || "").toUpperCase() === "TEACHER") {
+      teacherInfo = await Teacher.findOne({
+        $or: [{ user: user._id }, { email: user.email }],
+      }).select("subject department assignedBatches subjectBatches employeeId fullName");
+    }
+
     res.status(200).json({
       message: "Login Successful",
       token,
@@ -135,6 +142,11 @@ const loginUser = async (req, res) => {
         isFirstLogin: firstLoginFlag,
         status: user.status,
         profilePic: user.profilePic || "",
+        subject: teacherInfo?.subject || null,
+        department: teacherInfo?.department || null,
+        assignedBatches: teacherInfo?.assignedBatches || [],
+        subjectBatches: teacherInfo?.subjectBatches || [],
+        employeeId: teacherInfo?.employeeId || null,
       },
     });
   } catch (error) {
@@ -650,6 +662,13 @@ const getCurrentUser = async (req, res) => {
     const isAdministrator = (user.role || "").toUpperCase() === "ADMINISTRATOR";
     const firstLoginFlag = isAdministrator ? false : Boolean(user.isFirstLogin);
 
+    let teacherInfo = null;
+    if ((user.role || "").toUpperCase() === "TEACHER") {
+      teacherInfo = await Teacher.findOne({
+        $or: [{ user: user._id }, { email: user.email }],
+      }).select("subject department assignedBatches subjectBatches employeeId fullName");
+    }
+
     res.status(200).json({
       user: {
         id: user._id,
@@ -660,6 +679,11 @@ const getCurrentUser = async (req, res) => {
         isFirstLogin: firstLoginFlag,
         status: user.status,
         profilePic: user.profilePic || "",
+        subject: teacherInfo?.subject || null,
+        department: teacherInfo?.department || null,
+        assignedBatches: teacherInfo?.assignedBatches || [],
+        subjectBatches: teacherInfo?.subjectBatches || [],
+        employeeId: teacherInfo?.employeeId || null,
       },
     });
   } catch (error) {

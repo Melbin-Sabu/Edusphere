@@ -1,8 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
-import { Calendar, Settings, Sparkles, RefreshCw, Clock, BookOpen, ChevronRight, CheckCircle2 } from "lucide-react";
+import api from "../../api/api";
+import {
+  Calendar,
+  Settings,
+  Sparkles,
+  RefreshCw,
+  Clock,
+  BookOpen,
+  ChevronRight,
+  CheckCircle2,
+} from "lucide-react";
 
 function TimetableGenerator() {
   const [course, setCourse] = useState("NEET");
@@ -21,24 +31,52 @@ function TimetableGenerator() {
     return ["04:00 PM - 05:00 PM", "05:00 PM - 06:00 PM", "06:15 PM - 07:15 PM", "07:15 PM - 08:15 PM"];
   };
 
+  // Load published timetable if available
+  useEffect(() => {
+    let isMounted = true;
+    const fetchExisting = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await api.get(`/timetable?course=${course}&batch=${batch}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (isMounted && res.data?.timetable?.schedule) {
+          setTimetable(res.data.timetable);
+        }
+      } catch (err) {
+        // Silently continue
+      }
+    };
+    fetchExisting();
+    return () => {
+      isMounted = false;
+    };
+  }, [course, batch]);
+
   const generateTimetable = () => {
     setIsGenerating(true);
     setTimetable(null);
 
-    // Simulate API delay
-    setTimeout(() => {
+    // Simulate delay for smooth UI feedback and calculation
+    setTimeout(async () => {
       const schedule = {};
       const slots = getSlots(batch);
 
       const neetSubjects = ["Physics", "Chemistry", "Botany", "Zoology"];
       const jeeSubjects = ["Physics", "Chemistry", "Mathematics"];
 
-      const extraSubjects = additionalSubjects.split(",").map(s => s.trim()).filter(s => s);
-      const allSubjects = course === "NEET" ? [...neetSubjects, ...extraSubjects] : [...jeeSubjects, ...extraSubjects];
+      const extraSubjects = additionalSubjects
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => s);
+      const allSubjects =
+        course === "NEET"
+          ? [...neetSubjects, ...extraSubjects]
+          : [...jeeSubjects, ...extraSubjects];
 
       let subjectIndex = 0;
 
-      days.forEach((day, dayIndex) => {
+      days.forEach((day) => {
         schedule[day] = [];
 
         for (let i = 0; i < 4; i++) {
@@ -47,7 +85,7 @@ function TimetableGenerator() {
             schedule[day].push({
               subject: "Mock Test",
               type: "Test",
-              color: "bg-rose-100 text-rose-700 border-rose-200"
+              color: "bg-rose-100 text-rose-700 border-rose-200",
             });
             continue;
           }
@@ -67,18 +105,31 @@ function TimetableGenerator() {
           schedule[day].push({
             subject,
             type: "Class",
-            color
+            color,
           });
         }
       });
 
-      setTimetable({
+      const generated = {
         course,
         batch,
         slots,
-        schedule
-      });
+        schedule,
+        additionalSubjects,
+      };
+
+      setTimetable(generated);
       setIsGenerating(false);
+
+      // Persist to database so faculty & students see it immediately
+      try {
+        const token = localStorage.getItem("token");
+        await api.post("/timetable", generated, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } catch (saveErr) {
+        console.warn("Could not sync generated timetable to backend:", saveErr);
+      }
     }, 1500);
   };
 
@@ -109,19 +160,21 @@ function TimetableGenerator() {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => setCourse("NEET")}
-                    className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${course === "NEET"
+                    className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                      course === "NEET"
                         ? "border-emerald-500 bg-emerald-50 text-emerald-700 shadow-sm"
                         : "border-slate-200 bg-white text-slate-500 hover:border-slate-300"
-                      }`}
+                    }`}
                   >
                     NEET
                   </button>
                   <button
                     onClick={() => setCourse("JEE")}
-                    className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${course === "JEE"
+                    className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                      course === "JEE"
                         ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm"
                         : "border-slate-200 bg-white text-slate-500 hover:border-slate-300"
-                      }`}
+                    }`}
                   >
                     JEE
                   </button>
@@ -135,19 +188,21 @@ function TimetableGenerator() {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => setBatch("Morning")}
-                    className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${batch === "Morning"
+                    className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                      batch === "Morning"
                         ? "border-amber-500 bg-amber-50 text-amber-700 shadow-sm"
                         : "border-slate-200 bg-white text-slate-500 hover:border-slate-300"
-                      }`}
+                    }`}
                   >
                     Morning
                   </button>
                   <button
                     onClick={() => setBatch("Evening")}
-                    className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${batch === "Evening"
+                    className={`py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                      batch === "Evening"
                         ? "border-emerald-700 bg-indigo-50 text-indigo-700 shadow-sm"
                         : "border-slate-200 bg-white text-slate-500 hover:border-slate-300"
-                      }`}
+                    }`}
                   >
                     Evening
                   </button>
@@ -168,9 +223,15 @@ function TimetableGenerator() {
               </div>
 
               <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 mt-4 space-y-2 text-xs text-slate-600">
-                <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> 4 Hours daily schedule</p>
-                <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Mock Tests on Tue & Thu (Periods 3 & 4)</p>
-                <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Includes custom/extra subjects</p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" /> 4 Hours daily schedule
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Mock Tests on Tue & Thu (Periods 3 & 4)
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Automatically published to faculty portals
+                </p>
               </div>
 
               <Button
@@ -206,8 +267,10 @@ function TimetableGenerator() {
                     <Clock className="w-4 h-4" /> Effective for current academic week
                   </p>
                 </div>
-                <div className="px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm">
-                  <CheckCircle2 className="w-4 h-4" /> Allocated Successfully
+                <div className="flex items-center gap-2">
+                  <div className="px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm">
+                    <CheckCircle2 className="w-4 h-4" /> Allocated Successfully
+                  </div>
                 </div>
               </div>
 
@@ -218,7 +281,7 @@ function TimetableGenerator() {
                       <th className="py-2 px-3 text-slate-400 font-bold uppercase tracking-wider text-xs w-24">
                         Day
                       </th>
-                      {timetable.slots.map((slot, i) => (
+                      {timetable.slots?.map((slot, i) => (
                         <th key={i} className="py-2 px-3 text-slate-600 font-bold text-center text-xs bg-slate-50 rounded-lg">
                           Period {i + 1}
                           <div className="text-[10px] text-slate-400 font-mono mt-0.5">{slot}</div>
@@ -227,12 +290,12 @@ function TimetableGenerator() {
                     </tr>
                   </thead>
                   <tbody>
-                    {days.map(day => (
+                    {days.map((day) => (
                       <tr key={day}>
                         <td className="py-3 px-3 font-bold text-slate-700 border-r border-slate-100">
                           {day}
                         </td>
-                        {timetable.schedule[day].map((session, i) => (
+                        {(timetable.schedule[day] || []).map((session, i) => (
                           <td key={i} className="p-1 h-full">
                             <div className={`h-full flex flex-col items-center justify-center p-2 rounded-xl border ${session.color} text-center min-h-[60px] transition-transform hover:scale-[1.02] cursor-default`}>
                               <span className="font-bold text-xs">{session.subject}</span>

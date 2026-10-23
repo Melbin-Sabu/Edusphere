@@ -72,6 +72,7 @@ function AdminLayout({ children, title }) {
     if (roleUpper === "TEACHER") {
       return [
         { name: "Faculty Dashboard", path: "/teacher/dashboard", icon: LayoutDashboard },
+        { name: "Class Timetable", path: "/teacher/timetable", icon: CalendarCheck, badge: "Weekly" },
         { name: "Manage Subject Teachers", path: "/teacher/subject-teachers", icon: Users },
         { name: "Quiz Management", path: "/teacher/quizzes", icon: FileText },
         { name: "My Batches", path: "/teacher/batches", icon: Layers, isPlaceholder: true },

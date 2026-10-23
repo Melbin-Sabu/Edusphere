@@ -20,6 +20,7 @@ const quizRoutes = require("./routes/quizRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const leaveRoutes = require("./routes/leaveRoutes");
+const timetableRoutes = require("./routes/timetableRoutes");
 
 const app = express();
 
@@ -83,6 +84,7 @@ app.use("/api/quizzes", quizRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/leaves", leaveRoutes);
+app.use("/api/timetable", timetableRoutes);
 
 // Health Check Route
 app.get("/api/health", (req, res) => {
